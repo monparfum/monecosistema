@@ -11,8 +11,8 @@ const nav = [
   { to: "/workshops", label: "Workshops" },
   { to: "/catalogo", label: "Produtos" },
   { to: "/cursos", label: "Cursos" },
-  { to: "/comunidade", label: "Comunidade" },
   { to: "/ebooks", label: "Ebooks" },
+  { to: "/comunidade", label: "Comunidade" },
 ] as const;
 
 export function SiteHeader() {
