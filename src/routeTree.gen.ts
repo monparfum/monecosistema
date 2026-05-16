@@ -21,18 +21,23 @@ import { Route as CatalogoRouteImport } from './routes/catalogo'
 import { Route as CarrinhoRouteImport } from './routes/carrinho'
 import { Route as CadastroRouteImport } from './routes/cadastro'
 import { Route as BuscaRouteImport } from './routes/busca'
+import { Route as StudioRouteImport } from './routes/_studio'
 import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as AdminRouteImport } from './routes/_admin'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ProdutoSlugRouteImport } from './routes/produto.$slug'
 import { Route as CategoriaSlugRouteImport } from './routes/categoria.$slug'
+import { Route as StudioStudioRouteImport } from './routes/_studio/studio'
 import { Route as AuthenticatedPedidosRouteImport } from './routes/_authenticated/pedidos'
 import { Route as AuthenticatedContaRouteImport } from './routes/_authenticated/conta'
 import { Route as AdminAdminRouteImport } from './routes/_admin/admin'
+import { Route as StudioStudioPaginasRouteImport } from './routes/_studio/studio.paginas'
+import { Route as StudioStudioMidiaRouteImport } from './routes/_studio/studio.midia'
 import { Route as AdminAdminProdutosRouteImport } from './routes/_admin/admin.produtos'
 import { Route as AdminAdminPedidosRouteImport } from './routes/_admin/admin.pedidos'
 import { Route as AdminAdminClientesRouteImport } from './routes/_admin/admin.clientes'
 import { Route as AdminAdminCategoriasRouteImport } from './routes/_admin/admin.categorias'
+import { Route as StudioStudioPaginasSlugRouteImport } from './routes/_studio/studio.paginas.$slug'
 import { Route as AdminAdminProdutosNovoRouteImport } from './routes/_admin/admin.produtos.novo'
 
 const WorkshopsRoute = WorkshopsRouteImport.update({
@@ -95,6 +100,10 @@ const BuscaRoute = BuscaRouteImport.update({
   path: '/busca',
   getParentRoute: () => rootRouteImport,
 } as any)
+const StudioRoute = StudioRouteImport.update({
+  id: '/_studio',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthenticatedRoute = AuthenticatedRouteImport.update({
   id: '/_authenticated',
   getParentRoute: () => rootRouteImport,
@@ -118,6 +127,11 @@ const CategoriaSlugRoute = CategoriaSlugRouteImport.update({
   path: '/categoria/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const StudioStudioRoute = StudioStudioRouteImport.update({
+  id: '/studio',
+  path: '/studio',
+  getParentRoute: () => StudioRoute,
+} as any)
 const AuthenticatedPedidosRoute = AuthenticatedPedidosRouteImport.update({
   id: '/pedidos',
   path: '/pedidos',
@@ -132,6 +146,16 @@ const AdminAdminRoute = AdminAdminRouteImport.update({
   id: '/admin',
   path: '/admin',
   getParentRoute: () => AdminRoute,
+} as any)
+const StudioStudioPaginasRoute = StudioStudioPaginasRouteImport.update({
+  id: '/paginas',
+  path: '/paginas',
+  getParentRoute: () => StudioStudioRoute,
+} as any)
+const StudioStudioMidiaRoute = StudioStudioMidiaRouteImport.update({
+  id: '/midia',
+  path: '/midia',
+  getParentRoute: () => StudioStudioRoute,
 } as any)
 const AdminAdminProdutosRoute = AdminAdminProdutosRouteImport.update({
   id: '/produtos',
@@ -152,6 +176,11 @@ const AdminAdminCategoriasRoute = AdminAdminCategoriasRouteImport.update({
   id: '/categorias',
   path: '/categorias',
   getParentRoute: () => AdminAdminRoute,
+} as any)
+const StudioStudioPaginasSlugRoute = StudioStudioPaginasSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => StudioStudioPaginasRoute,
 } as any)
 const AdminAdminProdutosNovoRoute = AdminAdminProdutosNovoRouteImport.update({
   id: '/novo',
@@ -176,13 +205,17 @@ export interface FileRoutesByFullPath {
   '/admin': typeof AdminAdminRouteWithChildren
   '/conta': typeof AuthenticatedContaRoute
   '/pedidos': typeof AuthenticatedPedidosRoute
+  '/studio': typeof StudioStudioRouteWithChildren
   '/categoria/$slug': typeof CategoriaSlugRoute
   '/produto/$slug': typeof ProdutoSlugRoute
   '/admin/categorias': typeof AdminAdminCategoriasRoute
   '/admin/clientes': typeof AdminAdminClientesRoute
   '/admin/pedidos': typeof AdminAdminPedidosRoute
   '/admin/produtos': typeof AdminAdminProdutosRouteWithChildren
+  '/studio/midia': typeof StudioStudioMidiaRoute
+  '/studio/paginas': typeof StudioStudioPaginasRouteWithChildren
   '/admin/produtos/novo': typeof AdminAdminProdutosNovoRoute
+  '/studio/paginas/$slug': typeof StudioStudioPaginasSlugRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -201,19 +234,24 @@ export interface FileRoutesByTo {
   '/admin': typeof AdminAdminRouteWithChildren
   '/conta': typeof AuthenticatedContaRoute
   '/pedidos': typeof AuthenticatedPedidosRoute
+  '/studio': typeof StudioStudioRouteWithChildren
   '/categoria/$slug': typeof CategoriaSlugRoute
   '/produto/$slug': typeof ProdutoSlugRoute
   '/admin/categorias': typeof AdminAdminCategoriasRoute
   '/admin/clientes': typeof AdminAdminClientesRoute
   '/admin/pedidos': typeof AdminAdminPedidosRoute
   '/admin/produtos': typeof AdminAdminProdutosRouteWithChildren
+  '/studio/midia': typeof StudioStudioMidiaRoute
+  '/studio/paginas': typeof StudioStudioPaginasRouteWithChildren
   '/admin/produtos/novo': typeof AdminAdminProdutosNovoRoute
+  '/studio/paginas/$slug': typeof StudioStudioPaginasSlugRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_admin': typeof AdminRouteWithChildren
   '/_authenticated': typeof AuthenticatedRouteWithChildren
+  '/_studio': typeof StudioRouteWithChildren
   '/busca': typeof BuscaRoute
   '/cadastro': typeof CadastroRoute
   '/carrinho': typeof CarrinhoRoute
@@ -229,13 +267,17 @@ export interface FileRoutesById {
   '/_admin/admin': typeof AdminAdminRouteWithChildren
   '/_authenticated/conta': typeof AuthenticatedContaRoute
   '/_authenticated/pedidos': typeof AuthenticatedPedidosRoute
+  '/_studio/studio': typeof StudioStudioRouteWithChildren
   '/categoria/$slug': typeof CategoriaSlugRoute
   '/produto/$slug': typeof ProdutoSlugRoute
   '/_admin/admin/categorias': typeof AdminAdminCategoriasRoute
   '/_admin/admin/clientes': typeof AdminAdminClientesRoute
   '/_admin/admin/pedidos': typeof AdminAdminPedidosRoute
   '/_admin/admin/produtos': typeof AdminAdminProdutosRouteWithChildren
+  '/_studio/studio/midia': typeof StudioStudioMidiaRoute
+  '/_studio/studio/paginas': typeof StudioStudioPaginasRouteWithChildren
   '/_admin/admin/produtos/novo': typeof AdminAdminProdutosNovoRoute
+  '/_studio/studio/paginas/$slug': typeof StudioStudioPaginasSlugRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -256,13 +298,17 @@ export interface FileRouteTypes {
     | '/admin'
     | '/conta'
     | '/pedidos'
+    | '/studio'
     | '/categoria/$slug'
     | '/produto/$slug'
     | '/admin/categorias'
     | '/admin/clientes'
     | '/admin/pedidos'
     | '/admin/produtos'
+    | '/studio/midia'
+    | '/studio/paginas'
     | '/admin/produtos/novo'
+    | '/studio/paginas/$slug'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -281,18 +327,23 @@ export interface FileRouteTypes {
     | '/admin'
     | '/conta'
     | '/pedidos'
+    | '/studio'
     | '/categoria/$slug'
     | '/produto/$slug'
     | '/admin/categorias'
     | '/admin/clientes'
     | '/admin/pedidos'
     | '/admin/produtos'
+    | '/studio/midia'
+    | '/studio/paginas'
     | '/admin/produtos/novo'
+    | '/studio/paginas/$slug'
   id:
     | '__root__'
     | '/'
     | '/_admin'
     | '/_authenticated'
+    | '/_studio'
     | '/busca'
     | '/cadastro'
     | '/carrinho'
@@ -308,19 +359,24 @@ export interface FileRouteTypes {
     | '/_admin/admin'
     | '/_authenticated/conta'
     | '/_authenticated/pedidos'
+    | '/_studio/studio'
     | '/categoria/$slug'
     | '/produto/$slug'
     | '/_admin/admin/categorias'
     | '/_admin/admin/clientes'
     | '/_admin/admin/pedidos'
     | '/_admin/admin/produtos'
+    | '/_studio/studio/midia'
+    | '/_studio/studio/paginas'
     | '/_admin/admin/produtos/novo'
+    | '/_studio/studio/paginas/$slug'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AdminRoute: typeof AdminRouteWithChildren
   AuthenticatedRoute: typeof AuthenticatedRouteWithChildren
+  StudioRoute: typeof StudioRouteWithChildren
   BuscaRoute: typeof BuscaRoute
   CadastroRoute: typeof CadastroRoute
   CarrinhoRoute: typeof CarrinhoRoute
@@ -423,6 +479,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BuscaRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_studio': {
+      id: '/_studio'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof StudioRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_authenticated': {
       id: '/_authenticated'
       path: ''
@@ -458,6 +521,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CategoriaSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_studio/studio': {
+      id: '/_studio/studio'
+      path: '/studio'
+      fullPath: '/studio'
+      preLoaderRoute: typeof StudioStudioRouteImport
+      parentRoute: typeof StudioRoute
+    }
     '/_authenticated/pedidos': {
       id: '/_authenticated/pedidos'
       path: '/pedidos'
@@ -478,6 +548,20 @@ declare module '@tanstack/react-router' {
       fullPath: '/admin'
       preLoaderRoute: typeof AdminAdminRouteImport
       parentRoute: typeof AdminRoute
+    }
+    '/_studio/studio/paginas': {
+      id: '/_studio/studio/paginas'
+      path: '/paginas'
+      fullPath: '/studio/paginas'
+      preLoaderRoute: typeof StudioStudioPaginasRouteImport
+      parentRoute: typeof StudioStudioRoute
+    }
+    '/_studio/studio/midia': {
+      id: '/_studio/studio/midia'
+      path: '/midia'
+      fullPath: '/studio/midia'
+      preLoaderRoute: typeof StudioStudioMidiaRouteImport
+      parentRoute: typeof StudioStudioRoute
     }
     '/_admin/admin/produtos': {
       id: '/_admin/admin/produtos'
@@ -506,6 +590,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/admin/categorias'
       preLoaderRoute: typeof AdminAdminCategoriasRouteImport
       parentRoute: typeof AdminAdminRoute
+    }
+    '/_studio/studio/paginas/$slug': {
+      id: '/_studio/studio/paginas/$slug'
+      path: '/$slug'
+      fullPath: '/studio/paginas/$slug'
+      preLoaderRoute: typeof StudioStudioPaginasSlugRouteImport
+      parentRoute: typeof StudioStudioPaginasRoute
     }
     '/_admin/admin/produtos/novo': {
       id: '/_admin/admin/produtos/novo'
@@ -570,10 +661,47 @@ const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
   AuthenticatedRouteChildren,
 )
 
+interface StudioStudioPaginasRouteChildren {
+  StudioStudioPaginasSlugRoute: typeof StudioStudioPaginasSlugRoute
+}
+
+const StudioStudioPaginasRouteChildren: StudioStudioPaginasRouteChildren = {
+  StudioStudioPaginasSlugRoute: StudioStudioPaginasSlugRoute,
+}
+
+const StudioStudioPaginasRouteWithChildren =
+  StudioStudioPaginasRoute._addFileChildren(StudioStudioPaginasRouteChildren)
+
+interface StudioStudioRouteChildren {
+  StudioStudioMidiaRoute: typeof StudioStudioMidiaRoute
+  StudioStudioPaginasRoute: typeof StudioStudioPaginasRouteWithChildren
+}
+
+const StudioStudioRouteChildren: StudioStudioRouteChildren = {
+  StudioStudioMidiaRoute: StudioStudioMidiaRoute,
+  StudioStudioPaginasRoute: StudioStudioPaginasRouteWithChildren,
+}
+
+const StudioStudioRouteWithChildren = StudioStudioRoute._addFileChildren(
+  StudioStudioRouteChildren,
+)
+
+interface StudioRouteChildren {
+  StudioStudioRoute: typeof StudioStudioRouteWithChildren
+}
+
+const StudioRouteChildren: StudioRouteChildren = {
+  StudioStudioRoute: StudioStudioRouteWithChildren,
+}
+
+const StudioRouteWithChildren =
+  StudioRoute._addFileChildren(StudioRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AdminRoute: AdminRouteWithChildren,
   AuthenticatedRoute: AuthenticatedRouteWithChildren,
+  StudioRoute: StudioRouteWithChildren,
   BuscaRoute: BuscaRoute,
   CadastroRoute: CadastroRoute,
   CarrinhoRoute: CarrinhoRoute,
