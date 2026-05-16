@@ -53,7 +53,7 @@ function PageEditor() {
   const addBlock = async (type: string) => {
     if (!page || !blocks) return;
     const { data, error } = await supabase.from("page_blocks").insert({
-      page_id: page.id, type, position: blocks.length, content: defaultContent[type] ?? {},
+      page_id: page.id, type, position: blocks.length, content: (defaultContent[type] ?? {}) as never,
     }).select().single();
     if (error) { toast.error(error.message); return; }
     setAdding(false);
@@ -75,7 +75,7 @@ function PageEditor() {
   const duplicate = async (block: Block) => {
     if (!page || !blocks) return;
     const { error } = await supabase.from("page_blocks").insert({
-      page_id: page.id, type: block.type, position: blocks.length, content: block.content,
+      page_id: page.id, type: block.type, position: blocks.length, content: block.content as never,
     });
     if (error) { toast.error(error.message); return; }
     invalidate();
@@ -89,7 +89,7 @@ function PageEditor() {
   };
 
   const updateContent = async (id: string, content: Record<string, unknown>) => {
-    await supabase.from("page_blocks").update({ content }).eq("id", id);
+    await supabase.from("page_blocks").update({ content: content as never }).eq("id", id);
     invalidate();
   };
 
