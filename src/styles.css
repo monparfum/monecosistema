@@ -46,28 +46,31 @@
 
 :root {
   --radius: 0.25rem;
-  --paper: oklch(0.965 0.008 80);
-  --ink: oklch(0.18 0.005 80);
+  /* Maison palette: cream paper, deep ink, soft gold, deep brown */
+  --paper: oklch(0.965 0.012 82);
+  --ink: oklch(0.16 0.008 60);
+  --gold: oklch(0.78 0.09 82);
+  --brown: oklch(0.32 0.04 55);
 
-  --background: oklch(0.965 0.008 80);
-  --foreground: oklch(0.18 0.005 80);
-  --card: oklch(0.985 0.005 80);
-  --card-foreground: oklch(0.18 0.005 80);
-  --popover: oklch(0.985 0.005 80);
-  --popover-foreground: oklch(0.18 0.005 80);
-  --primary: oklch(0.18 0.005 80);
-  --primary-foreground: oklch(0.965 0.008 80);
-  --secondary: oklch(0.92 0.01 80);
-  --secondary-foreground: oklch(0.18 0.005 80);
-  --muted: oklch(0.92 0.01 80);
-  --muted-foreground: oklch(0.45 0.008 80);
-  --accent: oklch(0.92 0.01 80);
-  --accent-foreground: oklch(0.18 0.005 80);
-  --destructive: oklch(0.55 0.22 27);
-  --destructive-foreground: oklch(0.985 0.005 80);
-  --border: oklch(0.86 0.01 80);
-  --input: oklch(0.86 0.01 80);
-  --ring: oklch(0.18 0.005 80);
+  --background: oklch(0.965 0.012 82);
+  --foreground: oklch(0.16 0.008 60);
+  --card: oklch(0.985 0.008 82);
+  --card-foreground: oklch(0.16 0.008 60);
+  --popover: oklch(0.985 0.008 82);
+  --popover-foreground: oklch(0.16 0.008 60);
+  --primary: oklch(0.16 0.008 60);
+  --primary-foreground: oklch(0.965 0.012 82);
+  --secondary: oklch(0.93 0.014 82);
+  --secondary-foreground: oklch(0.16 0.008 60);
+  --muted: oklch(0.93 0.014 82);
+  --muted-foreground: oklch(0.46 0.012 60);
+  --accent: oklch(0.78 0.09 82);
+  --accent-foreground: oklch(0.16 0.008 60);
+  --destructive: oklch(0.5 0.18 30);
+  --destructive-foreground: oklch(0.985 0.008 82);
+  --border: oklch(0.86 0.014 82);
+  --input: oklch(0.86 0.014 82);
+  --ring: oklch(0.32 0.04 55);
 
   --sidebar: oklch(0.965 0.008 80);
   --sidebar-foreground: oklch(0.18 0.005 80);
@@ -128,12 +131,33 @@
 .eyebrow {
   font-family: var(--font-sans);
   text-transform: uppercase;
-  letter-spacing: 0.18em;
-  font-size: 0.7rem;
+  letter-spacing: 0.22em;
+  font-size: 0.68rem;
   font-weight: 500;
   color: var(--color-muted-foreground);
 }
 
 .hairline {
   border-top: 1px solid var(--color-border);
+}
+
+.gold {
+  color: var(--gold);
+}
+
+.editorial-link {
+  position: relative;
+  display: inline-block;
+  padding-bottom: 0.25rem;
+  border-bottom: 1px solid currentColor;
+  transition: opacity 0.3s ease;
+}
+.editorial-link:hover { opacity: 0.6; }
+
+.fade-in {
+  animation: fadeIn 1.2s ease both;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: none; }
 }

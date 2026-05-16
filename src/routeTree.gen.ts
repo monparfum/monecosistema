@@ -9,7 +9,13 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as WorkshopsRouteImport } from './routes/workshops'
+import { Route as SobreRouteImport } from './routes/sobre'
 import { Route as LoginRouteImport } from './routes/login'
+import { Route as ExperienciasRouteImport } from './routes/experiencias'
+import { Route as EbooksRouteImport } from './routes/ebooks'
+import { Route as CursosRouteImport } from './routes/cursos'
+import { Route as ComunidadeRouteImport } from './routes/comunidade'
 import { Route as CheckoutRouteImport } from './routes/checkout'
 import { Route as CatalogoRouteImport } from './routes/catalogo'
 import { Route as CarrinhoRouteImport } from './routes/carrinho'
@@ -29,9 +35,39 @@ import { Route as AdminAdminClientesRouteImport } from './routes/_admin/admin.cl
 import { Route as AdminAdminCategoriasRouteImport } from './routes/_admin/admin.categorias'
 import { Route as AdminAdminProdutosNovoRouteImport } from './routes/_admin/admin.produtos.novo'
 
+const WorkshopsRoute = WorkshopsRouteImport.update({
+  id: '/workshops',
+  path: '/workshops',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SobreRoute = SobreRouteImport.update({
+  id: '/sobre',
+  path: '/sobre',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
   path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ExperienciasRoute = ExperienciasRouteImport.update({
+  id: '/experiencias',
+  path: '/experiencias',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EbooksRoute = EbooksRouteImport.update({
+  id: '/ebooks',
+  path: '/ebooks',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CursosRoute = CursosRouteImport.update({
+  id: '/cursos',
+  path: '/cursos',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ComunidadeRoute = ComunidadeRouteImport.update({
+  id: '/comunidade',
+  path: '/comunidade',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CheckoutRoute = CheckoutRouteImport.update({
@@ -130,7 +166,13 @@ export interface FileRoutesByFullPath {
   '/carrinho': typeof CarrinhoRoute
   '/catalogo': typeof CatalogoRoute
   '/checkout': typeof CheckoutRoute
+  '/comunidade': typeof ComunidadeRoute
+  '/cursos': typeof CursosRoute
+  '/ebooks': typeof EbooksRoute
+  '/experiencias': typeof ExperienciasRoute
   '/login': typeof LoginRoute
+  '/sobre': typeof SobreRoute
+  '/workshops': typeof WorkshopsRoute
   '/admin': typeof AdminAdminRouteWithChildren
   '/conta': typeof AuthenticatedContaRoute
   '/pedidos': typeof AuthenticatedPedidosRoute
@@ -149,7 +191,13 @@ export interface FileRoutesByTo {
   '/carrinho': typeof CarrinhoRoute
   '/catalogo': typeof CatalogoRoute
   '/checkout': typeof CheckoutRoute
+  '/comunidade': typeof ComunidadeRoute
+  '/cursos': typeof CursosRoute
+  '/ebooks': typeof EbooksRoute
+  '/experiencias': typeof ExperienciasRoute
   '/login': typeof LoginRoute
+  '/sobre': typeof SobreRoute
+  '/workshops': typeof WorkshopsRoute
   '/admin': typeof AdminAdminRouteWithChildren
   '/conta': typeof AuthenticatedContaRoute
   '/pedidos': typeof AuthenticatedPedidosRoute
@@ -171,7 +219,13 @@ export interface FileRoutesById {
   '/carrinho': typeof CarrinhoRoute
   '/catalogo': typeof CatalogoRoute
   '/checkout': typeof CheckoutRoute
+  '/comunidade': typeof ComunidadeRoute
+  '/cursos': typeof CursosRoute
+  '/ebooks': typeof EbooksRoute
+  '/experiencias': typeof ExperienciasRoute
   '/login': typeof LoginRoute
+  '/sobre': typeof SobreRoute
+  '/workshops': typeof WorkshopsRoute
   '/_admin/admin': typeof AdminAdminRouteWithChildren
   '/_authenticated/conta': typeof AuthenticatedContaRoute
   '/_authenticated/pedidos': typeof AuthenticatedPedidosRoute
@@ -192,7 +246,13 @@ export interface FileRouteTypes {
     | '/carrinho'
     | '/catalogo'
     | '/checkout'
+    | '/comunidade'
+    | '/cursos'
+    | '/ebooks'
+    | '/experiencias'
     | '/login'
+    | '/sobre'
+    | '/workshops'
     | '/admin'
     | '/conta'
     | '/pedidos'
@@ -211,7 +271,13 @@ export interface FileRouteTypes {
     | '/carrinho'
     | '/catalogo'
     | '/checkout'
+    | '/comunidade'
+    | '/cursos'
+    | '/ebooks'
+    | '/experiencias'
     | '/login'
+    | '/sobre'
+    | '/workshops'
     | '/admin'
     | '/conta'
     | '/pedidos'
@@ -232,7 +298,13 @@ export interface FileRouteTypes {
     | '/carrinho'
     | '/catalogo'
     | '/checkout'
+    | '/comunidade'
+    | '/cursos'
+    | '/ebooks'
+    | '/experiencias'
     | '/login'
+    | '/sobre'
+    | '/workshops'
     | '/_admin/admin'
     | '/_authenticated/conta'
     | '/_authenticated/pedidos'
@@ -254,18 +326,66 @@ export interface RootRouteChildren {
   CarrinhoRoute: typeof CarrinhoRoute
   CatalogoRoute: typeof CatalogoRoute
   CheckoutRoute: typeof CheckoutRoute
+  ComunidadeRoute: typeof ComunidadeRoute
+  CursosRoute: typeof CursosRoute
+  EbooksRoute: typeof EbooksRoute
+  ExperienciasRoute: typeof ExperienciasRoute
   LoginRoute: typeof LoginRoute
+  SobreRoute: typeof SobreRoute
+  WorkshopsRoute: typeof WorkshopsRoute
   CategoriaSlugRoute: typeof CategoriaSlugRoute
   ProdutoSlugRoute: typeof ProdutoSlugRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/workshops': {
+      id: '/workshops'
+      path: '/workshops'
+      fullPath: '/workshops'
+      preLoaderRoute: typeof WorkshopsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sobre': {
+      id: '/sobre'
+      path: '/sobre'
+      fullPath: '/sobre'
+      preLoaderRoute: typeof SobreRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/login': {
       id: '/login'
       path: '/login'
       fullPath: '/login'
       preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/experiencias': {
+      id: '/experiencias'
+      path: '/experiencias'
+      fullPath: '/experiencias'
+      preLoaderRoute: typeof ExperienciasRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ebooks': {
+      id: '/ebooks'
+      path: '/ebooks'
+      fullPath: '/ebooks'
+      preLoaderRoute: typeof EbooksRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/cursos': {
+      id: '/cursos'
+      path: '/cursos'
+      fullPath: '/cursos'
+      preLoaderRoute: typeof CursosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/comunidade': {
+      id: '/comunidade'
+      path: '/comunidade'
+      fullPath: '/comunidade'
+      preLoaderRoute: typeof ComunidadeRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/checkout': {
@@ -459,7 +579,13 @@ const rootRouteChildren: RootRouteChildren = {
   CarrinhoRoute: CarrinhoRoute,
   CatalogoRoute: CatalogoRoute,
   CheckoutRoute: CheckoutRoute,
+  ComunidadeRoute: ComunidadeRoute,
+  CursosRoute: CursosRoute,
+  EbooksRoute: EbooksRoute,
+  ExperienciasRoute: ExperienciasRoute,
   LoginRoute: LoginRoute,
+  SobreRoute: SobreRoute,
+  WorkshopsRoute: WorkshopsRoute,
   CategoriaSlugRoute: CategoriaSlugRoute,
   ProdutoSlugRoute: ProdutoSlugRoute,
 }
