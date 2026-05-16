@@ -3,6 +3,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useState } from "react";
 import { toast } from "sonner";
+import { publishPage, unpublishPage } from "@/lib/studio-versions";
 
 export const Route = createFileRoute("/_studio/studio/paginas")({ component: PagesList });
 
