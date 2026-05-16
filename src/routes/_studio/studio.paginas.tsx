@@ -28,11 +28,11 @@ function PagesList() {
   });
 
   const togglePublish = async (id: string, status: string) => {
-    const next = status === "published" ? "draft" : "published";
-    const { error } = await supabase.from("pages").update({ status: next }).eq("id", id);
-    if (error) { toast.error(error.message); return; }
-    toast.success(next === "published" ? "Página publicada" : "Página em rascunho");
-    qc.invalidateQueries({ queryKey: ["studio-pages"] });
+    try {
+      if (status === "published") { await unpublishPage(id); toast.success("Página em rascunho"); }
+      else { await publishPage(id); toast.success("Página publicada — versão salva"); }
+      qc.invalidateQueries({ queryKey: ["studio-pages"] });
+    } catch (e) { toast.error((e as Error).message); }
   };
 
   const createPage = async () => {
