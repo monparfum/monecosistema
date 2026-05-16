@@ -1,10 +1,11 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import { BLOCK_DEFS, type Block } from "@/components/blocks";
-import { ChevronUp, ChevronDown, Copy, Trash2, Plus, X } from "lucide-react";
+import { ChevronUp, ChevronDown, Copy, Trash2, Plus, X, Eye, History, Settings2, RotateCcw } from "lucide-react";
+import { publishPage, unpublishPage, restoreVersion, snapshotPage } from "@/lib/studio-versions";
 
 export const Route = createFileRoute("/_studio/studio/paginas/$slug")({ component: PageEditor });
 
@@ -42,6 +43,14 @@ function PageEditor() {
   const qc = useQueryClient();
   const [selected, setSelected] = useState<string | null>(null);
   const [adding, setAdding] = useState(false);
+  const [preview, setPreview] = useState(true);
+  const [drawer, setDrawer] = useState<"versions" | "settings" | null>(null);
+  const [previewTick, setPreviewTick] = useState(0);
+  const previewBump = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const bumpPreview = () => {
+    if (previewBump.current) clearTimeout(previewBump.current);
+    previewBump.current = setTimeout(() => setPreviewTick((t) => t + 1), 700);
+  };
 
   const { data: page } = useQuery({
     queryKey: ["studio-page", slug],
@@ -64,7 +73,11 @@ function PageEditor() {
     enabled: !!page,
   });
 
-  const invalidate = () => qc.invalidateQueries({ queryKey: ["studio-blocks", page?.id] });
+  const invalidate = () => {
+    qc.invalidateQueries({ queryKey: ["studio-blocks", page?.id] });
+    bumpPreview();
+  };
+  const invalidatePage = () => qc.invalidateQueries({ queryKey: ["studio-page", slug] });
 
   const addBlock = async (type: string) => {
     if (!page || !blocks) return;
@@ -72,9 +85,7 @@ function PageEditor() {
       page_id: page.id, type, position: blocks.length, content: (defaultContent[type] ?? {}) as never,
     }).select().single();
     if (error) { toast.error(error.message); return; }
-    setAdding(false);
-    setSelected(data.id);
-    invalidate();
+    setAdding(false); setSelected(data.id); invalidate();
   };
 
   const move = async (block: Block, dir: -1 | 1) => {
@@ -109,31 +120,63 @@ function PageEditor() {
     invalidate();
   };
 
+  const handlePublish = async () => {
+    if (!page) return;
+    try {
+      await publishPage(page.id);
+      toast.success("Publicada — versão salva no histórico");
+      invalidatePage(); bumpPreview();
+    } catch (e) { toast.error((e as Error).message); }
+  };
+  const handleUnpublish = async () => {
+    if (!page) return;
+    await unpublishPage(page.id);
+    toast.success("Despublicada");
+    invalidatePage();
+  };
+  const handleSnapshot = async () => {
+    if (!page) return;
+    try {
+      await snapshotPage(page.id, "Manual");
+      toast.success("Snapshot criado");
+      qc.invalidateQueries({ queryKey: ["studio-versions", page.id] });
+    } catch (e) { toast.error((e as Error).message); }
+  };
+
   const selBlock = blocks?.find((b) => b.id === selected) ?? null;
 
   if (!page) return <div className="text-muted-foreground">Carregando…</div>;
 
+  const previewHref = page.slug === "home" ? "/" : `/${page.slug}`;
+
   return (
-    <div className="space-y-10">
-      <div className="flex items-end justify-between gap-6">
+    <div className="space-y-8">
+      <div className="flex items-end justify-between gap-6 flex-wrap">
         <div>
           <Link to="/studio/paginas" className="eyebrow text-muted-foreground hover:text-foreground">← Páginas</Link>
           <h1 className="font-display text-4xl mt-2">{page.title}</h1>
           <div className="text-xs text-muted-foreground mt-1">/{page.slug === "home" ? "" : page.slug}</div>
         </div>
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-3">
           <span className={`eyebrow ${page.status === "published" ? "text-foreground" : "text-muted-foreground"}`}>
             {page.status === "published" ? "Publicada" : "Rascunho"}
           </span>
-          <a
-            href={page.slug === "home" ? "/" : `/${page.slug}`}
-            target="_blank" rel="noreferrer"
-            className="text-xs eyebrow border-b border-foreground"
-          >Visualizar →</a>
+          <ToolBtn onClick={() => setPreview((v) => !v)} active={preview} icon={<Eye className="size-3.5" />}>Preview</ToolBtn>
+          <ToolBtn onClick={() => setDrawer(drawer === "versions" ? null : "versions")} active={drawer === "versions"} icon={<History className="size-3.5" />}>Histórico</ToolBtn>
+          <ToolBtn onClick={() => setDrawer(drawer === "settings" ? null : "settings")} active={drawer === "settings"} icon={<Settings2 className="size-3.5" />}>SEO</ToolBtn>
+          {page.status === "published" ? (
+            <button onClick={handleUnpublish} className="eyebrow text-xs text-muted-foreground hover:text-foreground">Despublicar</button>
+          ) : null}
+          <button onClick={handlePublish} className="text-xs px-4 py-2 bg-foreground text-background hover:opacity-80">
+            {page.status === "published" ? "Republicar" : "Publicar"}
+          </button>
         </div>
       </div>
 
-      <div className="grid grid-cols-[1fr_360px] gap-8 border-t border-border pt-8">
+      <div
+        className="grid gap-6 border-t border-border pt-6"
+        style={{ gridTemplateColumns: preview ? "minmax(320px, 380px) 1fr 340px" : "1fr 360px" }}
+      >
         {/* Blocks column */}
         <div className="space-y-3">
           {blocks?.map((b) => {
@@ -142,16 +185,16 @@ function PageEditor() {
               <div
                 key={b.id}
                 onClick={() => setSelected(b.id)}
-                className={`border p-5 cursor-pointer transition-colors ${selected === b.id ? "border-foreground bg-[color:var(--muted)]/40" : "border-border hover:bg-[color:var(--muted)]/20"}`}
+                className={`border p-4 cursor-pointer transition-colors ${selected === b.id ? "border-foreground bg-[color:var(--muted)]/40" : "border-border hover:bg-[color:var(--muted)]/20"}`}
               >
-                <div className="flex items-center justify-between">
-                  <div>
+                <div className="flex items-center justify-between gap-2">
+                  <div className="min-w-0">
                     <div className="eyebrow text-muted-foreground">{def?.label ?? b.type}</div>
-                    <div className="font-display text-lg mt-1 truncate max-w-md">
+                    <div className="font-display text-base mt-1 truncate">
                       {String(b.content.title ?? b.content.eyebrow ?? "Sem título")}
                     </div>
                   </div>
-                  <div className="flex items-center gap-1 text-muted-foreground">
+                  <div className="flex items-center gap-0.5 text-muted-foreground shrink-0">
                     <IconBtn onClick={(e) => { e.stopPropagation(); move(b, -1); }} label="Subir"><ChevronUp className="size-4" /></IconBtn>
                     <IconBtn onClick={(e) => { e.stopPropagation(); move(b, 1); }} label="Descer"><ChevronDown className="size-4" /></IconBtn>
                     <IconBtn onClick={(e) => { e.stopPropagation(); duplicate(b); }} label="Duplicar"><Copy className="size-4" /></IconBtn>
@@ -163,14 +206,35 @@ function PageEditor() {
           })}
           <button
             onClick={() => setAdding(true)}
-            className="w-full border border-dashed border-border py-6 text-muted-foreground hover:text-foreground hover:border-foreground transition-colors flex items-center justify-center gap-2 text-sm"
+            className="w-full border border-dashed border-border py-5 text-muted-foreground hover:text-foreground hover:border-foreground transition-colors flex items-center justify-center gap-2 text-sm"
           >
             <Plus className="size-4" /> Adicionar bloco
           </button>
         </div>
 
+        {/* Live preview */}
+        {preview && (
+          <div className="border border-border bg-[color:var(--muted)]/20 sticky top-6 h-[calc(100vh-7rem)] overflow-hidden flex flex-col">
+            <div className="flex items-center justify-between px-3 py-2 border-b border-border bg-background">
+              <div className="eyebrow text-muted-foreground">Preview ao vivo</div>
+              <div className="flex items-center gap-2">
+                <button onClick={() => setPreviewTick((t) => t + 1)} className="text-xs text-muted-foreground hover:text-foreground" aria-label="Recarregar">
+                  <RotateCcw className="size-3.5" />
+                </button>
+                <a href={previewHref} target="_blank" rel="noreferrer" className="text-xs eyebrow border-b border-foreground">Abrir →</a>
+              </div>
+            </div>
+            <iframe
+              key={previewTick}
+              src={previewHref}
+              title="Preview"
+              className="flex-1 w-full bg-background"
+            />
+          </div>
+        )}
+
         {/* Inspector */}
-        <aside className="border border-border p-6 sticky top-6 h-fit">
+        <aside className="border border-border p-5 sticky top-6 h-fit max-h-[calc(100vh-7rem)] overflow-y-auto">
           {selBlock ? (
             <BlockInspector block={selBlock} onChange={(c) => updateContent(selBlock.id, c)} />
           ) : (
@@ -183,13 +247,146 @@ function PageEditor() {
       </div>
 
       {adding && <AddBlockModal onPick={addBlock} onClose={() => setAdding(false)} />}
+      {drawer === "versions" && (
+        <VersionsDrawer
+          pageId={page.id}
+          onClose={() => setDrawer(null)}
+          onSnapshot={handleSnapshot}
+          onRestored={() => { invalidate(); invalidatePage(); }}
+        />
+      )}
+      {drawer === "settings" && (
+        <SettingsDrawer
+          page={page}
+          onClose={() => setDrawer(null)}
+          onSaved={invalidatePage}
+        />
+      )}
     </div>
   );
 }
 
-function IconBtn({ children, onClick, label }: { children: React.ReactNode; onClick: (e: React.MouseEvent) => void; label: string }) {
+function ToolBtn({ children, onClick, active, icon }: { children: React.ReactNode; onClick: () => void; active?: boolean; icon: React.ReactNode }) {
   return (
-    <button onClick={onClick} aria-label={label} className="p-1.5 hover:text-foreground">{children}</button>
+    <button onClick={onClick} className={`inline-flex items-center gap-1.5 text-xs px-3 py-1.5 border ${active ? "border-foreground text-foreground" : "border-border text-muted-foreground hover:text-foreground"}`}>
+      {icon}{children}
+    </button>
+  );
+}
+
+function IconBtn({ children, onClick, label }: { children: React.ReactNode; onClick: (e: React.MouseEvent) => void; label: string }) {
+  return <button onClick={onClick} aria-label={label} className="p-1.5 hover:text-foreground">{children}</button>;
+}
+
+function VersionsDrawer({ pageId, onClose, onSnapshot, onRestored }: { pageId: string; onClose: () => void; onSnapshot: () => void; onRestored: () => void }) {
+  const qc = useQueryClient();
+  const { data: versions } = useQuery({
+    queryKey: ["studio-versions", pageId],
+    queryFn: async () => {
+      const { data, error } = await supabase.from("page_versions").select("*").eq("page_id", pageId).order("created_at", { ascending: false });
+      if (error) throw error;
+      return data;
+    },
+  });
+
+  const restore = async (id: string) => {
+    if (!confirm("Restaurar esta versão? A versão atual será salva antes.")) return;
+    try {
+      await restoreVersion(id);
+      toast.success("Versão restaurada");
+      qc.invalidateQueries({ queryKey: ["studio-versions", pageId] });
+      onRestored();
+    } catch (e) { toast.error((e as Error).message); }
+  };
+
+  return (
+    <Drawer title="Histórico de versões" onClose={onClose}>
+      <button onClick={onSnapshot} className="w-full border border-dashed border-border py-3 text-xs text-muted-foreground hover:text-foreground hover:border-foreground mb-6">
+        + Criar snapshot agora
+      </button>
+      {versions?.length === 0 && (
+        <p className="text-sm text-muted-foreground">Nenhuma versão ainda. Publique a página ou crie um snapshot manual.</p>
+      )}
+      <div className="divide-y divide-border">
+        {versions?.map((v) => (
+          <div key={v.id} className="py-4 flex items-center justify-between gap-4">
+            <div className="min-w-0">
+              <div className="font-display text-base">{v.label ?? "Snapshot"}</div>
+              <div className="text-xs text-muted-foreground mt-0.5">
+                {new Date(v.created_at).toLocaleString("pt-BR", { dateStyle: "short", timeStyle: "short" })}
+              </div>
+            </div>
+            <button onClick={() => restore(v.id)} className="text-xs eyebrow border-b border-foreground shrink-0">Restaurar →</button>
+          </div>
+        ))}
+      </div>
+    </Drawer>
+  );
+}
+
+function SettingsDrawer({ page, onClose, onSaved }: { page: { id: string; title: string; seo_title: string | null; seo_description: string | null }; onClose: () => void; onSaved: () => void }) {
+  const [title, setTitle] = useState(page.title);
+  const [seoTitle, setSeoTitle] = useState(page.seo_title ?? "");
+  const [seoDesc, setSeoDesc] = useState(page.seo_description ?? "");
+  const [saving, setSaving] = useState(false);
+
+  const save = async () => {
+    setSaving(true);
+    const { error } = await supabase.from("pages").update({
+      title, seo_title: seoTitle || null, seo_description: seoDesc || null,
+    }).eq("id", page.id);
+    setSaving(false);
+    if (error) { toast.error(error.message); return; }
+    toast.success("Configurações salvas");
+    onSaved(); onClose();
+  };
+
+  return (
+    <Drawer title="SEO & configurações" onClose={onClose}>
+      <div className="space-y-5">
+        <Input label="Título da página" value={title} onChange={setTitle} />
+        <Input label="SEO · Título (≤60 caracteres)" value={seoTitle} onChange={setSeoTitle} hint={`${seoTitle.length}/60`} />
+        <Input label="SEO · Descrição (≤160 caracteres)" value={seoDesc} onChange={setSeoDesc} multiline hint={`${seoDesc.length}/160`} />
+        <button onClick={save} disabled={saving} className="w-full text-xs px-4 py-2.5 bg-foreground text-background hover:opacity-80 disabled:opacity-50">
+          {saving ? "Salvando…" : "Salvar configurações"}
+        </button>
+      </div>
+    </Drawer>
+  );
+}
+
+function Input({ label, value, onChange, multiline, hint }: { label: string; value: string; onChange: (v: string) => void; multiline?: boolean; hint?: string }) {
+  return (
+    <div>
+      <div className="flex items-center justify-between mb-2">
+        <label className="eyebrow">{label}</label>
+        {hint && <span className="text-[10px] text-muted-foreground">{hint}</span>}
+      </div>
+      {multiline ? (
+        <textarea value={value} onChange={(e) => onChange(e.target.value)} rows={3}
+          className="w-full border border-border bg-transparent px-3 py-2 text-sm focus:outline-none focus:border-foreground" />
+      ) : (
+        <input value={value} onChange={(e) => onChange(e.target.value)}
+          className="w-full border border-border bg-transparent px-3 py-2 text-sm focus:outline-none focus:border-foreground" />
+      )}
+    </div>
+  );
+}
+
+function Drawer({ title, children, onClose }: { title: string; children: React.ReactNode; onClose: () => void }) {
+  return (
+    <div className="fixed inset-0 z-50 bg-background/60 backdrop-blur-sm flex justify-end" onClick={onClose}>
+      <div className="bg-background border-l border-border w-full max-w-md h-full overflow-y-auto p-8" onClick={(e) => e.stopPropagation()}>
+        <div className="flex items-center justify-between mb-8">
+          <div>
+            <div className="eyebrow mb-2">Studio</div>
+            <h2 className="font-display text-2xl">{title}</h2>
+          </div>
+          <button onClick={onClose}><X className="size-5" /></button>
+        </div>
+        {children}
+      </div>
+    </div>
   );
 }
 
@@ -227,7 +424,6 @@ function BlockInspector({ block, onChange }: { block: Block; onChange: (c: Recor
 
   const debouncedSave = (next: Record<string, unknown>) => {
     setLocal(next);
-    // simple debounce
     clearTimeout((debouncedSave as unknown as { t?: ReturnType<typeof setTimeout> }).t);
     (debouncedSave as unknown as { t?: ReturnType<typeof setTimeout> }).t = setTimeout(() => onChange(next), 500);
   };
