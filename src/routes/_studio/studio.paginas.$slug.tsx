@@ -10,15 +10,31 @@ export const Route = createFileRoute("/_studio/studio/paginas/$slug")({ componen
 
 const defaultContent: Record<string, Record<string, unknown>> = {
   hero: { eyebrow: "", title: "Título do hero", subtitle: "", ctaLabel: "", ctaHref: "/", image: "/src/assets/editorial-hero.jpg" },
+  banner: { eyebrow: "Capítulo", title: "Título do banner", body: "Texto editorial.", image: "/src/assets/editorial-experiencias.jpg", ctaLabel: "", ctaHref: "", reverse: false },
   text: { eyebrow: "Manifesto", body: "Escreva o texto editorial aqui." },
+  quote: { body: "Uma frase memorável.", attribution: "Autor · cargo" },
   grid: { eyebrow: "Chapitres", items: [
     { title: "Item 1", subtitle: "Subtítulo", href: "/", image: "/src/assets/editorial-experiencias.jpg" },
     { title: "Item 2", subtitle: "Subtítulo", href: "/", image: "/src/assets/editorial-workshops.jpg" },
     { title: "Item 3", subtitle: "Subtítulo", href: "/", image: "/src/assets/editorial-cursos.jpg" },
   ]},
+  cards_list: { eyebrow: "Coleção", columns: 2, items: [
+    { eyebrow: "Tag", title: "Card 1", body: "Descrição editorial.", meta: "", ctaLabel: "", ctaHref: "" },
+    { eyebrow: "Tag", title: "Card 2", body: "Descrição editorial.", meta: "", ctaLabel: "", ctaHref: "" },
+  ]},
+  text_columns: { columns: 3, items: [
+    { title: "Pilar 1", body: "Descrição curta." },
+    { title: "Pilar 2", body: "Descrição curta." },
+    { title: "Pilar 3", body: "Descrição curta." },
+  ]},
   featured_products: { eyebrow: "La Collection", title: "Edições autorais", limit: 3 },
   cta: { eyebrow: "", title: "Faça parte", body: "", ctaLabel: "Cadastrar", ctaHref: "/cadastro" },
   image_text: { image: "/src/assets/editorial-hero.jpg", eyebrow: "", title: "Título", body: "", reverse: false },
+  newsletter: { eyebrow: "", title: "Receba nosso diário editorial.", placeholder: "seu e-mail", ctaLabel: "Assinar" },
+  faq: { eyebrow: "FAQ", title: "Perguntas frequentes", items: [
+    { question: "Pergunta 1?", answer: "Resposta detalhada." },
+    { question: "Pergunta 2?", answer: "Resposta detalhada." },
+  ]},
 };
 
 function PageEditor() {
@@ -238,10 +254,56 @@ function BlockInspector({ block, onChange }: { block: Block; onChange: (c: Recor
     </div>
   );
 
+  const updateItem = (i: number, k: string, v: string) => {
+    const items = [...((local.items as Array<Record<string, string>>) ?? [])];
+    items[i] = { ...items[i], [k]: v };
+    debouncedSave({ ...local, items });
+  };
+  const addItem = (template: Record<string, string>) => {
+    const items = [...((local.items as Array<Record<string, string>>) ?? []), template];
+    debouncedSave({ ...local, items });
+  };
+  const removeItem = (i: number) => {
+    const items = ((local.items as Array<Record<string, string>>) ?? []).filter((_, idx) => idx !== i);
+    debouncedSave({ ...local, items });
+  };
+
+  const ItemsEditor = (keys: readonly string[], template: Record<string, string>, labels?: Record<string, string>) => (
+    <div className="space-y-3">
+      <div className="eyebrow">Itens</div>
+      {((local.items as Array<Record<string, string>>) ?? []).map((it, i) => (
+        <div key={i} className="border border-border p-3 space-y-2 relative">
+          <button onClick={() => removeItem(i)} className="absolute top-2 right-2 text-xs text-muted-foreground hover:text-foreground" aria-label="Remover">×</button>
+          {keys.map((k) => (
+            <input key={k} placeholder={labels?.[k] ?? k} value={String(it[k] ?? "")}
+              onChange={(e) => updateItem(i, k, e.target.value)}
+              className="w-full border border-border bg-transparent px-2 py-1 text-xs" />
+          ))}
+        </div>
+      ))}
+      <button onClick={() => addItem(template)} className="w-full border border-dashed border-border py-2 text-xs text-muted-foreground hover:text-foreground hover:border-foreground">+ Adicionar item</button>
+    </div>
+  );
+
+  const ColumnsField = (
+    <div>
+      <label className="eyebrow block mb-2">Colunas</label>
+      <input type="number" min={1} max={4} value={Number(local.columns ?? 3)}
+        onChange={(e) => debouncedSave({ ...local, columns: Number(e.target.value) })}
+        className="w-full border border-border bg-transparent px-3 py-2 text-sm" />
+    </div>
+  );
+
   const fields = (() => {
     switch (block.type) {
       case "hero": return <>{Field("eyebrow", "Eyebrow")}{Field("title", "Título", true)}{Field("subtitle", "Subtítulo", true)}{Field("ctaLabel", "CTA — texto")}{Field("ctaHref", "CTA — link")}{Field("image", "Imagem (URL)")}</>;
+      case "banner": return <>{Field("eyebrow", "Eyebrow")}{Field("title", "Título")}{Field("body", "Corpo", true)}{Field("image", "Imagem (URL)")}{Field("ctaLabel", "CTA — texto")}{Field("ctaHref", "CTA — link")}<label className="flex items-center gap-2 text-sm"><input type="checkbox" checked={local.reverse === true} onChange={(e) => debouncedSave({ ...local, reverse: e.target.checked })} />Texto à esquerda</label></>;
       case "text": return <>{Field("eyebrow", "Eyebrow")}{Field("body", "Corpo do texto", true)}</>;
+      case "quote": return <>{Field("body", "Citação", true)}{Field("attribution", "Atribuição")}</>;
+      case "cards_list": return <>{Field("eyebrow", "Eyebrow")}{ColumnsField}{ItemsEditor(["eyebrow","title","body","meta","ctaLabel","ctaHref"], { eyebrow: "", title: "Novo card", body: "", meta: "", ctaLabel: "", ctaHref: "" })}</>;
+      case "text_columns": return <>{Field("eyebrow", "Eyebrow")}{ColumnsField}{ItemsEditor(["title","body"], { title: "Pilar", body: "" })}</>;
+      case "newsletter": return <>{Field("eyebrow", "Eyebrow")}{Field("title", "Título", true)}{Field("placeholder", "Placeholder")}{Field("ctaLabel", "Botão")}</>;
+      case "faq": return <>{Field("eyebrow", "Eyebrow")}{Field("title", "Título")}{ItemsEditor(["question","answer"], { question: "Nova pergunta?", answer: "" }, { question: "Pergunta", answer: "Resposta" })}</>;
       case "grid": return (
         <>
           {Field("eyebrow", "Eyebrow")}

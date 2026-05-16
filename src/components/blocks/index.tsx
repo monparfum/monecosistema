@@ -1,7 +1,9 @@
 import { Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
+import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { ProductCard } from "@/components/product-card";
+import { toast } from "sonner";
 import heroImg from "@/assets/editorial-hero.jpg";
 import experienciasImg from "@/assets/editorial-experiencias.jpg";
 import workshopsImg from "@/assets/editorial-workshops.jpg";
@@ -26,11 +28,17 @@ export type Block = {
 
 export const BLOCK_DEFS = [
   { type: "hero", label: "Hero editorial", description: "Imagem full-bleed com título serif e CTA" },
+  { type: "banner", label: "Banner editorial", description: "Split imagem + texto e CTA (capítulo)" },
   { type: "text", label: "Texto editorial", description: "Manifesto centralizado" },
+  { type: "quote", label: "Citação", description: "Frase grande em itálico com atribuição" },
   { type: "grid", label: "Grid editorial", description: "Três chapitres com imagem, título e link" },
+  { type: "cards_list", label: "Lista de cards", description: "Grid 2/3 colunas de cards textuais com CTA" },
+  { type: "text_columns", label: "Colunas de texto", description: "3 colunas curtas (pilares)" },
   { type: "featured_products", label: "Produtos em destaque", description: "Coleção puxada do catálogo" },
   { type: "cta", label: "CTA editorial", description: "Faixa com chamada e botão" },
   { type: "image_text", label: "Imagem + Texto", description: "Split 50/50 com imagem e bloco textual" },
+  { type: "newsletter", label: "Newsletter", description: "Captura de e-mail editorial" },
+  { type: "faq", label: "FAQ", description: "Lista de perguntas e respostas" },
 ] as const;
 
 const get = (c: Record<string, unknown>, k: string, fallback = ""): string =>
@@ -63,13 +71,45 @@ function HeroBlock({ c }: { c: Record<string, unknown> }) {
   );
 }
 
+function BannerBlock({ c }: { c: Record<string, unknown> }) {
+  const reverse = c.reverse === true;
+  return (
+    <section className="mx-auto max-w-[1400px] px-6 pt-20 pb-16 grid lg:grid-cols-12 gap-12 items-center">
+      <div className={`lg:col-span-5 space-y-6 ${reverse ? "lg:order-1" : "lg:order-2"}`}>
+        {get(c, "eyebrow") && <div className="eyebrow gold">{get(c, "eyebrow")}</div>}
+        <h1 className="font-display text-5xl md:text-7xl leading-[0.95]">{get(c, "title")}</h1>
+        {get(c, "body") && <p className="text-muted-foreground leading-relaxed">{get(c, "body")}</p>}
+        {get(c, "ctaLabel") && get(c, "ctaHref") && (
+          <Link to={get(c, "ctaHref")} className="editorial-link text-sm">{get(c, "ctaLabel")}</Link>
+        )}
+      </div>
+      <div className={`lg:col-span-7 ${reverse ? "lg:order-2" : "lg:order-1"}`}>
+        <div className="aspect-[4/3] overflow-hidden">
+          <img src={resolveImg(get(c, "image"))} alt={get(c, "title", "Banner")} className="w-full h-full object-cover" />
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function TextBlock({ c }: { c: Record<string, unknown> }) {
   return (
-    <section className="mx-auto max-w-4xl px-8 py-32 text-center fade-in">
-      {get(c, "eyebrow") && <div className="eyebrow mb-10">— {get(c, "eyebrow")} —</div>}
+    <section className="mx-auto max-w-3xl px-6 pt-24 pb-16 text-center fade-in">
+      {get(c, "eyebrow") && <div className="eyebrow gold mb-6">{get(c, "eyebrow")}</div>}
       <p className="font-display text-[clamp(1.75rem,3vw,2.75rem)] leading-[1.25] text-foreground/90 whitespace-pre-line">
         {get(c, "body")}
       </p>
+    </section>
+  );
+}
+
+function QuoteBlock({ c }: { c: Record<string, unknown> }) {
+  return (
+    <section className="mx-auto max-w-3xl px-6 py-24 text-center">
+      <p className="font-display text-3xl md:text-4xl leading-snug italic whitespace-pre-line">
+        “{get(c, "body")}”
+      </p>
+      {get(c, "attribution") && <div className="eyebrow mt-8">{get(c, "attribution")}</div>}
     </section>
   );
 }
@@ -91,6 +131,53 @@ function GridBlock({ c }: { c: Record<string, unknown> }) {
             </Link>
           ))}
         </div>
+      </div>
+    </section>
+  );
+}
+
+function CardsListBlock({ c }: { c: Record<string, unknown> }) {
+  const items = (Array.isArray(c.items) ? c.items : []) as Array<Record<string, string>>;
+  const cols = typeof c.columns === "number" ? c.columns : 2;
+  const gridCls = cols === 3 ? "md:grid-cols-3" : "md:grid-cols-2";
+  return (
+    <section className="mx-auto max-w-[1400px] px-6 py-20 border-t border-border">
+      {get(c, "eyebrow") && <div className="eyebrow mb-10">{get(c, "eyebrow")}</div>}
+      <div className={`grid ${gridCls} gap-px bg-border`}>
+        {items.map((it, i) => (
+          <article key={i} className="bg-background p-10 md:p-12 flex flex-col">
+            {it.eyebrow && <div className="eyebrow mb-4">{it.eyebrow}</div>}
+            <h2 className="font-display text-3xl md:text-4xl mb-4">{it.title}</h2>
+            {it.body && <p className="text-sm text-muted-foreground leading-relaxed flex-1">{it.body}</p>}
+            {(it.meta || (it.ctaLabel && it.ctaHref)) && (
+              <div className="mt-8 flex items-end justify-between">
+                {it.meta ? <div className="font-display text-2xl">{it.meta}</div> : <span />}
+                {it.ctaLabel && it.ctaHref && (
+                  <Link to={it.ctaHref} className="editorial-link text-xs">{it.ctaLabel}</Link>
+                )}
+              </div>
+            )}
+          </article>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function TextColumnsBlock({ c }: { c: Record<string, unknown> }) {
+  const items = (Array.isArray(c.items) ? c.items : []) as Array<Record<string, string>>;
+  const cols = typeof c.columns === "number" ? c.columns : 3;
+  const gridCls = cols === 2 ? "md:grid-cols-2" : cols === 4 ? "md:grid-cols-4" : "md:grid-cols-3";
+  return (
+    <section className="mx-auto max-w-[1200px] px-6 py-16 border-t border-border">
+      {get(c, "eyebrow") && <div className="eyebrow mb-10">{get(c, "eyebrow")}</div>}
+      <div className={`grid ${gridCls} gap-px bg-border`}>
+        {items.map((it, i) => (
+          <div key={i} className="bg-background p-12">
+            <h2 className="font-display text-3xl mb-4">{it.title}</h2>
+            <p className="text-sm text-muted-foreground leading-relaxed">{it.body}</p>
+          </div>
+        ))}
       </div>
     </section>
   );
@@ -163,14 +250,63 @@ function ImageTextBlock({ c }: { c: Record<string, unknown> }) {
   );
 }
 
+function NewsletterBlock({ c }: { c: Record<string, unknown> }) {
+  const [email, setEmail] = useState("");
+  return (
+    <section className="mx-auto max-w-2xl px-6 py-24 text-center">
+      {get(c, "eyebrow") && <div className="eyebrow gold mb-6">{get(c, "eyebrow")}</div>}
+      <p className="font-display text-2xl md:text-3xl leading-snug">{get(c, "title")}</p>
+      <form
+        onSubmit={(e) => { e.preventDefault(); toast.success("Obrigado — em breve você receberá nosso diário."); setEmail(""); }}
+        className="mt-10 flex items-center gap-3 border-b border-border max-w-md mx-auto"
+      >
+        <input
+          type="email" required value={email} onChange={(e) => setEmail(e.target.value)}
+          placeholder={get(c, "placeholder", "seu e-mail")}
+          className="flex-1 bg-transparent py-3 text-sm focus:outline-none"
+        />
+        <button className="eyebrow">{get(c, "ctaLabel", "Assinar")} →</button>
+      </form>
+    </section>
+  );
+}
+
+function FaqBlock({ c }: { c: Record<string, unknown> }) {
+  const items = (Array.isArray(c.items) ? c.items : []) as Array<Record<string, string>>;
+  const [open, setOpen] = useState<number | null>(0);
+  return (
+    <section className="mx-auto max-w-3xl px-6 py-24 border-t border-border">
+      {get(c, "eyebrow") && <div className="eyebrow mb-4">{get(c, "eyebrow")}</div>}
+      {get(c, "title") && <h2 className="font-display text-4xl md:text-5xl mb-12">{get(c, "title")}</h2>}
+      <div className="divide-y divide-border border-t border-b border-border">
+        {items.map((it, i) => (
+          <div key={i} className="py-6">
+            <button onClick={() => setOpen(open === i ? null : i)} className="w-full flex justify-between items-start text-left gap-6">
+              <span className="font-display text-xl md:text-2xl">{it.question}</span>
+              <span className="eyebrow shrink-0 pt-2">{open === i ? "—" : "+"}</span>
+            </button>
+            {open === i && <p className="mt-4 text-muted-foreground leading-relaxed text-sm">{it.answer}</p>}
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
 export function BlockRenderer({ block }: { block: Block }) {
   switch (block.type) {
     case "hero": return <HeroBlock c={block.content} />;
+    case "banner": return <BannerBlock c={block.content} />;
     case "text": return <TextBlock c={block.content} />;
+    case "quote": return <QuoteBlock c={block.content} />;
     case "grid": return <GridBlock c={block.content} />;
+    case "cards_list": return <CardsListBlock c={block.content} />;
+    case "text_columns": return <TextColumnsBlock c={block.content} />;
     case "featured_products": return <FeaturedProductsBlock c={block.content} />;
     case "cta": return <CtaBlock c={block.content} />;
     case "image_text": return <ImageTextBlock c={block.content} />;
+    case "newsletter": return <NewsletterBlock c={block.content} />;
+    case "faq": return <FaqBlock c={block.content} />;
     default: return null;
   }
 }
