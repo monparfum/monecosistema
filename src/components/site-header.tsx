@@ -5,6 +5,7 @@ import { useCart } from "@/lib/cart-context";
 import { useAuth } from "@/lib/auth-context";
 
 const nav = [
+  { to: "/", label: "Home" },
   { to: "/experiencias", label: "Experiências" },
   { to: "/workshops", label: "Workshops" },
   { to: "/catalogo", label: "Produtos" },
