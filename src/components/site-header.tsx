@@ -6,13 +6,13 @@ import { useAuth } from "@/lib/auth-context";
 
 const nav = [
   { to: "/", label: "Home" },
+  { to: "/sobre", label: "Sobre" },
   { to: "/experiencias", label: "Experiências" },
   { to: "/workshops", label: "Workshops" },
   { to: "/catalogo", label: "Produtos" },
   { to: "/cursos", label: "Cursos" },
   { to: "/comunidade", label: "Comunidade" },
   { to: "/ebooks", label: "Ebooks" },
-  { to: "/sobre", label: "Sobre" },
 ] as const;
 
 export function SiteHeader() {
