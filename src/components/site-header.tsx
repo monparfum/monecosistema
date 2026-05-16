@@ -86,6 +86,7 @@ export function SiteHeader() {
             <Link
               key={n.to}
               to={n.to}
+              activeOptions={{ exact: n.to === "/" }}
               activeProps={{ className: "text-foreground" }}
               inactiveProps={{ className: "text-muted-foreground hover:text-foreground transition-colors" }}
             >
