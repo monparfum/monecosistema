@@ -40,24 +40,25 @@ function Home() {
     <div className="min-h-screen bg-background text-foreground">
       <SiteHeader />
 
-      {/* Cinematic full-bleed hero */}
-      <section className="relative grain vignette overflow-hidden">
+      {/* Editorial full-bleed hero — light & airy */}
+      <section className="relative overflow-hidden">
         <div className="relative h-[92vh] min-h-[680px] w-full">
           <img
             src={heroImg}
-            alt="Frasco de perfume Mon Parfum em mármore escuro com luz dourada e fumaça"
+            alt="Mulher elegante segurando frasco de perfume Mon Parfum em ambiente claro"
             className="absolute inset-0 w-full h-full object-cover"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-background/70" />
+          {/* light wash from left for legibility */}
+          <div className="absolute inset-0 bg-gradient-to-r from-background/85 via-background/30 to-transparent" />
           <div className="relative z-10 mx-auto max-w-[1400px] px-8 h-full flex flex-col justify-between py-16">
             <div className="fade-in flex items-center justify-between">
-              <span className="eyebrow gold">Édition Nº 01 — MMXXVI</span>
+              <span className="eyebrow">Édition Nº 01 — MMXXVI</span>
               <span className="eyebrow hidden md:inline">Paris · São Paulo</span>
             </div>
-            <div className="fade-in-slow max-w-3xl">
-              <h1 className="font-display text-[clamp(3.5rem,9vw,9rem)] leading-[0.88] tracking-tight">
+            <div className="fade-in-slow max-w-2xl">
+              <h1 className="font-display text-[clamp(3rem,7.5vw,7.5rem)] leading-[0.92] tracking-tight text-foreground">
                 Le parfum,<br />
-                <em className="italic text-[color:var(--gold)]">une langue</em><br />
+                <em className="italic text-[color:var(--brown)]">une langue</em><br />
                 silencieuse.
               </h1>
               <div className="mt-10 flex items-center gap-10">
@@ -71,7 +72,7 @@ function Home() {
 
       {/* Manifesto — single editorial paragraph */}
       <section className="mx-auto max-w-4xl px-8 py-40 text-center fade-in">
-        <div className="eyebrow gold mb-10">— Manifeste —</div>
+        <div className="eyebrow mb-10">— Manifeste —</div>
         <p className="font-display text-[clamp(1.75rem,3vw,2.75rem)] leading-[1.25] text-foreground/90">
           O perfume é a mais íntima das artes. Uma assinatura invisível
           que carrega memória, lugar e desejo. Cada criação Mon Parfum nasce
@@ -109,7 +110,7 @@ function Home() {
         <div className="mx-auto max-w-[1400px] px-8">
           <div className="grid md:grid-cols-12 gap-12 items-end mb-24">
             <div className="md:col-span-7">
-              <div className="eyebrow gold mb-8">Chapitre IV — La Collection</div>
+              <div className="eyebrow mb-8">Chapitre IV — La Collection</div>
               <h2 className="font-display text-[clamp(3rem,6vw,6rem)] leading-[0.95] tracking-tight">
                 Objets de désir,<br />
                 <em className="italic text-muted-foreground">non un catalogue.</em>
@@ -146,7 +147,7 @@ function Home() {
       {/* Universe — minimal editorial list */}
       <section className="border-t border-border py-40">
         <div className="mx-auto max-w-[1400px] px-8">
-          <div className="eyebrow gold mb-10">Chapitre VI — L'Univers</div>
+          <div className="eyebrow mb-10">Chapitre VI — L'Univers</div>
           <div className="divide-y divide-border">
             {[
               { to: "/comunidade" as const, label: "Communauté", text: "Círculos privados, clube de assinaturas e encontros olfativos." },
@@ -156,14 +157,14 @@ function Home() {
               <Link
                 key={c.to}
                 to={c.to}
-                className="group grid md:grid-cols-12 gap-8 items-baseline py-10 transition-colors hover:bg-[color:var(--muted)]/40 -mx-8 px-8"
+                className="group grid md:grid-cols-12 gap-8 items-baseline py-10 transition-colors hover:bg-[color:var(--muted)]/60 -mx-8 px-8"
               >
-                <div className="md:col-span-1 eyebrow gold">— {c.label[0]}</div>
+                <div className="md:col-span-1 eyebrow">— {c.label[0]}</div>
                 <div className="md:col-span-5 font-display text-[clamp(2.5rem,4vw,4rem)] leading-none group-hover:translate-x-2 transition-transform duration-500">
                   {c.label}
                 </div>
                 <p className="md:col-span-5 text-muted-foreground text-sm leading-relaxed">{c.text}</p>
-                <span className="md:col-span-1 text-right eyebrow text-foreground/60 group-hover:text-[color:var(--gold)]">→</span>
+                <span className="md:col-span-1 text-right eyebrow text-foreground/50 group-hover:text-[color:var(--brown)]">→</span>
               </Link>
             ))}
           </div>
@@ -191,7 +192,7 @@ function EditorialChapter({
     <section className="relative border-t border-border py-32 md:py-40 overflow-hidden">
       <div className="mx-auto max-w-[1400px] px-8 grid lg:grid-cols-12 gap-16 items-center">
         <div className={`lg:col-span-7 ${reverse ? "lg:order-2" : ""}`}>
-          <div className="relative aspect-[4/5] md:aspect-[5/4] overflow-hidden grain">
+          <div className="relative aspect-[4/5] md:aspect-[5/4] overflow-hidden">
             <img
               src={image}
               alt={imageAlt}
@@ -200,13 +201,12 @@ function EditorialChapter({
               height={1200}
               className="w-full h-full object-cover transition-transform duration-[2000ms] hover:scale-[1.03]"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-background/60 via-transparent to-transparent" />
           </div>
         </div>
         <div className={`lg:col-span-5 space-y-10 ${reverse ? "lg:order-1 lg:pr-8" : "lg:pl-8"}`}>
           <div className="flex items-center gap-6">
-            <span className="eyebrow gold">Chapitre {chapter}</span>
-            <span className="h-px w-16 bg-[color:var(--gold)]/40" />
+            <span className="eyebrow">Chapitre {chapter}</span>
+            <span className="h-px w-16 bg-[color:var(--brown)]/30" />
             <span className="eyebrow">{eyebrow}</span>
           </div>
           <h2 className="font-display text-[clamp(2.75rem,5vw,5rem)] leading-[0.95] tracking-tight">
