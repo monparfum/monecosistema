@@ -274,6 +274,42 @@ export type Database = {
           },
         ]
       }
+      page_versions: {
+        Row: {
+          blocks_snapshot: Json
+          created_at: string
+          created_by: string | null
+          id: string
+          label: string | null
+          page_id: string
+          seo_description: string | null
+          seo_title: string | null
+          title: string
+        }
+        Insert: {
+          blocks_snapshot?: Json
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          label?: string | null
+          page_id: string
+          seo_description?: string | null
+          seo_title?: string | null
+          title: string
+        }
+        Update: {
+          blocks_snapshot?: Json
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          label?: string | null
+          page_id?: string
+          seo_description?: string | null
+          seo_title?: string | null
+          title?: string
+        }
+        Relationships: []
+      }
       pages: {
         Row: {
           created_at: string
