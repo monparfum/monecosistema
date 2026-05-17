@@ -1,11 +1,17 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, Outlet, useLocation } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useState } from "react";
 import { toast } from "sonner";
 import { publishPage, unpublishPage } from "@/lib/studio-versions";
 
-export const Route = createFileRoute("/_studio/studio/paginas")({ component: PagesList });
+export const Route = createFileRoute("/_studio/studio/paginas")({ component: StudioPagesRoute });
+
+function StudioPagesRoute() {
+  const location = useLocation();
+  if (location.pathname !== "/studio/paginas") return <Outlet />;
+  return <PagesList />;
+}
 
 function slugify(s: string): string {
   return s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "")
