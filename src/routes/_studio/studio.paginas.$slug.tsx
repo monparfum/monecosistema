@@ -159,7 +159,8 @@ function PageEditor() {
 
   if (!page) return <div className="text-muted-foreground">Carregando…</div>;
 
-  const previewHref = page.slug === "home" ? "/" : `/${page.slug}`;
+  const publicHref = page.slug === "home" ? "/" : `/${page.slug}`;
+  const previewHref = `${publicHref}?studio=1`;
 
   return (
     <div className="space-y-8">
@@ -176,12 +177,20 @@ function PageEditor() {
           <ToolBtn onClick={() => setPreview((v) => !v)} active={preview} icon={<Eye className="size-3.5" />}>Preview</ToolBtn>
           <ToolBtn onClick={() => setDrawer(drawer === "versions" ? null : "versions")} active={drawer === "versions"} icon={<History className="size-3.5" />}>Histórico</ToolBtn>
           <ToolBtn onClick={() => setDrawer(drawer === "settings" ? null : "settings")} active={drawer === "settings"} icon={<Settings2 className="size-3.5" />}>SEO</ToolBtn>
-          {page.status === "published" ? (
-            <button onClick={handleUnpublish} className="eyebrow text-xs text-muted-foreground hover:text-foreground">Despublicar</button>
-          ) : null}
-          <button onClick={handlePublish} className="text-xs px-4 py-2 bg-foreground text-background hover:opacity-80">
-            {page.status === "published" ? "Republicar" : "Publicar"}
-          </button>
+          {canPublish ? (
+            <>
+              {page.status === "published" && (
+                <button onClick={handleUnpublish} className="eyebrow text-xs text-muted-foreground hover:text-foreground">Despublicar</button>
+              )}
+              <button onClick={handlePublish} className="text-xs px-4 py-2 bg-foreground text-background hover:opacity-80">
+                {page.status === "published" ? "Republicar" : "Publicar"}
+              </button>
+            </>
+          ) : (
+            <span className="inline-flex items-center gap-1.5 text-xs px-3 py-2 border border-border text-muted-foreground" title="Apenas Revisores podem publicar">
+              <Lock className="size-3" /> Aguardando revisão
+            </span>
+          )}
         </div>
       </div>
 
