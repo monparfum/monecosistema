@@ -1,17 +1,27 @@
 import { createFileRoute, Outlet, redirect, Link } from "@tanstack/react-router";
 import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/lib/auth-context";
 
 export const Route = createFileRoute("/_studio")({
   beforeLoad: async ({ location }) => {
     const { data: s } = await supabase.auth.getSession();
     if (!s.session) throw redirect({ to: "/login", search: { redirect: location.href } });
     const { data: roles } = await supabase.from("user_roles").select("role").eq("user_id", s.session.user.id);
-    if (!roles?.some((r) => r.role === "admin")) throw redirect({ to: "/" });
+    const allowed = roles?.some((r) => r.role === "admin" || r.role === "editor" || r.role === "reviewer");
+    if (!allowed) throw redirect({ to: "/" });
   },
   component: StudioLayout,
 });
 
+function roleLabel(roles: string[]): string {
+  if (roles.includes("admin")) return "Admin";
+  if (roles.includes("reviewer")) return "Revisor";
+  if (roles.includes("editor")) return "Editor";
+  return "—";
+}
+
 function StudioLayout() {
+  const { roles, isAdmin } = useAuth();
   return (
     <div className="min-h-screen bg-background text-foreground grid grid-cols-[240px_1fr]">
       <aside className="border-r border-border px-6 py-8 sticky top-0 h-screen flex flex-col">
@@ -21,9 +31,13 @@ function StudioLayout() {
           <StudioLink to="/studio" exact>Visão geral</StudioLink>
           <StudioLink to="/studio/paginas">Páginas</StudioLink>
           <StudioLink to="/studio/midia">Mídia</StudioLink>
+          {isAdmin && <StudioLink to="/studio/equipe">Equipe</StudioLink>}
         </nav>
         <div className="space-y-2 pt-6 border-t border-border">
-          <Link to="/admin" className="block eyebrow text-muted-foreground hover:text-foreground">Comércio</Link>
+          <div className="text-[10px] tracking-[0.18em] uppercase text-muted-foreground">
+            Sessão · {roleLabel(roles)}
+          </div>
+          {isAdmin && <Link to="/admin" className="block eyebrow text-muted-foreground hover:text-foreground">Comércio</Link>}
           <Link to="/" className="block eyebrow text-muted-foreground hover:text-foreground">← Site</Link>
         </div>
       </aside>
