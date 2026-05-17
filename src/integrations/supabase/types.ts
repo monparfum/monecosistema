@@ -82,31 +82,40 @@ export type Database = {
       }
       media_assets: {
         Row: {
+          alt_text: string | null
           created_at: string
           filename: string
+          folder: string | null
           height: number | null
           id: string
           mime_type: string | null
+          tags: string[]
           uploaded_by: string | null
           url: string
           width: number | null
         }
         Insert: {
+          alt_text?: string | null
           created_at?: string
           filename: string
+          folder?: string | null
           height?: number | null
           id?: string
           mime_type?: string | null
+          tags?: string[]
           uploaded_by?: string | null
           url: string
           width?: number | null
         }
         Update: {
+          alt_text?: string | null
           created_at?: string
           filename?: string
+          folder?: string | null
           height?: number | null
           id?: string
           mime_type?: string | null
+          tags?: string[]
           uploaded_by?: string | null
           url?: string
           width?: number | null
@@ -490,6 +499,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      can_publish: { Args: { _user_id: string }; Returns: boolean }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
@@ -497,9 +507,10 @@ export type Database = {
         }
         Returns: boolean
       }
+      has_studio_access: { Args: { _user_id: string }; Returns: boolean }
     }
     Enums: {
-      app_role: "admin" | "customer"
+      app_role: "admin" | "customer" | "editor" | "reviewer"
       order_status:
         | "pending_payment"
         | "paid"
@@ -634,7 +645,7 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
-      app_role: ["admin", "customer"],
+      app_role: ["admin", "customer", "editor", "reviewer"],
       order_status: [
         "pending_payment",
         "paid",

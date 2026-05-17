@@ -4,8 +4,9 @@ import { supabase } from "@/integrations/supabase/client";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import { BLOCK_DEFS, type Block } from "@/components/blocks";
-import { ChevronUp, ChevronDown, Copy, Trash2, Plus, X, Eye, History, Settings2, RotateCcw } from "lucide-react";
+import { ChevronUp, ChevronDown, Copy, Trash2, Plus, X, Eye, History, Settings2, RotateCcw, Lock } from "lucide-react";
 import { publishPage, unpublishPage, restoreVersion, snapshotPage } from "@/lib/studio-versions";
+import { useAuth } from "@/lib/auth-context";
 
 export const Route = createFileRoute("/_studio/studio/paginas/$slug")({ component: PageEditor });
 
@@ -41,6 +42,7 @@ const defaultContent: Record<string, Record<string, unknown>> = {
 function PageEditor() {
   const { slug } = Route.useParams();
   const qc = useQueryClient();
+  const { canPublish } = useAuth();
   const [selected, setSelected] = useState<string | null>(null);
   const [adding, setAdding] = useState(false);
   const [preview, setPreview] = useState(true);
@@ -51,6 +53,16 @@ function PageEditor() {
     if (previewBump.current) clearTimeout(previewBump.current);
     previewBump.current = setTimeout(() => setPreviewTick((t) => t + 1), 700);
   };
+
+  // Listen to inline-edit selection coming from the preview iframe
+  useEffect(() => {
+    const handler = (e: MessageEvent) => {
+      const data = e.data as { type?: string; blockId?: string } | null;
+      if (data?.type === "studio:select" && data.blockId) setSelected(data.blockId);
+    };
+    window.addEventListener("message", handler);
+    return () => window.removeEventListener("message", handler);
+  }, []);
 
   const { data: page } = useQuery({
     queryKey: ["studio-page", slug],
@@ -147,7 +159,8 @@ function PageEditor() {
 
   if (!page) return <div className="text-muted-foreground">Carregando…</div>;
 
-  const previewHref = page.slug === "home" ? "/" : `/${page.slug}`;
+  const publicHref = page.slug === "home" ? "/" : `/${page.slug}`;
+  const previewHref = `${publicHref}?studio=1`;
 
   return (
     <div className="space-y-8">
@@ -164,12 +177,20 @@ function PageEditor() {
           <ToolBtn onClick={() => setPreview((v) => !v)} active={preview} icon={<Eye className="size-3.5" />}>Preview</ToolBtn>
           <ToolBtn onClick={() => setDrawer(drawer === "versions" ? null : "versions")} active={drawer === "versions"} icon={<History className="size-3.5" />}>Histórico</ToolBtn>
           <ToolBtn onClick={() => setDrawer(drawer === "settings" ? null : "settings")} active={drawer === "settings"} icon={<Settings2 className="size-3.5" />}>SEO</ToolBtn>
-          {page.status === "published" ? (
-            <button onClick={handleUnpublish} className="eyebrow text-xs text-muted-foreground hover:text-foreground">Despublicar</button>
-          ) : null}
-          <button onClick={handlePublish} className="text-xs px-4 py-2 bg-foreground text-background hover:opacity-80">
-            {page.status === "published" ? "Republicar" : "Publicar"}
-          </button>
+          {canPublish ? (
+            <>
+              {page.status === "published" && (
+                <button onClick={handleUnpublish} className="eyebrow text-xs text-muted-foreground hover:text-foreground">Despublicar</button>
+              )}
+              <button onClick={handlePublish} className="text-xs px-4 py-2 bg-foreground text-background hover:opacity-80">
+                {page.status === "published" ? "Republicar" : "Publicar"}
+              </button>
+            </>
+          ) : (
+            <span className="inline-flex items-center gap-1.5 text-xs px-3 py-2 border border-border text-muted-foreground" title="Apenas Revisores podem publicar">
+              <Lock className="size-3" /> Aguardando revisão
+            </span>
+          )}
         </div>
       </div>
 
@@ -221,7 +242,7 @@ function PageEditor() {
                 <button onClick={() => setPreviewTick((t) => t + 1)} className="text-xs text-muted-foreground hover:text-foreground" aria-label="Recarregar">
                   <RotateCcw className="size-3.5" />
                 </button>
-                <a href={previewHref} target="_blank" rel="noreferrer" className="text-xs eyebrow border-b border-foreground">Abrir →</a>
+                <a href={publicHref} target="_blank" rel="noreferrer" className="text-xs eyebrow border-b border-foreground">Abrir →</a>
               </div>
             </div>
             <iframe

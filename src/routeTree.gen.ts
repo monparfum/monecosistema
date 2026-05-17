@@ -33,6 +33,7 @@ import { Route as AuthenticatedContaRouteImport } from './routes/_authenticated/
 import { Route as AdminAdminRouteImport } from './routes/_admin/admin'
 import { Route as StudioStudioPaginasRouteImport } from './routes/_studio/studio.paginas'
 import { Route as StudioStudioMidiaRouteImport } from './routes/_studio/studio.midia'
+import { Route as StudioStudioEquipeRouteImport } from './routes/_studio/studio.equipe'
 import { Route as AdminAdminProdutosRouteImport } from './routes/_admin/admin.produtos'
 import { Route as AdminAdminPedidosRouteImport } from './routes/_admin/admin.pedidos'
 import { Route as AdminAdminClientesRouteImport } from './routes/_admin/admin.clientes'
@@ -157,6 +158,11 @@ const StudioStudioMidiaRoute = StudioStudioMidiaRouteImport.update({
   path: '/midia',
   getParentRoute: () => StudioStudioRoute,
 } as any)
+const StudioStudioEquipeRoute = StudioStudioEquipeRouteImport.update({
+  id: '/equipe',
+  path: '/equipe',
+  getParentRoute: () => StudioStudioRoute,
+} as any)
 const AdminAdminProdutosRoute = AdminAdminProdutosRouteImport.update({
   id: '/produtos',
   path: '/produtos',
@@ -212,6 +218,7 @@ export interface FileRoutesByFullPath {
   '/admin/clientes': typeof AdminAdminClientesRoute
   '/admin/pedidos': typeof AdminAdminPedidosRoute
   '/admin/produtos': typeof AdminAdminProdutosRouteWithChildren
+  '/studio/equipe': typeof StudioStudioEquipeRoute
   '/studio/midia': typeof StudioStudioMidiaRoute
   '/studio/paginas': typeof StudioStudioPaginasRouteWithChildren
   '/admin/produtos/novo': typeof AdminAdminProdutosNovoRoute
@@ -241,6 +248,7 @@ export interface FileRoutesByTo {
   '/admin/clientes': typeof AdminAdminClientesRoute
   '/admin/pedidos': typeof AdminAdminPedidosRoute
   '/admin/produtos': typeof AdminAdminProdutosRouteWithChildren
+  '/studio/equipe': typeof StudioStudioEquipeRoute
   '/studio/midia': typeof StudioStudioMidiaRoute
   '/studio/paginas': typeof StudioStudioPaginasRouteWithChildren
   '/admin/produtos/novo': typeof AdminAdminProdutosNovoRoute
@@ -274,6 +282,7 @@ export interface FileRoutesById {
   '/_admin/admin/clientes': typeof AdminAdminClientesRoute
   '/_admin/admin/pedidos': typeof AdminAdminPedidosRoute
   '/_admin/admin/produtos': typeof AdminAdminProdutosRouteWithChildren
+  '/_studio/studio/equipe': typeof StudioStudioEquipeRoute
   '/_studio/studio/midia': typeof StudioStudioMidiaRoute
   '/_studio/studio/paginas': typeof StudioStudioPaginasRouteWithChildren
   '/_admin/admin/produtos/novo': typeof AdminAdminProdutosNovoRoute
@@ -305,6 +314,7 @@ export interface FileRouteTypes {
     | '/admin/clientes'
     | '/admin/pedidos'
     | '/admin/produtos'
+    | '/studio/equipe'
     | '/studio/midia'
     | '/studio/paginas'
     | '/admin/produtos/novo'
@@ -334,6 +344,7 @@ export interface FileRouteTypes {
     | '/admin/clientes'
     | '/admin/pedidos'
     | '/admin/produtos'
+    | '/studio/equipe'
     | '/studio/midia'
     | '/studio/paginas'
     | '/admin/produtos/novo'
@@ -366,6 +377,7 @@ export interface FileRouteTypes {
     | '/_admin/admin/clientes'
     | '/_admin/admin/pedidos'
     | '/_admin/admin/produtos'
+    | '/_studio/studio/equipe'
     | '/_studio/studio/midia'
     | '/_studio/studio/paginas'
     | '/_admin/admin/produtos/novo'
@@ -563,6 +575,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof StudioStudioMidiaRouteImport
       parentRoute: typeof StudioStudioRoute
     }
+    '/_studio/studio/equipe': {
+      id: '/_studio/studio/equipe'
+      path: '/equipe'
+      fullPath: '/studio/equipe'
+      preLoaderRoute: typeof StudioStudioEquipeRouteImport
+      parentRoute: typeof StudioStudioRoute
+    }
     '/_admin/admin/produtos': {
       id: '/_admin/admin/produtos'
       path: '/produtos'
@@ -673,11 +692,13 @@ const StudioStudioPaginasRouteWithChildren =
   StudioStudioPaginasRoute._addFileChildren(StudioStudioPaginasRouteChildren)
 
 interface StudioStudioRouteChildren {
+  StudioStudioEquipeRoute: typeof StudioStudioEquipeRoute
   StudioStudioMidiaRoute: typeof StudioStudioMidiaRoute
   StudioStudioPaginasRoute: typeof StudioStudioPaginasRouteWithChildren
 }
 
 const StudioStudioRouteChildren: StudioStudioRouteChildren = {
+  StudioStudioEquipeRoute: StudioStudioEquipeRoute,
   StudioStudioMidiaRoute: StudioStudioMidiaRoute,
   StudioStudioPaginasRoute: StudioStudioPaginasRouteWithChildren,
 }
