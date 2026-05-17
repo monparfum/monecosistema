@@ -42,6 +42,7 @@ const defaultContent: Record<string, Record<string, unknown>> = {
 function PageEditor() {
   const { slug } = Route.useParams();
   const qc = useQueryClient();
+  const { canPublish } = useAuth();
   const [selected, setSelected] = useState<string | null>(null);
   const [adding, setAdding] = useState(false);
   const [preview, setPreview] = useState(true);
@@ -52,6 +53,16 @@ function PageEditor() {
     if (previewBump.current) clearTimeout(previewBump.current);
     previewBump.current = setTimeout(() => setPreviewTick((t) => t + 1), 700);
   };
+
+  // Listen to inline-edit selection coming from the preview iframe
+  useEffect(() => {
+    const handler = (e: MessageEvent) => {
+      const data = e.data as { type?: string; blockId?: string } | null;
+      if (data?.type === "studio:select" && data.blockId) setSelected(data.blockId);
+    };
+    window.addEventListener("message", handler);
+    return () => window.removeEventListener("message", handler);
+  }, []);
 
   const { data: page } = useQuery({
     queryKey: ["studio-page", slug],
