@@ -311,6 +311,43 @@ export function BlockRenderer({ block }: { block: Block }) {
   }
 }
 
+function useStudioMode() {
+  if (typeof window === "undefined") return false;
+  return new URLSearchParams(window.location.search).get("studio") === "1";
+}
+
 export function PageRenderer({ blocks }: { blocks: Block[] }) {
-  return <>{blocks.map((b) => <BlockRenderer key={b.id} block={b} />)}</>;
+  const studio = useStudioMode();
+  if (!studio) return <>{blocks.map((b) => <BlockRenderer key={b.id} block={b} />)}</>;
+  return (
+    <>
+      <style>{`
+        [data-studio-block]{position:relative;outline:1px dashed transparent;transition:outline-color .15s;cursor:pointer;}
+        [data-studio-block]:hover{outline-color:hsl(var(--foreground,#000)/.4);}
+        [data-studio-block][data-studio-selected="true"]{outline:2px solid hsl(var(--foreground,#000));}
+        [data-studio-block]::before{content:attr(data-studio-label);position:absolute;top:6px;left:6px;z-index:50;background:#000;color:#fff;font-size:9px;letter-spacing:.1em;text-transform:uppercase;padding:3px 6px;opacity:0;transition:opacity .15s;pointer-events:none;}
+        [data-studio-block]:hover::before,[data-studio-block][data-studio-selected="true"]::before{opacity:1;}
+      `}</style>
+      {blocks.map((b) => {
+        const def = BLOCK_DEFS.find((d) => d.type === b.type);
+        return (
+          <div
+            key={b.id}
+            data-studio-block
+            data-studio-block-id={b.id}
+            data-studio-label={def?.label ?? b.type}
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              window.parent?.postMessage({ type: "studio:select", blockId: b.id }, "*");
+              document.querySelectorAll('[data-studio-selected="true"]').forEach((el) => el.removeAttribute("data-studio-selected"));
+              (e.currentTarget as HTMLElement).setAttribute("data-studio-selected", "true");
+            }}
+          >
+            <BlockRenderer block={b} />
+          </div>
+        );
+      })}
+    </>
+  );
 }
