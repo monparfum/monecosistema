@@ -65,6 +65,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setLoading(false);
     };
 
+    const finishEmpty = () => {
+      if (!alive) return;
+      setSession(null);
+      setRoles([]);
+      setLoading(false);
+    };
+
     const { data: sub } = supabase.auth.onAuthStateChange((_e, s) => {
       setSession(s);
       if (!s?.user) {
@@ -75,9 +82,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setLoading(true);
       setTimeout(() => { void applySession(s); }, 0);
     });
-    supabase.auth.getSession().then(({ data }) => {
-      void applySession(data.session);
-    });
+    supabase.auth.getSession()
+      .then(({ data }) => { void applySession(data.session); })
+      .catch((error) => { console.error(error); finishEmpty(); });
     return () => {
       alive = false;
       sub.subscription.unsubscribe();
