@@ -24,6 +24,7 @@ import { Route as BuscaRouteImport } from './routes/busca'
 import { Route as StudioRouteImport } from './routes/_studio'
 import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as AdminRouteImport } from './routes/_admin'
+import { Route as SlugRouteImport } from './routes/$slug'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ProdutoSlugRouteImport } from './routes/produto.$slug'
 import { Route as CategoriaSlugRouteImport } from './routes/categoria.$slug'
@@ -113,6 +114,11 @@ const AdminRoute = AdminRouteImport.update({
   id: '/_admin',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SlugRoute = SlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -196,6 +202,7 @@ const AdminAdminProdutosNovoRoute = AdminAdminProdutosNovoRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/$slug': typeof SlugRoute
   '/busca': typeof BuscaRoute
   '/cadastro': typeof CadastroRoute
   '/carrinho': typeof CarrinhoRoute
@@ -226,6 +233,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/$slug': typeof SlugRoute
   '/busca': typeof BuscaRoute
   '/cadastro': typeof CadastroRoute
   '/carrinho': typeof CarrinhoRoute
@@ -257,6 +265,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/$slug': typeof SlugRoute
   '/_admin': typeof AdminRouteWithChildren
   '/_authenticated': typeof AuthenticatedRouteWithChildren
   '/_studio': typeof StudioRouteWithChildren
@@ -292,6 +301,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/$slug'
     | '/busca'
     | '/cadastro'
     | '/carrinho'
@@ -322,6 +332,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/$slug'
     | '/busca'
     | '/cadastro'
     | '/carrinho'
@@ -352,6 +363,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/$slug'
     | '/_admin'
     | '/_authenticated'
     | '/_studio'
@@ -386,6 +398,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  SlugRoute: typeof SlugRoute
   AdminRoute: typeof AdminRouteWithChildren
   AuthenticatedRoute: typeof AuthenticatedRouteWithChildren
   StudioRoute: typeof StudioRouteWithChildren
@@ -510,6 +523,13 @@ declare module '@tanstack/react-router' {
       path: ''
       fullPath: '/'
       preLoaderRoute: typeof AdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/$slug': {
+      id: '/$slug'
+      path: '/$slug'
+      fullPath: '/$slug'
+      preLoaderRoute: typeof SlugRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -720,6 +740,7 @@ const StudioRouteWithChildren =
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  SlugRoute: SlugRoute,
   AdminRoute: AdminRouteWithChildren,
   AuthenticatedRoute: AuthenticatedRouteWithChildren,
   StudioRoute: StudioRouteWithChildren,
