@@ -1,16 +1,10 @@
-import { createFileRoute, redirect } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useState } from "react";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/_studio/studio/equipe")({
-  beforeLoad: async () => {
-    const { data: s } = await supabase.auth.getSession();
-    if (!s.session) throw redirect({ to: "/login" });
-    const { data: roles } = await supabase.from("user_roles").select("role").eq("user_id", s.session.user.id);
-    if (!roles?.some((r) => r.role === "admin")) throw redirect({ to: "/studio" });
-  },
   component: Equipe,
 });
 
