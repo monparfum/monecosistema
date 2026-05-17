@@ -1,10 +1,11 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, Outlet, useLocation } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/_studio/studio")({ component: StudioHome });
 
 function StudioHome() {
+  const location = useLocation();
   const { data: pages } = useQuery({
     queryKey: ["studio-pages-count"],
     queryFn: async () => (await supabase.from("pages").select("id,status")).data ?? [],
@@ -16,6 +17,8 @@ function StudioHome() {
 
   const total = pages?.length ?? 0;
   const published = pages?.filter((p) => p.status === "published").length ?? 0;
+
+  if (location.pathname !== "/studio") return <Outlet />;
 
   return (
     <div className="space-y-16">
