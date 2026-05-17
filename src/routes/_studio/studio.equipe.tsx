@@ -22,16 +22,6 @@ function Equipe() {
   const qc = useQueryClient();
   const { isAdmin } = useAuth();
 
-  if (!isAdmin) {
-    return (
-      <div className="max-w-xl">
-        <div className="eyebrow mb-3 text-muted-foreground">Studio · Equipe</div>
-        <h1 className="font-display text-4xl">Acesso restrito</h1>
-        <p className="mt-4 text-sm text-muted-foreground">Apenas admins podem gerenciar permissões.</p>
-      </div>
-    );
-  }
-
   const { data: rows } = useQuery({
     queryKey: ["studio-team"],
     queryFn: async () => {
@@ -43,7 +33,18 @@ function Equipe() {
         roles: (roles ?? []).filter((r) => r.user_id === p.id) as Array<{ id: string; role: Role; user_id: string }>,
       }));
     },
+    enabled: isAdmin,
   });
+
+  if (!isAdmin) {
+    return (
+      <div className="max-w-xl">
+        <div className="eyebrow mb-3 text-muted-foreground">Studio · Equipe</div>
+        <h1 className="font-display text-4xl">Acesso restrito</h1>
+        <p className="mt-4 text-sm text-muted-foreground">Apenas admins podem gerenciar permissões.</p>
+      </div>
+    );
+  }
 
   const setRole = async (userId: string, role: Role, current: Array<{ id: string; role: Role }>) => {
     // remove studio roles other than the chosen one, leave customer untouched
