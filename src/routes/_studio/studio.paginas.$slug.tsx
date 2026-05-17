@@ -242,7 +242,7 @@ function PageEditor() {
                 <button onClick={() => setPreviewTick((t) => t + 1)} className="text-xs text-muted-foreground hover:text-foreground" aria-label="Recarregar">
                   <RotateCcw className="size-3.5" />
                 </button>
-                <a href={previewHref} target="_blank" rel="noreferrer" className="text-xs eyebrow border-b border-foreground">Abrir →</a>
+                <a href={publicHref} target="_blank" rel="noreferrer" className="text-xs eyebrow border-b border-foreground">Abrir →</a>
               </div>
             </div>
             <iframe
