@@ -4,8 +4,9 @@ import { supabase } from "@/integrations/supabase/client";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import { BLOCK_DEFS, type Block } from "@/components/blocks";
-import { ChevronUp, ChevronDown, Copy, Trash2, Plus, X, Eye, History, Settings2, RotateCcw } from "lucide-react";
+import { ChevronUp, ChevronDown, Copy, Trash2, Plus, X, Eye, History, Settings2, RotateCcw, Lock } from "lucide-react";
 import { publishPage, unpublishPage, restoreVersion, snapshotPage } from "@/lib/studio-versions";
+import { useAuth } from "@/lib/auth-context";
 
 export const Route = createFileRoute("/_studio/studio/paginas/$slug")({ component: PageEditor });
 
