@@ -1,16 +1,11 @@
-import { createFileRoute, redirect } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useState } from "react";
 import { toast } from "sonner";
+import { useAuth } from "@/lib/auth-context";
 
 export const Route = createFileRoute("/_studio/studio/equipe")({
-  beforeLoad: async () => {
-    const { data: s } = await supabase.auth.getSession();
-    if (!s.session) throw redirect({ to: "/login" });
-    const { data: roles } = await supabase.from("user_roles").select("role").eq("user_id", s.session.user.id);
-    if (!roles?.some((r) => r.role === "admin")) throw redirect({ to: "/studio" });
-  },
   component: Equipe,
 });
 
@@ -25,6 +20,7 @@ const ROLE_LABELS: Record<Role, string> = {
 
 function Equipe() {
   const qc = useQueryClient();
+  const { isAdmin } = useAuth();
 
   const { data: rows } = useQuery({
     queryKey: ["studio-team"],
@@ -37,7 +33,18 @@ function Equipe() {
         roles: (roles ?? []).filter((r) => r.user_id === p.id) as Array<{ id: string; role: Role; user_id: string }>,
       }));
     },
+    enabled: isAdmin,
   });
+
+  if (!isAdmin) {
+    return (
+      <div className="max-w-xl">
+        <div className="eyebrow mb-3 text-muted-foreground">Studio · Equipe</div>
+        <h1 className="font-display text-4xl">Acesso restrito</h1>
+        <p className="mt-4 text-sm text-muted-foreground">Apenas admins podem gerenciar permissões.</p>
+      </div>
+    );
+  }
 
   const setRole = async (userId: string, role: Role, current: Array<{ id: string; role: Role }>) => {
     // remove studio roles other than the chosen one, leave customer untouched

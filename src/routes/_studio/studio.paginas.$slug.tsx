@@ -128,7 +128,11 @@ function PageEditor() {
   };
 
   const updateContent = async (id: string, content: Record<string, unknown>) => {
-    await supabase.from("page_blocks").update({ content: content as never }).eq("id", id);
+    const { error } = await supabase.from("page_blocks").update({ content: content as never }).eq("id", id);
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
     invalidate();
   };
 
@@ -441,12 +445,13 @@ function AddBlockModal({ onPick, onClose }: { onPick: (t: string) => void; onClo
 
 function BlockInspector({ block, onChange }: { block: Block; onChange: (c: Record<string, unknown>) => void }) {
   const [local, setLocal] = useState(block.content);
+  const saveTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   useEffect(() => { setLocal(block.content); }, [block.id, block.content]);
 
   const debouncedSave = (next: Record<string, unknown>) => {
     setLocal(next);
-    clearTimeout((debouncedSave as unknown as { t?: ReturnType<typeof setTimeout> }).t);
-    (debouncedSave as unknown as { t?: ReturnType<typeof setTimeout> }).t = setTimeout(() => onChange(next), 500);
+    if (saveTimer.current) clearTimeout(saveTimer.current);
+    saveTimer.current = setTimeout(() => onChange(next), 500);
   };
 
   const def = BLOCK_DEFS.find((d) => d.type === block.type);

@@ -1,15 +1,7 @@
-import { createFileRoute, Outlet, redirect, Link } from "@tanstack/react-router";
-import { supabase } from "@/integrations/supabase/client";
+import { createFileRoute, Outlet, Link } from "@tanstack/react-router";
 import { useAuth } from "@/lib/auth-context";
 
 export const Route = createFileRoute("/_studio")({
-  beforeLoad: async ({ location }) => {
-    const { data: s } = await supabase.auth.getSession();
-    if (!s.session) throw redirect({ to: "/login", search: { redirect: location.href } });
-    const { data: roles } = await supabase.from("user_roles").select("role").eq("user_id", s.session.user.id);
-    const allowed = roles?.some((r) => r.role === "admin" || r.role === "editor" || r.role === "reviewer");
-    if (!allowed) throw redirect({ to: "/" });
-  },
   component: StudioLayout,
 });
 
@@ -21,7 +13,46 @@ function roleLabel(roles: string[]): string {
 }
 
 function StudioLayout() {
-  const { roles, isAdmin } = useAuth();
+  const { roles, isAdmin, hasStudioAccess, loading, user } = useAuth();
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background text-foreground grid place-items-center px-6">
+        <div className="text-center">
+          <div className="eyebrow mb-3 text-muted-foreground">Studio</div>
+          <div className="font-display text-4xl">Carregando acesso…</div>
+        </div>
+      </div>
+    );
+  }
+
+  if (!user) {
+    const redirect = typeof window !== "undefined" ? window.location.pathname + window.location.search : "/studio";
+    return (
+      <div className="min-h-screen bg-background text-foreground grid place-items-center px-6">
+        <div className="max-w-md text-center">
+          <div className="eyebrow mb-3 text-muted-foreground">Studio</div>
+          <h1 className="font-display text-4xl">Entre para continuar</h1>
+          <p className="mt-4 text-sm text-muted-foreground">Sua sessão precisa estar ativa para acessar o Studio.</p>
+          <Link to="/login" search={{ redirect }} className="editorial-link mt-8 inline-block text-xs">Entrar →</Link>
+        </div>
+      </div>
+    );
+  }
+
+  if (!hasStudioAccess) {
+    return (
+      <div className="min-h-screen bg-background text-foreground grid place-items-center px-6">
+        <div className="max-w-md text-center">
+          <div className="eyebrow mb-3 text-muted-foreground">Studio</div>
+          <h1 className="font-display text-4xl">Acesso não liberado</h1>
+          <p className="mt-4 text-sm text-muted-foreground">Seu usuário ainda não tem permissão para editar o site.</p>
+          <Link to="/" className="editorial-link mt-8 inline-block text-xs">Voltar ao site →</Link>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-background text-foreground grid grid-cols-[240px_1fr]">
       <aside className="border-r border-border px-6 py-8 sticky top-0 h-screen flex flex-col">

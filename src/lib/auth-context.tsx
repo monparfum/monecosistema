@@ -35,23 +35,60 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [roles, setRoles] = useState<StudioRole[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const loadRoles = async (uid: string) => {
-    const { data } = await supabase.from("user_roles").select("role").eq("user_id", uid);
-    setRoles((data ?? []).map((r) => r.role as StudioRole));
+  const loadRoles = async (uid: string): Promise<StudioRole[]> => {
+    const { data, error } = await supabase.from("user_roles").select("role").eq("user_id", uid);
+    if (error) {
+      console.error(error);
+      return [];
+    }
+    return (data ?? []).map((r) => r.role as StudioRole);
   };
 
   useEffect(() => {
+    let alive = true;
+    let run = 0;
+
+    const applySession = async (nextSession: Session | null) => {
+      const current = ++run;
+      setSession(nextSession);
+
+      if (!nextSession?.user) {
+        setRoles([]);
+        setLoading(false);
+        return;
+      }
+
+      setLoading(true);
+      const nextRoles = await loadRoles(nextSession.user.id);
+      if (!alive || current !== run) return;
+      setRoles(nextRoles);
+      setLoading(false);
+    };
+
+    const finishEmpty = () => {
+      if (!alive) return;
+      setSession(null);
+      setRoles([]);
+      setLoading(false);
+    };
+
     const { data: sub } = supabase.auth.onAuthStateChange((_e, s) => {
       setSession(s);
-      if (s?.user) setTimeout(() => loadRoles(s.user.id), 0);
-      else setRoles([]);
+      if (!s?.user) {
+        setRoles([]);
+        setLoading(false);
+        return;
+      }
+      setLoading(true);
+      setTimeout(() => { void applySession(s); }, 0);
     });
-    supabase.auth.getSession().then(({ data }) => {
-      setSession(data.session);
-      setLoading(false);
-      if (data.session?.user) loadRoles(data.session.user.id);
-    });
-    return () => sub.subscription.unsubscribe();
+    supabase.auth.getSession()
+      .then(({ data }) => { void applySession(data.session); })
+      .catch((error) => { console.error(error); finishEmpty(); });
+    return () => {
+      alive = false;
+      sub.subscription.unsubscribe();
+    };
   }, []);
 
   const isAdmin = roles.includes("admin");

@@ -26,7 +26,11 @@ function Login() {
     setLoading(false);
     if (error) return toast.error(error.message);
     toast.success("Bem-vindo de volta");
-    navigate({ to: redirect || "/conta" });
+    if (redirect) {
+      window.location.assign(redirect);
+      return;
+    }
+    navigate({ to: "/conta" });
   };
 
   return (
