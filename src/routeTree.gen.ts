@@ -20,6 +20,7 @@ import { Route as CheckoutRouteImport } from './routes/checkout'
 import { Route as CatalogoRouteImport } from './routes/catalogo'
 import { Route as CarrinhoRouteImport } from './routes/carrinho'
 import { Route as CadastroRouteImport } from './routes/cadastro'
+import { Route as BusinessplanRouteImport } from './routes/businessplan'
 import { Route as BuscaRouteImport } from './routes/busca'
 import { Route as StudioRouteImport } from './routes/_studio'
 import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
@@ -95,6 +96,11 @@ const CarrinhoRoute = CarrinhoRouteImport.update({
 const CadastroRoute = CadastroRouteImport.update({
   id: '/cadastro',
   path: '/cadastro',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BusinessplanRoute = BusinessplanRouteImport.update({
+  id: '/businessplan',
+  path: '/businessplan',
   getParentRoute: () => rootRouteImport,
 } as any)
 const BuscaRoute = BuscaRouteImport.update({
@@ -204,6 +210,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/$slug': typeof SlugRoute
   '/busca': typeof BuscaRoute
+  '/businessplan': typeof BusinessplanRoute
   '/cadastro': typeof CadastroRoute
   '/carrinho': typeof CarrinhoRoute
   '/catalogo': typeof CatalogoRoute
@@ -235,6 +242,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/$slug': typeof SlugRoute
   '/busca': typeof BuscaRoute
+  '/businessplan': typeof BusinessplanRoute
   '/cadastro': typeof CadastroRoute
   '/carrinho': typeof CarrinhoRoute
   '/catalogo': typeof CatalogoRoute
@@ -270,6 +278,7 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteWithChildren
   '/_studio': typeof StudioRouteWithChildren
   '/busca': typeof BuscaRoute
+  '/businessplan': typeof BusinessplanRoute
   '/cadastro': typeof CadastroRoute
   '/carrinho': typeof CarrinhoRoute
   '/catalogo': typeof CatalogoRoute
@@ -303,6 +312,7 @@ export interface FileRouteTypes {
     | '/'
     | '/$slug'
     | '/busca'
+    | '/businessplan'
     | '/cadastro'
     | '/carrinho'
     | '/catalogo'
@@ -334,6 +344,7 @@ export interface FileRouteTypes {
     | '/'
     | '/$slug'
     | '/busca'
+    | '/businessplan'
     | '/cadastro'
     | '/carrinho'
     | '/catalogo'
@@ -368,6 +379,7 @@ export interface FileRouteTypes {
     | '/_authenticated'
     | '/_studio'
     | '/busca'
+    | '/businessplan'
     | '/cadastro'
     | '/carrinho'
     | '/catalogo'
@@ -403,6 +415,7 @@ export interface RootRouteChildren {
   AuthenticatedRoute: typeof AuthenticatedRouteWithChildren
   StudioRoute: typeof StudioRouteWithChildren
   BuscaRoute: typeof BuscaRoute
+  BusinessplanRoute: typeof BusinessplanRoute
   CadastroRoute: typeof CadastroRoute
   CarrinhoRoute: typeof CarrinhoRoute
   CatalogoRoute: typeof CatalogoRoute
@@ -495,6 +508,13 @@ declare module '@tanstack/react-router' {
       path: '/cadastro'
       fullPath: '/cadastro'
       preLoaderRoute: typeof CadastroRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/businessplan': {
+      id: '/businessplan'
+      path: '/businessplan'
+      fullPath: '/businessplan'
+      preLoaderRoute: typeof BusinessplanRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/busca': {
@@ -745,6 +765,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthenticatedRoute: AuthenticatedRouteWithChildren,
   StudioRoute: StudioRouteWithChildren,
   BuscaRoute: BuscaRoute,
+  BusinessplanRoute: BusinessplanRoute,
   CadastroRoute: CadastroRoute,
   CarrinhoRoute: CarrinhoRoute,
   CatalogoRoute: CatalogoRoute,
