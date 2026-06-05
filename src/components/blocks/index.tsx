@@ -47,21 +47,32 @@ const get = (c: Record<string, unknown>, k: string, fallback = ""): string =>
 function HeroBlock({ c }: { c: Record<string, unknown> }) {
   return (
     <section className="relative overflow-hidden">
-      <div className="relative h-[92vh] min-h-[680px] w-full">
-        <img src={resolveImg(get(c, "image"))} alt={get(c, "title", "Hero")} className="absolute inset-0 w-full h-full object-cover" />
-        <div className="absolute inset-0 bg-gradient-to-r from-background/85 via-background/30 to-transparent" />
-        <div className="relative z-10 mx-auto max-w-[1400px] px-8 h-full flex flex-col justify-between py-16">
-          <div className="fade-in"><span className="eyebrow">{get(c, "eyebrow")}</span></div>
-          <div className="fade-in-slow max-w-2xl">
-            <h1 className="font-display text-[clamp(3rem,7.5vw,7.5rem)] leading-[0.92] tracking-tight whitespace-pre-line">
+      <div className="relative h-[500px] w-full group overflow-hidden">
+        <img 
+          src={resolveImg(get(c, "image"))} 
+          alt={get(c, "title", "Hero")} 
+          className="absolute inset-0 w-full h-full object-cover transition-transform duration-[6000ms] ease-out group-hover:scale-110" 
+        />
+        <div className="absolute inset-0 bg-linear-to-r from-background/95 via-background/20 to-transparent" />
+        <div className="relative z-10 mx-auto max-w-[1400px] px-10 h-full flex flex-col justify-center gap-8">
+          <div className="fade-in space-y-4">
+            <div className="w-12 h-px bg-gold/50" />
+            <span className="eyebrow gold tracking-[0.45em]">{get(c, "eyebrow")}</span>
+          </div>
+          <div className="fade-in-slow max-w-4xl">
+            <h1 className="font-display text-[clamp(2.5rem,6.5vw,5rem)] leading-[0.88] tracking-[-0.04em] whitespace-pre-line text-foreground/95 italic-serif">
               {get(c, "title")}
             </h1>
             {get(c, "subtitle") && (
-              <p className="mt-8 text-base md:text-lg text-muted-foreground max-w-xl leading-relaxed">{get(c, "subtitle")}</p>
+              <p className="mt-6 text-sm md:text-base text-muted-foreground/80 max-w-xl leading-relaxed font-light">
+                {get(c, "subtitle")}
+              </p>
             )}
             {get(c, "ctaLabel") && get(c, "ctaHref") && (
               <div className="mt-10">
-                <Link to={get(c, "ctaHref")} className="editorial-link">{get(c, "ctaLabel")}</Link>
+                <Link to={get(c, "ctaHref")} className="editorial-link !text-[10px] tracking-[0.3em]">
+                  {get(c, "ctaLabel")}
+                </Link>
               </div>
             )}
           </div>
