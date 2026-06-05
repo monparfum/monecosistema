@@ -46,31 +46,41 @@ const get = (c: Record<string, unknown>, k: string, fallback = ""): string =>
 
 function HeroBlock({ c }: { c: Record<string, unknown> }) {
   return (
-    <section className="relative overflow-hidden">
+    <section className="relative overflow-hidden bg-background">
       <div className="relative h-[500px] w-full group overflow-hidden">
         <img 
           src={resolveImg(get(c, "image"))} 
           alt={get(c, "title", "Hero")} 
-          className="absolute inset-0 w-full h-full object-cover transition-transform duration-[6000ms] ease-out group-hover:scale-110" 
+          className="absolute inset-0 w-full h-full object-cover transition-transform duration-[6000ms] ease-out group-hover:scale-105" 
         />
-        <div className="absolute inset-0 bg-linear-to-r from-background/95 via-background/20 to-transparent" />
-        <div className="relative z-10 mx-auto max-w-[1400px] px-10 h-full flex flex-col justify-center gap-8">
-          <div className="fade-in space-y-4">
-            <div className="w-12 h-px bg-gold/50" />
-            <span className="eyebrow gold tracking-[0.45em]">{get(c, "eyebrow")}</span>
-          </div>
-          <div className="fade-in-slow max-w-4xl">
-            <h1 className="font-display text-[clamp(2.5rem,6.5vw,5rem)] leading-[0.88] tracking-[-0.04em] whitespace-pre-line text-foreground/95 italic-serif">
-              {get(c, "title")}
-            </h1>
-            {get(c, "subtitle") && (
-              <p className="mt-6 text-sm md:text-base text-muted-foreground/80 max-w-xl leading-relaxed font-light">
-                {get(c, "subtitle")}
-              </p>
-            )}
+        <div className="absolute inset-0 bg-linear-to-r from-background/80 via-background/20 to-transparent md:from-background/60" />
+        
+        <div className="relative z-10 mx-auto max-w-[1400px] px-8 md:px-16 h-full flex flex-col justify-center">
+          <div className="max-w-4xl space-y-10">
+            <div className="fade-in space-y-4">
+              <div className="w-8 h-px bg-gold/60 mb-6" />
+              <span className="eyebrow gold tracking-[0.4em] text-[10px] uppercase">
+                {get(c, "eyebrow")}
+              </span>
+            </div>
+            
+            <div className="fade-in-slow space-y-6">
+              <h1 className="font-display text-[clamp(2.5rem,7vw,4.5rem)] leading-[0.95] tracking-tight whitespace-pre-line text-foreground/95 italic">
+                {get(c, "title")}
+              </h1>
+              {get(c, "subtitle") && (
+                <p className="text-sm md:text-base text-muted-foreground/90 max-w-lg leading-relaxed font-light">
+                  {get(c, "subtitle")}
+                </p>
+              )}
+            </div>
+
             {get(c, "ctaLabel") && get(c, "ctaHref") && (
-              <div className="mt-10">
-                <Link to={get(c, "ctaHref")} className="editorial-link !text-[10px] tracking-[0.3em]">
+              <div className="pt-4 fade-in-slow">
+                <Link 
+                  to={get(c, "ctaHref")} 
+                  className="editorial-link !text-[10px] tracking-[0.35em] border-b border-foreground/30 hover:border-gold transition-colors pb-2"
+                >
                   {get(c, "ctaLabel")}
                 </Link>
               </div>
