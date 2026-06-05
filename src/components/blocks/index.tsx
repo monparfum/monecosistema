@@ -47,20 +47,20 @@ const get = (c: Record<string, unknown>, k: string, fallback = ""): string =>
 function HeroBlock({ c }: { c: Record<string, unknown> }) {
   return (
     <section className="relative overflow-hidden">
-      <div className="relative h-[92vh] min-h-[680px] w-full">
-        <img src={resolveImg(get(c, "image"))} alt={get(c, "title", "Hero")} className="absolute inset-0 w-full h-full object-cover" />
-        <div className="absolute inset-0 bg-gradient-to-r from-background/85 via-background/30 to-transparent" />
-        <div className="relative z-10 mx-auto max-w-[1400px] px-8 h-full flex flex-col justify-between py-16">
-          <div className="fade-in"><span className="eyebrow">{get(c, "eyebrow")}</span></div>
-          <div className="fade-in-slow max-w-2xl">
-            <h1 className="font-display text-[clamp(3rem,7.5vw,7.5rem)] leading-[0.92] tracking-tight whitespace-pre-line">
+      <div className="relative h-[500px] w-full group">
+        <img src={resolveImg(get(c, "image"))} alt={get(c, "title", "Hero")} className="absolute inset-0 w-full h-full object-cover transition-transform duration-[4000ms] group-hover:scale-105" />
+        <div className="absolute inset-0 bg-linear-to-r from-background/90 via-background/40 to-transparent" />
+        <div className="relative z-10 mx-auto max-w-[1400px] px-10 h-full flex flex-col justify-center gap-6">
+          <div className="fade-in"><span className="eyebrow !text-foreground/80 tracking-[0.4em]">{get(c, "eyebrow")}</span></div>
+          <div className="fade-in-slow max-w-3xl">
+            <h1 className="font-display text-[clamp(2.5rem,6vw,5.5rem)] leading-[0.9] tracking-[-0.03em] whitespace-pre-line">
               {get(c, "title")}
             </h1>
             {get(c, "subtitle") && (
-              <p className="mt-8 text-base md:text-lg text-muted-foreground max-w-xl leading-relaxed">{get(c, "subtitle")}</p>
+              <p className="mt-6 text-sm md:text-base text-muted-foreground max-w-lg leading-relaxed">{get(c, "subtitle")}</p>
             )}
             {get(c, "ctaLabel") && get(c, "ctaHref") && (
-              <div className="mt-10">
+              <div className="mt-8">
                 <Link to={get(c, "ctaHref")} className="editorial-link">{get(c, "ctaLabel")}</Link>
               </div>
             )}
