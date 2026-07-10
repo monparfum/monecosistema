@@ -24,6 +24,7 @@ function PagesList() {
   const [creating, setCreating] = useState(false);
   const [newTitle, setNewTitle] = useState("");
   const [newSlug, setNewSlug] = useState("");
+  const [templateId, setTemplateId] = useState<string>("blank");
 
   const { data: pages } = useQuery({
     queryKey: ["studio-pages"],
