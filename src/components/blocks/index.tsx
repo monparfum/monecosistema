@@ -53,30 +53,30 @@ function HeroBlock({ c }: { c: Record<string, unknown> }) {
           alt={get(c, "title", "Hero")} 
           className="absolute inset-0 w-full h-full object-cover transition-transform duration-[6000ms] ease-out group-hover:scale-105" 
         />
-        <div className="absolute inset-0 bg-linear-to-r from-background/80 via-background/20 to-transparent md:from-background/60" />
+        <div className="absolute inset-0 bg-linear-to-r from-background/80 via-background/10 to-transparent md:from-background/40" />
         
         <div className="relative z-10 mx-auto max-w-[1400px] px-8 md:px-16 h-full flex flex-col justify-center">
-          <div className="max-w-4xl space-y-10">
+          <div className="max-w-4xl space-y-8">
             <div className="fade-in space-y-4">
-              <div className="w-8 h-px bg-gold/60 mb-6" />
+              <div className="w-8 h-px bg-gold/60 mb-4" />
               <span className="eyebrow gold tracking-[0.4em] text-[10px] uppercase">
                 {get(c, "eyebrow")}
               </span>
             </div>
             
-            <div className="fade-in-slow space-y-6">
-              <h1 className="font-display text-[clamp(2.5rem,7vw,4.5rem)] leading-[0.95] tracking-tight whitespace-pre-line text-foreground/95 italic">
+            <div className="fade-in-slow space-y-4">
+              <h1 className="font-display text-[clamp(2rem,6vw,4rem)] leading-[0.95] tracking-tight whitespace-pre-line text-foreground/95 italic">
                 {get(c, "title")}
               </h1>
               {get(c, "subtitle") && (
-                <p className="text-sm md:text-base text-muted-foreground/90 max-w-lg leading-relaxed font-light">
+                <p className="text-sm md:text-base text-muted-foreground/90 max-w-md leading-relaxed font-light">
                   {get(c, "subtitle")}
                 </p>
               )}
             </div>
 
             {get(c, "ctaLabel") && get(c, "ctaHref") && (
-              <div className="pt-4 fade-in-slow">
+              <div className="pt-2 fade-in-slow">
                 <Link 
                   to={get(c, "ctaHref")} 
                   className="editorial-link !text-[10px] tracking-[0.35em] border-b border-foreground/30 hover:border-gold transition-colors pb-2"
