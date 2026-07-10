@@ -4,6 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useState } from "react";
 import { toast } from "sonner";
 import { publishPage, unpublishPage } from "@/lib/studio-versions";
+import { PAGE_TEMPLATES } from "@/lib/page-templates";
 
 export const Route = createFileRoute("/_studio/studio/paginas")({ component: StudioPagesRoute });
 
@@ -23,6 +24,7 @@ function PagesList() {
   const [creating, setCreating] = useState(false);
   const [newTitle, setNewTitle] = useState("");
   const [newSlug, setNewSlug] = useState("");
+  const [templateId, setTemplateId] = useState<string>("blank");
 
   const { data: pages } = useQuery({
     queryKey: ["studio-pages"],
@@ -44,10 +46,21 @@ function PagesList() {
   const createPage = async () => {
     const slug = (newSlug || slugify(newTitle)).trim();
     if (!newTitle.trim() || !slug) { toast.error("Informe título e slug"); return; }
-    const { error } = await supabase.from("pages").insert({ title: newTitle.trim(), slug, status: "draft" });
-    if (error) { toast.error(error.message); return; }
-    toast.success("Página criada");
-    setCreating(false); setNewTitle(""); setNewSlug("");
+    const { data: page, error } = await supabase.from("pages")
+      .insert({ title: newTitle.trim(), slug, status: "draft" }).select().single();
+    if (error || !page) { toast.error(error?.message ?? "Erro ao criar página"); return; }
+
+    const template = PAGE_TEMPLATES.find((t) => t.id === templateId);
+    if (template && template.blocks.length) {
+      const rows = template.blocks.map((b, i) => ({
+        page_id: page.id, type: b.type, position: i, content: b.content as never,
+      }));
+      const { error: blocksError } = await supabase.from("page_blocks").insert(rows);
+      if (blocksError) toast.error(`Página criada, mas blocos falharam: ${blocksError.message}`);
+    }
+
+    toast.success(template && template.id !== "blank" ? `Página criada com template ${template.label}` : "Página criada");
+    setCreating(false); setNewTitle(""); setNewSlug(""); setTemplateId("blank");
     qc.invalidateQueries({ queryKey: ["studio-pages"] });
   };
 
@@ -106,26 +119,54 @@ function PagesList() {
       </div>
 
       {creating && (
-        <div className="fixed inset-0 z-50 bg-background/80 backdrop-blur grid place-items-center p-8" onClick={() => setCreating(false)}>
-          <div className="bg-background border border-border max-w-md w-full p-10" onClick={(e) => e.stopPropagation()}>
+        <div className="fixed inset-0 z-50 bg-background/80 backdrop-blur grid place-items-center p-8 overflow-y-auto" onClick={() => setCreating(false)}>
+          <div className="bg-background border border-border max-w-3xl w-full p-10 my-auto" onClick={(e) => e.stopPropagation()}>
             <div className="eyebrow mb-3">Studio</div>
             <h2 className="font-display text-3xl mb-8">Nova página</h2>
-            <div className="space-y-5">
-              <div>
-                <label className="eyebrow block mb-2">Título</label>
-                <input value={newTitle} onChange={(e) => { setNewTitle(e.target.value); if (!newSlug) setNewSlug(slugify(e.target.value)); }}
-                  className="w-full border border-border bg-transparent px-3 py-2 text-sm focus:outline-none focus:border-foreground" autoFocus />
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div className="space-y-5">
+                <div>
+                  <label className="eyebrow block mb-2">Título</label>
+                  <input value={newTitle} onChange={(e) => { setNewTitle(e.target.value); if (!newSlug) setNewSlug(slugify(e.target.value)); }}
+                    className="w-full border border-border bg-transparent px-3 py-2 text-sm focus:outline-none focus:border-foreground" autoFocus />
+                </div>
+                <div>
+                  <label className="eyebrow block mb-2">Slug</label>
+                  <div className="flex items-center gap-2 border border-border px-3 py-2">
+                    <span className="text-xs text-muted-foreground">/</span>
+                    <input value={newSlug} onChange={(e) => setNewSlug(slugify(e.target.value))}
+                      placeholder="campanha-edition-02" className="flex-1 bg-transparent text-sm focus:outline-none" />
+                  </div>
+                </div>
               </div>
+
               <div>
-                <label className="eyebrow block mb-2">Slug</label>
-                <div className="flex items-center gap-2 border border-border px-3 py-2">
-                  <span className="text-xs text-muted-foreground">/</span>
-                  <input value={newSlug} onChange={(e) => setNewSlug(slugify(e.target.value))}
-                    placeholder="campanha-edition-02" className="flex-1 bg-transparent text-sm focus:outline-none" />
+                <label className="eyebrow block mb-2">Template</label>
+                <div className="space-y-2 max-h-[340px] overflow-y-auto pr-1">
+                  {PAGE_TEMPLATES.map((t) => {
+                    const active = templateId === t.id;
+                    return (
+                      <button
+                        key={t.id}
+                        type="button"
+                        onClick={() => setTemplateId(t.id)}
+                        className={`w-full text-left border p-4 transition-colors ${active ? "border-foreground bg-[color:var(--muted)]" : "border-border hover:border-foreground/60"}`}
+                      >
+                        <div className="flex items-center justify-between gap-3">
+                          <div className="eyebrow text-[10px] text-muted-foreground">{t.eyebrow}</div>
+                          <div className="text-[10px] text-muted-foreground">{t.blocks.length} {t.blocks.length === 1 ? "bloco" : "blocos"}</div>
+                        </div>
+                        <div className="font-display text-lg mt-1">{t.label}</div>
+                        <div className="text-xs text-muted-foreground mt-1 leading-relaxed">{t.description}</div>
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
             </div>
-            <div className="mt-8 flex items-center justify-end gap-6">
+
+            <div className="mt-10 flex items-center justify-end gap-6">
               <button onClick={() => setCreating(false)} className="eyebrow text-muted-foreground">Cancelar</button>
               <button onClick={createPage} className="editorial-link text-xs">Criar página →</button>
             </div>
