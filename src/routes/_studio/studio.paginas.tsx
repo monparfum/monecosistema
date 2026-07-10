@@ -4,6 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useState } from "react";
 import { toast } from "sonner";
 import { publishPage, unpublishPage } from "@/lib/studio-versions";
+import { PAGE_TEMPLATES } from "@/lib/page-templates";
 
 export const Route = createFileRoute("/_studio/studio/paginas")({ component: StudioPagesRoute });
 
