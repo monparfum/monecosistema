@@ -46,10 +46,21 @@ function PagesList() {
   const createPage = async () => {
     const slug = (newSlug || slugify(newTitle)).trim();
     if (!newTitle.trim() || !slug) { toast.error("Informe título e slug"); return; }
-    const { error } = await supabase.from("pages").insert({ title: newTitle.trim(), slug, status: "draft" });
-    if (error) { toast.error(error.message); return; }
-    toast.success("Página criada");
-    setCreating(false); setNewTitle(""); setNewSlug("");
+    const { data: page, error } = await supabase.from("pages")
+      .insert({ title: newTitle.trim(), slug, status: "draft" }).select().single();
+    if (error || !page) { toast.error(error?.message ?? "Erro ao criar página"); return; }
+
+    const template = PAGE_TEMPLATES.find((t) => t.id === templateId);
+    if (template && template.blocks.length) {
+      const rows = template.blocks.map((b, i) => ({
+        page_id: page.id, type: b.type, position: i, content: b.content as never,
+      }));
+      const { error: blocksError } = await supabase.from("page_blocks").insert(rows);
+      if (blocksError) toast.error(`Página criada, mas blocos falharam: ${blocksError.message}`);
+    }
+
+    toast.success(template && template.id !== "blank" ? `Página criada com template ${template.label}` : "Página criada");
+    setCreating(false); setNewTitle(""); setNewSlug(""); setTemplateId("blank");
     qc.invalidateQueries({ queryKey: ["studio-pages"] });
   };
 
