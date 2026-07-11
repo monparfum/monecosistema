@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { PageHeader } from "@/components/module-shell";
 import { StatCard, StatGrid } from "@/components/stat-card";
+import { RevenueChart } from "@/components/revenue-chart";
 import { formatBRL } from "@/lib/format";
 
 export const Route = createFileRoute("/_ops/ops/")({
@@ -45,6 +46,7 @@ function OpsDashboard() {
         <StatCard label="Pedidos totais" value={data?.total ?? "—"} />
         <StatCard label="Receita realizada" value={data ? formatBRL(data.receita) : "—"} hint="Exclui cancelados e aguardando" />
       </StatGrid>
+      <RevenueChart days={30} />
     </div>
   );
 }
