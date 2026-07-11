@@ -31,6 +31,7 @@ export function SiteHeader() {
             <Link to={user ? "/conta" : "/login"} className="hover:text-foreground">
               {user ? "Minha conta" : "Entrar na plataforma"}
             </Link>
+            {isAdmin && <Link to="/admin/modulos" className="hover:text-foreground">Módulos</Link>}
             {isAdmin && <Link to="/studio" className="hover:text-foreground">Studio</Link>}
             {isAdmin && <Link to="/admin" className="hover:text-foreground">Comércio</Link>}
           </div>
