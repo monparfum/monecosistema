@@ -19,6 +19,7 @@ function AdminLayout() {
         <Link to="/" className="font-display text-2xl block">Mon Parfum</Link>
         <div className="eyebrow">Admin</div>
         <nav className="space-y-2 text-sm">
+          <Link to="/admin/modulos" className="block hover:underline" activeProps={{ className: "block underline" }}>Módulos</Link>
           <Link to="/admin" className="block hover:underline" activeOptions={{ exact: true }} activeProps={{ className: "block underline" }}>Painel</Link>
           <Link to="/admin/produtos" className="block hover:underline" activeProps={{ className: "block underline" }}>Produtos</Link>
           <Link to="/admin/categorias" className="block hover:underline" activeProps={{ className: "block underline" }}>Categorias</Link>
