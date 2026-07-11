@@ -14,7 +14,7 @@ export const Route = createFileRoute("/checkout")({
 });
 
 function Checkout() {
-  const { items, subtotalCents, clear } = useCart();
+  const { items, subtotalCents } = useCart();
   const { user, loading: authLoading } = useAuth();
   const navigate = useNavigate();
   const [submitting, setSubmitting] = useState(false);
