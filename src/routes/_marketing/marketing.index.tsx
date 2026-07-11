@@ -4,6 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { PageHeader } from "@/components/module-shell";
 import { StatCard, StatGrid } from "@/components/stat-card";
 import { EmptyState } from "@/components/empty-state";
+import { RevenueChart } from "@/components/revenue-chart";
 import { formatBRL } from "@/lib/format";
 
 export const Route = createFileRoute("/_marketing/marketing/")({
@@ -42,6 +43,7 @@ function MarketingIndex() {
         <StatCard label="Conversões · 30d" value={data?.conversions ?? "—"} hint="Pedidos pagos" />
         <StatCard label="Receita · 30d" value={data ? formatBRL(data.revenue) : "—"} />
       </StatGrid>
+      <RevenueChart days={30} />
       <EmptyState
         eyebrow="Conectar canais"
         title="Conecte redes e ferramentas para completar o painel."
