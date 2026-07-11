@@ -57,6 +57,7 @@ function AdminPanel() {
         {[
           { to: "/administracao/usuarios", eyebrow: "Pessoas", title: "Usuários" },
           { to: "/administracao/papeis", eyebrow: "Escopo", title: "Papéis" },
+          { to: "/administracao/comunicacoes", eyebrow: "Contato", title: "Comunicações" },
           { to: "/administracao/integracoes", eyebrow: "Serviços", title: "Integrações" },
           { to: "/administracao/logs", eyebrow: "Auditoria", title: "Logs" },
           { to: "/administracao/empresa", eyebrow: "Marca", title: "Empresa" },
