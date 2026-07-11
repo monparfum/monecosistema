@@ -1,95 +1,101 @@
-# Studio MON PARFUM — CMS Editorial Visual
+## Objetivo
 
-O escopo descrito (page builder estilo Webflow/Framer + media library + drag-and-drop + autosave + versionamento + preview em tempo real + edição inline) equivale a construir um produto completo de CMS. Não cabe em uma única entrega sem comprometer a qualidade editorial que a marca exige.
+Expandir a plataforma adicionando 5 novos módulos (Operações, CRM, Academy, Marketing, Administração) totalmente integrados ao ecossistema Commerce + Studio existente, sem alterar arquitetura ou módulos atuais.
 
-Proponho entregar em **3 fases**, começando por uma base sólida e funcional que já entrega 80% do valor real — sem virar um "ERP pesado".
+## Escopo desta entrega — Fase 1 (Estrutura)
 
----
+Criar **apenas a estrutura visual e de rotas** de cada módulo, seguindo o mesmo Design System editorial (Instrument Serif + Inter, paleta clara, radius=0). Os dados que já existem no Commerce (pedidos, clientes) serão **lidos** — nada duplicado. Áreas sem dados exibem *empty states* elegantes preparados para receber informação futura.
 
-## Fase 1 — Studio v1 (esta entrega)
+Não faz parte desta fase: implementação de IA, integrações de transportadoras, gateways de email/WhatsApp, criação de novas tabelas grandes de negócio. Estrutura pronta para receber tudo isso.
 
-Núcleo funcional do CMS. Tudo persistido em Lovable Cloud, todas as páginas públicas passam a ler conteúdo do banco em vez de strings hardcoded.
-
-**Rota** `/studio` (protegida por role `admin`, layout próprio, fora do `/admin` atual).
-
-**Seções:**
-
-1. **Páginas** — lista editorial de páginas do site (Home, Sobre, Experiências, Workshops, Cursos, Comunidade, Ebooks, Corporativo). Status draft/publicado. Botão "Editar".
-2. **Editor de página** — colunão único, lista vertical de blocos com:
-   - Adicionar bloco (modal com galeria visual dos tipos)
-   - Reordenar (drag-and-drop com `@dnd-kit`)
-   - Duplicar / excluir
-   - Editar inline (form lateral à direita)
-   - Salvar rascunho / Publicar
-3. **Biblioteca de mídia** — grid de imagens do bucket `products` (renomeio futuro), upload drag-and-drop, copiar URL, busca por nome.
-4. **Preview** — botão que abre a página pública em nova aba (sem live preview ainda).
-
-**Blocos disponíveis na v1 (6, suficientes para refazer Home + Sobre):**
-- Hero editorial (imagem full-bleed + eyebrow + título serif + subtítulo + CTA)
-- Texto editorial (manifesto centralizado)
-- Grid editorial (3 chapitres com imagem + título + link)
-- Produtos em destaque (puxa do catálogo, escolhe 3–4)
-- CTA editorial (faixa com chamada + botão)
-- Imagem + texto (split 50/50)
-
-**Páginas públicas afetadas:** `/`, `/sobre` passam a renderizar a partir dos blocos do banco. As demais páginas continuam estáticas e serão migradas na Fase 2.
-
----
-
-## Fase 2 — Expansão (próxima conversa)
-
-- Blocos adicionais: Banner cinematográfico, Workshops, Cursos, Depoimentos, FAQ, Carrossel, Newsletter
-- Migrar Experiências, Workshops, Cursos, Comunidade, Ebooks, Corporativo para o Studio
-- Duplicar página / salvar como template
-- Autosave (debounce 2s)
-- Landing page builder (criar páginas com slug livre, ex: `/campanha/edition-02`)
-
-## Fase 3 — Refinamento avançado
-
-- Preview em tempo real (split view com iframe)
-- Versionamento (snapshot a cada publicação, restaurar versão anterior)
-- Edição inline direto sobre o preview (estilo Framer)
-- Histórico de alterações com diff
-- Permissões granulares (editor / revisor / admin)
-
----
-
-## Detalhes técnicos (Fase 1)
-
-**Schema novo** (migration):
+## Arquitetura
 
 ```text
-pages
-  id, slug (unique), title, status (draft|published),
-  seo_title, seo_description, created_at, updated_at
-
-page_blocks
-  id, page_id (fk pages), type (enum), position (int),
-  content (jsonb), created_at, updated_at
-
-media_assets
-  id, url, filename, mime_type, width, height,
-  uploaded_by, created_at
+src/routes/
+  _admin/                          [já existe — não mexer nos submódulos atuais]
+    admin.modulos.tsx              [atualizar: passar de 4 para 7 cards]
+  _ops/                            [NOVO — módulo Operações]
+    route.tsx                      layout com sidebar própria
+    ops.index.tsx                  dashboard
+    ops.pedidos.tsx                lê orders do Commerce
+    ops.pedidos.$id.tsx            timeline do pedido
+    ops.expedicao.tsx
+    ops.producao.tsx
+  _crm/                            [NOVO]
+    route.tsx
+    crm.index.tsx                  dashboard
+    crm.clientes.tsx               lista com LTV, última compra
+    crm.clientes.$id.tsx           ficha 360º (pedidos, cursos, exp, obs)
+    crm.segmentos.tsx
+  _academy/                        [NOVO — área do admin p/ gerir cursos + libera acesso]
+    route.tsx
+    academy.index.tsx
+    academy.cursos.tsx
+    academy.alunos.tsx
+    academy.certificados.tsx
+  _marketing/                      [NOVO]
+    route.tsx
+    marketing.index.tsx            dashboard: seguidores, leads, ROI
+    marketing.campanhas.tsx
+    marketing.calendario.tsx
+    marketing.social.tsx           placeholders IG/TikTok/etc
+    marketing.automacoes.tsx
+    marketing.ia.tsx               shell preparado p/ IA (sem implementar)
+  _administracao/                  [NOVO]
+    route.tsx
+    administracao.index.tsx
+    administracao.usuarios.tsx     usa profiles + user_roles
+    administracao.papeis.tsx
+    administracao.integracoes.tsx
+    administracao.logs.tsx
+    administracao.empresa.tsx
 ```
 
-RLS: leitura pública apenas para `pages.status = 'published'` e seus blocks; escrita só para `has_role(admin)`. Media assets: leitura pública, escrita admin.
+Todos os layouts de módulo reutilizam o mesmo padrão do `_admin.tsx` atual: sidebar 240px + `← Módulos`, header do módulo, área de conteúdo com breadcrumb.
 
-**Rotas TanStack novas:**
-- `src/routes/_studio.tsx` — layout protegido (redirect se não-admin), sidebar editorial clara, tipografia Instrument Serif no topo
-- `src/routes/_studio/studio.tsx` — overview (cards: páginas / mídia / atalhos)
-- `src/routes/_studio/studio.paginas.tsx` — lista de páginas
-- `src/routes/_studio/studio.paginas.$slug.tsx` — editor de blocos
-- `src/routes/_studio/studio.midia.tsx` — biblioteca
+**Core (invisível)** — criar dois arquivos utilitários compartilhados, sem tabelas novas nesta fase:
 
-**Renderização pública:**
-- `src/components/blocks/` — um componente por tipo de bloco
-- `src/components/page-renderer.tsx` — recebe array de blocks, despacha pelo `type`
-- `src/routes/index.tsx` e `src/routes/sobre.tsx` passam a usar `PageRenderer` com loader buscando blocks pela slug
+- `src/lib/core/events.ts` — barramento in-memory (`emit`, `on`) para os módulos comunicarem no cliente (ex.: Commerce emite `order.created`, Ops/CRM ouvem). Documentado para ser trocado por Postgres NOTIFY / edge function no futuro.
+- `src/lib/core/module-registry.ts` — fonte única dos 7 módulos (id, label, ícone, rota, permissões requeridas). `admin.modulos.tsx` e o header passam a ler daqui. Facilita adicionar módulo futuro em 1 lugar só.
 
-**Estética do Studio:** segue a identidade clara da marca (creme, nude, dourado suave) — não é dark dashboard. Sidebar fina, muito respiro, tipografia serif para títulos de seção, sans 300 para campos. Sem cards pesados, sem badges coloridos agressivos.
+**Permissões** — sem migração agora. Cada `route.tsx` de módulo faz `beforeLoad` só verificando `admin` (igual aos existentes). O registry já declara `requiredRoles` de cada módulo para quando for expandido.
 
-**Seed:** os blocos da Home atual e da página Sobre são inseridos no banco via migration `INSERT`, para que ao abrir o Studio a equipe já veja o conteúdo existente — nada se perde visualmente.
+## Componentes de UI compartilhados (novos)
 
----
+- `src/components/module-shell.tsx` — layout genérico (sidebar + main + breadcrumb + botão voltar Módulos). Cada `route.tsx` novo usa isso, evita repetir markup.
+- `src/components/empty-state.tsx` — estado vazio editorial (eyebrow + display + texto + CTA opcional).
+- `src/components/stat-card.tsx` — card de métrica do dashboard.
+- `src/components/data-table.tsx` — tabela leve com busca + filtros básicos (não substitui shadcn; é um wrapper mínimo no estilo da casa).
+- `src/components/skeleton-row.tsx` — skeleton loading no tom da paleta.
 
-Confirma a Fase 1 assim como descrita? Se preferir começar por outro recorte (ex: só media library, ou só editor da Home), me diz.
+## Integrações de dados (reutilizando o que já existe)
+
+- **Ops → Pedidos**: `select * from orders` (mesma query do `_admin/admin.pedidos.tsx`), agrupado por status operacional.
+- **CRM → Clientes**: `profiles` join com agregados de `orders` (LTV = sum(total_cents), última compra = max(created_at), total de pedidos).
+- **Academy → Alunos**: por enquanto lista `order_items` cujo `product` tenha categoria "cursos" (placeholder; matrícula real fica p/ fase 2).
+- **Administração → Usuários**: `profiles` + `user_roles` (leitura). Alteração de papel via update em `user_roles` (já existe).
+- **Marketing**: 100% dashboard com valores placeholder + empty states rotulados "Conectar Instagram", "Configurar automação", etc. Nada quebra, nada mente.
+
+## Atualizações em arquivos existentes
+
+- `src/routes/_admin/admin.modulos.tsx` — passa a mapear `module-registry`. Ganha os 5 novos cards.
+- `src/components/site-header.tsx` — link "Módulos" continua igual (aponta pra `/admin/modulos`).
+- `src/routes/login.tsx` — sem mudanças (admin já cai em `/admin/modulos`).
+
+Nada em Commerce (`_admin/admin.produtos`, `.categorias`, `.pedidos`, `.clientes`) ou Studio (`_studio/*`) é tocado.
+
+## Design
+
+Mantém o vocabulário editorial atual: eyebrow uppercase tracked, display Instrument Serif com itálico de destaque, muito respiro, grades com `gap-px bg-border`, sem sombras pesadas, hover discreto (`bg-[color:var(--muted)]`). Dashboards com no máximo 4 stat cards por linha; tabelas com hairlines superior/inferior, sem zebra.
+
+## Fora de escopo (fica documentado no code para fase 2)
+
+- Emissão de etiqueta / integração Correios / Melhor Envio.
+- Provider de IA real em `marketing.ia.tsx`.
+- Player de vídeo / progresso de aula em Academy (a fase 1 só lista cursos e alunos).
+- Provider de email/WhatsApp em automações.
+- Tabelas novas de `courses`, `lessons`, `campaigns`, `automations` — serão adicionadas quando cada feature for ativada; nesta fase os módulos operam sobre dados existentes e placeholders bem sinalizados.
+
+## Confirmação necessária
+
+Confirma que posso seguir por essa Fase 1 (estrutura + integrações de leitura sobre o que já existe, sem novas tabelas)? Se sim, entrego tudo de uma vez e depois abrimos ticket a ticket para "acender" cada submódulo com dados/integrações reais.
