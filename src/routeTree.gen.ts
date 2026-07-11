@@ -64,6 +64,7 @@ import { Route as AdministracaoAdministracaoPapeisRouteImport } from './routes/_
 import { Route as AdministracaoAdministracaoLogsRouteImport } from './routes/_administracao/administracao.logs'
 import { Route as AdministracaoAdministracaoIntegracoesRouteImport } from './routes/_administracao/administracao.integracoes'
 import { Route as AdministracaoAdministracaoEmpresaRouteImport } from './routes/_administracao/administracao.empresa'
+import { Route as AdministracaoAdministracaoComunicacoesRouteImport } from './routes/_administracao/administracao.comunicacoes'
 import { Route as AdminAdminProdutosRouteImport } from './routes/_admin/admin.produtos'
 import { Route as AdminAdminPedidosRouteImport } from './routes/_admin/admin.pedidos'
 import { Route as AdminAdminModulosRouteImport } from './routes/_admin/admin.modulos'
@@ -356,6 +357,12 @@ const AdministracaoAdministracaoEmpresaRoute =
     path: '/administracao/empresa',
     getParentRoute: () => AdministracaoRoute,
   } as any)
+const AdministracaoAdministracaoComunicacoesRoute =
+  AdministracaoAdministracaoComunicacoesRouteImport.update({
+    id: '/administracao/comunicacoes',
+    path: '/administracao/comunicacoes',
+    getParentRoute: () => AdministracaoRoute,
+  } as any)
 const AdminAdminProdutosRoute = AdminAdminProdutosRouteImport.update({
   id: '/admin/produtos',
   path: '/admin/produtos',
@@ -455,6 +462,7 @@ export interface FileRoutesByFullPath {
   '/admin/modulos': typeof AdminAdminModulosRoute
   '/admin/pedidos': typeof AdminAdminPedidosRoute
   '/admin/produtos': typeof AdminAdminProdutosRouteWithChildren
+  '/administracao/comunicacoes': typeof AdministracaoAdministracaoComunicacoesRoute
   '/administracao/empresa': typeof AdministracaoAdministracaoEmpresaRoute
   '/administracao/integracoes': typeof AdministracaoAdministracaoIntegracoesRoute
   '/administracao/logs': typeof AdministracaoAdministracaoLogsRoute
@@ -517,6 +525,7 @@ export interface FileRoutesByTo {
   '/admin/modulos': typeof AdminAdminModulosRoute
   '/admin/pedidos': typeof AdminAdminPedidosRoute
   '/admin/produtos': typeof AdminAdminProdutosRouteWithChildren
+  '/administracao/comunicacoes': typeof AdministracaoAdministracaoComunicacoesRoute
   '/administracao/empresa': typeof AdministracaoAdministracaoEmpresaRoute
   '/administracao/integracoes': typeof AdministracaoAdministracaoIntegracoesRoute
   '/administracao/logs': typeof AdministracaoAdministracaoLogsRoute
@@ -588,6 +597,7 @@ export interface FileRoutesById {
   '/_admin/admin/modulos': typeof AdminAdminModulosRoute
   '/_admin/admin/pedidos': typeof AdminAdminPedidosRoute
   '/_admin/admin/produtos': typeof AdminAdminProdutosRouteWithChildren
+  '/_administracao/administracao/comunicacoes': typeof AdministracaoAdministracaoComunicacoesRoute
   '/_administracao/administracao/empresa': typeof AdministracaoAdministracaoEmpresaRoute
   '/_administracao/administracao/integracoes': typeof AdministracaoAdministracaoIntegracoesRoute
   '/_administracao/administracao/logs': typeof AdministracaoAdministracaoLogsRoute
@@ -652,6 +662,7 @@ export interface FileRouteTypes {
     | '/admin/modulos'
     | '/admin/pedidos'
     | '/admin/produtos'
+    | '/administracao/comunicacoes'
     | '/administracao/empresa'
     | '/administracao/integracoes'
     | '/administracao/logs'
@@ -714,6 +725,7 @@ export interface FileRouteTypes {
     | '/admin/modulos'
     | '/admin/pedidos'
     | '/admin/produtos'
+    | '/administracao/comunicacoes'
     | '/administracao/empresa'
     | '/administracao/integracoes'
     | '/administracao/logs'
@@ -784,6 +796,7 @@ export interface FileRouteTypes {
     | '/_admin/admin/modulos'
     | '/_admin/admin/pedidos'
     | '/_admin/admin/produtos'
+    | '/_administracao/administracao/comunicacoes'
     | '/_administracao/administracao/empresa'
     | '/_administracao/administracao/integracoes'
     | '/_administracao/administracao/logs'
@@ -1232,6 +1245,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdministracaoAdministracaoEmpresaRouteImport
       parentRoute: typeof AdministracaoRoute
     }
+    '/_administracao/administracao/comunicacoes': {
+      id: '/_administracao/administracao/comunicacoes'
+      path: '/administracao/comunicacoes'
+      fullPath: '/administracao/comunicacoes'
+      preLoaderRoute: typeof AdministracaoAdministracaoComunicacoesRouteImport
+      parentRoute: typeof AdministracaoRoute
+    }
     '/_admin/admin/produtos': {
       id: '/_admin/admin/produtos'
       path: '/admin/produtos'
@@ -1375,6 +1395,7 @@ const AdminRouteChildren: AdminRouteChildren = {
 const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
 
 interface AdministracaoRouteChildren {
+  AdministracaoAdministracaoComunicacoesRoute: typeof AdministracaoAdministracaoComunicacoesRoute
   AdministracaoAdministracaoEmpresaRoute: typeof AdministracaoAdministracaoEmpresaRoute
   AdministracaoAdministracaoIntegracoesRoute: typeof AdministracaoAdministracaoIntegracoesRoute
   AdministracaoAdministracaoLogsRoute: typeof AdministracaoAdministracaoLogsRoute
@@ -1384,6 +1405,8 @@ interface AdministracaoRouteChildren {
 }
 
 const AdministracaoRouteChildren: AdministracaoRouteChildren = {
+  AdministracaoAdministracaoComunicacoesRoute:
+    AdministracaoAdministracaoComunicacoesRoute,
   AdministracaoAdministracaoEmpresaRoute:
     AdministracaoAdministracaoEmpresaRoute,
   AdministracaoAdministracaoIntegracoesRoute:
