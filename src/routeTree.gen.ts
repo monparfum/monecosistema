@@ -33,6 +33,7 @@ import { Route as AcademyRouteImport } from './routes/_academy'
 import { Route as SlugRouteImport } from './routes/$slug'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ProdutoSlugRouteImport } from './routes/produto.$slug'
+import { Route as CheckoutRetornoRouteImport } from './routes/checkout.retorno'
 import { Route as CategoriaSlugRouteImport } from './routes/categoria.$slug'
 import { Route as StudioStudioRouteImport } from './routes/_studio/studio'
 import { Route as AuthenticatedPedidosRouteImport } from './routes/_authenticated/pedidos'
@@ -44,6 +45,7 @@ import { Route as CrmCrmIndexRouteImport } from './routes/_crm/crm.index'
 import { Route as AdministracaoAdministracaoIndexRouteImport } from './routes/_administracao/administracao.index'
 import { Route as AdminAdminIndexRouteImport } from './routes/_admin/admin.index'
 import { Route as AcademyAcademyIndexRouteImport } from './routes/_academy/academy.index'
+import { Route as CheckoutPagamentoOrderIdRouteImport } from './routes/checkout.pagamento.$orderId'
 import { Route as StudioStudioPaginasRouteImport } from './routes/_studio/studio.paginas'
 import { Route as StudioStudioMidiaRouteImport } from './routes/_studio/studio.midia'
 import { Route as StudioStudioEquipeRouteImport } from './routes/_studio/studio.equipe'
@@ -70,6 +72,7 @@ import { Route as AdminAdminCategoriasRouteImport } from './routes/_admin/admin.
 import { Route as AcademyAcademyCursosRouteImport } from './routes/_academy/academy.cursos'
 import { Route as AcademyAcademyCertificadosRouteImport } from './routes/_academy/academy.certificados'
 import { Route as AcademyAcademyAlunosRouteImport } from './routes/_academy/academy.alunos'
+import { Route as ApiPublicPaymentsWebhookRouteImport } from './routes/api/public/payments/webhook'
 import { Route as StudioStudioPaginasSlugRouteImport } from './routes/_studio/studio.paginas.$slug'
 import { Route as OpsOpsPedidosIdRouteImport } from './routes/_ops/ops.pedidos.$id'
 import { Route as CrmCrmClientesIdRouteImport } from './routes/_crm/crm.clientes.$id'
@@ -187,6 +190,11 @@ const ProdutoSlugRoute = ProdutoSlugRouteImport.update({
   path: '/produto/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CheckoutRetornoRoute = CheckoutRetornoRouteImport.update({
+  id: '/retorno',
+  path: '/retorno',
+  getParentRoute: () => CheckoutRoute,
+} as any)
 const CategoriaSlugRoute = CategoriaSlugRouteImport.update({
   id: '/categoria/$slug',
   path: '/categoria/$slug',
@@ -243,6 +251,12 @@ const AcademyAcademyIndexRoute = AcademyAcademyIndexRouteImport.update({
   path: '/academy/',
   getParentRoute: () => AcademyRoute,
 } as any)
+const CheckoutPagamentoOrderIdRoute =
+  CheckoutPagamentoOrderIdRouteImport.update({
+    id: '/pagamento/$orderId',
+    path: '/pagamento/$orderId',
+    getParentRoute: () => CheckoutRoute,
+  } as any)
 const StudioStudioPaginasRoute = StudioStudioPaginasRouteImport.update({
   id: '/paginas',
   path: '/paginas',
@@ -383,6 +397,12 @@ const AcademyAcademyAlunosRoute = AcademyAcademyAlunosRouteImport.update({
   path: '/academy/alunos',
   getParentRoute: () => AcademyRoute,
 } as any)
+const ApiPublicPaymentsWebhookRoute =
+  ApiPublicPaymentsWebhookRouteImport.update({
+    id: '/api/public/payments/webhook',
+    path: '/api/public/payments/webhook',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const StudioStudioPaginasSlugRoute = StudioStudioPaginasSlugRouteImport.update({
   id: '/$slug',
   path: '/$slug',
@@ -412,7 +432,7 @@ export interface FileRoutesByFullPath {
   '/cadastro': typeof CadastroRoute
   '/carrinho': typeof CarrinhoRoute
   '/catalogo': typeof CatalogoRoute
-  '/checkout': typeof CheckoutRoute
+  '/checkout': typeof CheckoutRouteWithChildren
   '/comunidade': typeof ComunidadeRoute
   '/cursos': typeof CursosRoute
   '/ebooks': typeof EbooksRoute
@@ -425,6 +445,7 @@ export interface FileRoutesByFullPath {
   '/pedidos': typeof AuthenticatedPedidosRoute
   '/studio': typeof StudioStudioRouteWithChildren
   '/categoria/$slug': typeof CategoriaSlugRoute
+  '/checkout/retorno': typeof CheckoutRetornoRoute
   '/produto/$slug': typeof ProdutoSlugRoute
   '/academy/alunos': typeof AcademyAcademyAlunosRoute
   '/academy/certificados': typeof AcademyAcademyCertificadosRoute
@@ -452,6 +473,7 @@ export interface FileRoutesByFullPath {
   '/studio/equipe': typeof StudioStudioEquipeRoute
   '/studio/midia': typeof StudioStudioMidiaRoute
   '/studio/paginas': typeof StudioStudioPaginasRouteWithChildren
+  '/checkout/pagamento/$orderId': typeof CheckoutPagamentoOrderIdRoute
   '/academy/': typeof AcademyAcademyIndexRoute
   '/admin/': typeof AdminAdminIndexRoute
   '/administracao/': typeof AdministracaoAdministracaoIndexRoute
@@ -462,6 +484,7 @@ export interface FileRoutesByFullPath {
   '/crm/clientes/$id': typeof CrmCrmClientesIdRoute
   '/ops/pedidos/$id': typeof OpsOpsPedidosIdRoute
   '/studio/paginas/$slug': typeof StudioStudioPaginasSlugRoute
+  '/api/public/payments/webhook': typeof ApiPublicPaymentsWebhookRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -471,7 +494,7 @@ export interface FileRoutesByTo {
   '/cadastro': typeof CadastroRoute
   '/carrinho': typeof CarrinhoRoute
   '/catalogo': typeof CatalogoRoute
-  '/checkout': typeof CheckoutRoute
+  '/checkout': typeof CheckoutRouteWithChildren
   '/comunidade': typeof ComunidadeRoute
   '/cursos': typeof CursosRoute
   '/ebooks': typeof EbooksRoute
@@ -484,6 +507,7 @@ export interface FileRoutesByTo {
   '/pedidos': typeof AuthenticatedPedidosRoute
   '/studio': typeof StudioStudioRouteWithChildren
   '/categoria/$slug': typeof CategoriaSlugRoute
+  '/checkout/retorno': typeof CheckoutRetornoRoute
   '/produto/$slug': typeof ProdutoSlugRoute
   '/academy/alunos': typeof AcademyAcademyAlunosRoute
   '/academy/certificados': typeof AcademyAcademyCertificadosRoute
@@ -511,6 +535,7 @@ export interface FileRoutesByTo {
   '/studio/equipe': typeof StudioStudioEquipeRoute
   '/studio/midia': typeof StudioStudioMidiaRoute
   '/studio/paginas': typeof StudioStudioPaginasRouteWithChildren
+  '/checkout/pagamento/$orderId': typeof CheckoutPagamentoOrderIdRoute
   '/academy': typeof AcademyAcademyIndexRoute
   '/admin': typeof AdminAdminIndexRoute
   '/administracao': typeof AdministracaoAdministracaoIndexRoute
@@ -521,6 +546,7 @@ export interface FileRoutesByTo {
   '/crm/clientes/$id': typeof CrmCrmClientesIdRoute
   '/ops/pedidos/$id': typeof OpsOpsPedidosIdRoute
   '/studio/paginas/$slug': typeof StudioStudioPaginasSlugRoute
+  '/api/public/payments/webhook': typeof ApiPublicPaymentsWebhookRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -539,7 +565,7 @@ export interface FileRoutesById {
   '/cadastro': typeof CadastroRoute
   '/carrinho': typeof CarrinhoRoute
   '/catalogo': typeof CatalogoRoute
-  '/checkout': typeof CheckoutRoute
+  '/checkout': typeof CheckoutRouteWithChildren
   '/comunidade': typeof ComunidadeRoute
   '/cursos': typeof CursosRoute
   '/ebooks': typeof EbooksRoute
@@ -552,6 +578,7 @@ export interface FileRoutesById {
   '/_authenticated/pedidos': typeof AuthenticatedPedidosRoute
   '/_studio/studio': typeof StudioStudioRouteWithChildren
   '/categoria/$slug': typeof CategoriaSlugRoute
+  '/checkout/retorno': typeof CheckoutRetornoRoute
   '/produto/$slug': typeof ProdutoSlugRoute
   '/_academy/academy/alunos': typeof AcademyAcademyAlunosRoute
   '/_academy/academy/certificados': typeof AcademyAcademyCertificadosRoute
@@ -579,6 +606,7 @@ export interface FileRoutesById {
   '/_studio/studio/equipe': typeof StudioStudioEquipeRoute
   '/_studio/studio/midia': typeof StudioStudioMidiaRoute
   '/_studio/studio/paginas': typeof StudioStudioPaginasRouteWithChildren
+  '/checkout/pagamento/$orderId': typeof CheckoutPagamentoOrderIdRoute
   '/_academy/academy/': typeof AcademyAcademyIndexRoute
   '/_admin/admin/': typeof AdminAdminIndexRoute
   '/_administracao/administracao/': typeof AdministracaoAdministracaoIndexRoute
@@ -589,6 +617,7 @@ export interface FileRoutesById {
   '/_crm/crm/clientes/$id': typeof CrmCrmClientesIdRoute
   '/_ops/ops/pedidos/$id': typeof OpsOpsPedidosIdRoute
   '/_studio/studio/paginas/$slug': typeof StudioStudioPaginasSlugRoute
+  '/api/public/payments/webhook': typeof ApiPublicPaymentsWebhookRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -613,6 +642,7 @@ export interface FileRouteTypes {
     | '/pedidos'
     | '/studio'
     | '/categoria/$slug'
+    | '/checkout/retorno'
     | '/produto/$slug'
     | '/academy/alunos'
     | '/academy/certificados'
@@ -640,6 +670,7 @@ export interface FileRouteTypes {
     | '/studio/equipe'
     | '/studio/midia'
     | '/studio/paginas'
+    | '/checkout/pagamento/$orderId'
     | '/academy/'
     | '/admin/'
     | '/administracao/'
@@ -650,6 +681,7 @@ export interface FileRouteTypes {
     | '/crm/clientes/$id'
     | '/ops/pedidos/$id'
     | '/studio/paginas/$slug'
+    | '/api/public/payments/webhook'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -672,6 +704,7 @@ export interface FileRouteTypes {
     | '/pedidos'
     | '/studio'
     | '/categoria/$slug'
+    | '/checkout/retorno'
     | '/produto/$slug'
     | '/academy/alunos'
     | '/academy/certificados'
@@ -699,6 +732,7 @@ export interface FileRouteTypes {
     | '/studio/equipe'
     | '/studio/midia'
     | '/studio/paginas'
+    | '/checkout/pagamento/$orderId'
     | '/academy'
     | '/admin'
     | '/administracao'
@@ -709,6 +743,7 @@ export interface FileRouteTypes {
     | '/crm/clientes/$id'
     | '/ops/pedidos/$id'
     | '/studio/paginas/$slug'
+    | '/api/public/payments/webhook'
   id:
     | '__root__'
     | '/'
@@ -739,6 +774,7 @@ export interface FileRouteTypes {
     | '/_authenticated/pedidos'
     | '/_studio/studio'
     | '/categoria/$slug'
+    | '/checkout/retorno'
     | '/produto/$slug'
     | '/_academy/academy/alunos'
     | '/_academy/academy/certificados'
@@ -766,6 +802,7 @@ export interface FileRouteTypes {
     | '/_studio/studio/equipe'
     | '/_studio/studio/midia'
     | '/_studio/studio/paginas'
+    | '/checkout/pagamento/$orderId'
     | '/_academy/academy/'
     | '/_admin/admin/'
     | '/_administracao/administracao/'
@@ -776,6 +813,7 @@ export interface FileRouteTypes {
     | '/_crm/crm/clientes/$id'
     | '/_ops/ops/pedidos/$id'
     | '/_studio/studio/paginas/$slug'
+    | '/api/public/payments/webhook'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -794,7 +832,7 @@ export interface RootRouteChildren {
   CadastroRoute: typeof CadastroRoute
   CarrinhoRoute: typeof CarrinhoRoute
   CatalogoRoute: typeof CatalogoRoute
-  CheckoutRoute: typeof CheckoutRoute
+  CheckoutRoute: typeof CheckoutRouteWithChildren
   ComunidadeRoute: typeof ComunidadeRoute
   CursosRoute: typeof CursosRoute
   EbooksRoute: typeof EbooksRoute
@@ -804,6 +842,7 @@ export interface RootRouteChildren {
   WorkshopsRoute: typeof WorkshopsRoute
   CategoriaSlugRoute: typeof CategoriaSlugRoute
   ProdutoSlugRoute: typeof ProdutoSlugRoute
+  ApiPublicPaymentsWebhookRoute: typeof ApiPublicPaymentsWebhookRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -976,6 +1015,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProdutoSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/checkout/retorno': {
+      id: '/checkout/retorno'
+      path: '/retorno'
+      fullPath: '/checkout/retorno'
+      preLoaderRoute: typeof CheckoutRetornoRouteImport
+      parentRoute: typeof CheckoutRoute
+    }
     '/categoria/$slug': {
       id: '/categoria/$slug'
       path: '/categoria/$slug'
@@ -1052,6 +1098,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/academy/'
       preLoaderRoute: typeof AcademyAcademyIndexRouteImport
       parentRoute: typeof AcademyRoute
+    }
+    '/checkout/pagamento/$orderId': {
+      id: '/checkout/pagamento/$orderId'
+      path: '/pagamento/$orderId'
+      fullPath: '/checkout/pagamento/$orderId'
+      preLoaderRoute: typeof CheckoutPagamentoOrderIdRouteImport
+      parentRoute: typeof CheckoutRoute
     }
     '/_studio/studio/paginas': {
       id: '/_studio/studio/paginas'
@@ -1234,6 +1287,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/academy/alunos'
       preLoaderRoute: typeof AcademyAcademyAlunosRouteImport
       parentRoute: typeof AcademyRoute
+    }
+    '/api/public/payments/webhook': {
+      id: '/api/public/payments/webhook'
+      path: '/api/public/payments/webhook'
+      fullPath: '/api/public/payments/webhook'
+      preLoaderRoute: typeof ApiPublicPaymentsWebhookRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/_studio/studio/paginas/$slug': {
       id: '/_studio/studio/paginas/$slug'
@@ -1469,6 +1529,20 @@ const StudioRouteChildren: StudioRouteChildren = {
 const StudioRouteWithChildren =
   StudioRoute._addFileChildren(StudioRouteChildren)
 
+interface CheckoutRouteChildren {
+  CheckoutRetornoRoute: typeof CheckoutRetornoRoute
+  CheckoutPagamentoOrderIdRoute: typeof CheckoutPagamentoOrderIdRoute
+}
+
+const CheckoutRouteChildren: CheckoutRouteChildren = {
+  CheckoutRetornoRoute: CheckoutRetornoRoute,
+  CheckoutPagamentoOrderIdRoute: CheckoutPagamentoOrderIdRoute,
+}
+
+const CheckoutRouteWithChildren = CheckoutRoute._addFileChildren(
+  CheckoutRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   SlugRoute: SlugRoute,
@@ -1485,7 +1559,7 @@ const rootRouteChildren: RootRouteChildren = {
   CadastroRoute: CadastroRoute,
   CarrinhoRoute: CarrinhoRoute,
   CatalogoRoute: CatalogoRoute,
-  CheckoutRoute: CheckoutRoute,
+  CheckoutRoute: CheckoutRouteWithChildren,
   ComunidadeRoute: ComunidadeRoute,
   CursosRoute: CursosRoute,
   EbooksRoute: EbooksRoute,
@@ -1495,6 +1569,7 @@ const rootRouteChildren: RootRouteChildren = {
   WorkshopsRoute: WorkshopsRoute,
   CategoriaSlugRoute: CategoriaSlugRoute,
   ProdutoSlugRoute: ProdutoSlugRoute,
+  ApiPublicPaymentsWebhookRoute: ApiPublicPaymentsWebhookRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

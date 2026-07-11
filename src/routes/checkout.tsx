@@ -14,7 +14,7 @@ export const Route = createFileRoute("/checkout")({
 });
 
 function Checkout() {
-  const { items, subtotalCents, clear } = useCart();
+  const { items, subtotalCents } = useCart();
   const { user, loading: authLoading } = useAuth();
   const navigate = useNavigate();
   const [submitting, setSubmitting] = useState(false);
@@ -94,9 +94,8 @@ function Checkout() {
       );
       if (itemsError) throw itemsError;
 
-      clear();
-      toast.success(`Pedido ${order.order_number} criado`);
-      navigate({ to: "/pedidos" });
+      toast.success(`Pedido ${order.order_number} criado — prossiga com o pagamento`);
+      navigate({ to: "/checkout/pagamento/$orderId", params: { orderId: order.id } });
     } catch (err) {
       toast.error((err as Error).message);
     } finally {
