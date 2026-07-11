@@ -80,6 +80,72 @@ export type Database = {
         }
         Relationships: []
       }
+      customer_notes: {
+        Row: {
+          author_user_id: string | null
+          body: string
+          created_at: string
+          customer_id: string
+          id: string
+        }
+        Insert: {
+          author_user_id?: string | null
+          body: string
+          created_at?: string
+          customer_id: string
+          id?: string
+        }
+        Update: {
+          author_user_id?: string | null
+          body?: string
+          created_at?: string
+          customer_id?: string
+          id?: string
+        }
+        Relationships: []
+      }
+      enrollments: {
+        Row: {
+          created_at: string
+          id: string
+          order_id: string | null
+          product_id: string
+          status: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          order_id?: string | null
+          product_id: string
+          status?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          order_id?: string | null
+          product_id?: string
+          status?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "enrollments_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "enrollments_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       media_assets: {
         Row: {
           alt_text: string | null
@@ -119,6 +185,36 @@ export type Database = {
           uploaded_by?: string | null
           url?: string
           width?: number | null
+        }
+        Relationships: []
+      }
+      module_events: {
+        Row: {
+          actor_user_id: string | null
+          created_at: string
+          event_type: string
+          id: string
+          payload: Json
+          subject_id: string | null
+          subject_type: string
+        }
+        Insert: {
+          actor_user_id?: string | null
+          created_at?: string
+          event_type: string
+          id?: string
+          payload?: Json
+          subject_id?: string | null
+          subject_type: string
+        }
+        Update: {
+          actor_user_id?: string | null
+          created_at?: string
+          event_type?: string
+          id?: string
+          payload?: Json
+          subject_id?: string | null
+          subject_type?: string
         }
         Relationships: []
       }
@@ -508,6 +604,16 @@ export type Database = {
         Returns: boolean
       }
       has_studio_access: { Args: { _user_id: string }; Returns: boolean }
+      log_module_event: {
+        Args: {
+          _actor: string
+          _event_type: string
+          _payload: Json
+          _subject_id: string
+          _subject_type: string
+        }
+        Returns: string
+      }
     }
     Enums: {
       app_role: "admin" | "customer" | "editor" | "reviewer"

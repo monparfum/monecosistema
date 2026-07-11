@@ -55,7 +55,8 @@ function OpsPedidos() {
           {filtered.map((o) => (
             <Link
               key={o.id}
-              to="/admin/pedidos"
+              to="/ops/pedidos/$id"
+              params={{ id: o.id }}
               className="py-5 grid grid-cols-[1.2fr_1fr_auto_auto] gap-6 items-center hover:bg-[color:var(--muted)] px-2 -mx-2 transition-colors"
             >
               <div>
@@ -71,7 +72,7 @@ function OpsPedidos() {
         </div>
       )}
 
-      <p className="text-xs text-muted-foreground">Edição de status permanece no módulo Commerce — esta é a visão operacional consolidada.</p>
+      <p className="text-xs text-muted-foreground">Clique num pedido para abrir a ficha operacional com timeline e transições de status.</p>
     </div>
   );
 }
