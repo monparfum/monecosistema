@@ -1,101 +1,65 @@
-## Objetivo
+## Fase 2 — Integração viva entre módulos
 
-Expandir a plataforma adicionando 5 novos módulos (Operações, CRM, Academy, Marketing, Administração) totalmente integrados ao ecossistema Commerce + Studio existente, sem alterar arquitetura ou módulos atuais.
+Fase 1 entregou a estrutura. Fase 2 acende os fios que conectam os módulos: quando algo acontece no Commerce, os outros módulos **reagem de verdade** — persistindo no banco, não só na tela.
 
-## Escopo desta entrega — Fase 1 (Estrutura)
+## Escopo
 
-Criar **apenas a estrutura visual e de rotas** de cada módulo, seguindo o mesmo Design System editorial (Instrument Serif + Inter, paleta clara, radius=0). Os dados que já existem no Commerce (pedidos, clientes) serão **lidos** — nada duplicado. Áreas sem dados exibem *empty states* elegantes preparados para receber informação futura.
+### 1. Core — barramento persistente
 
-Não faz parte desta fase: implementação de IA, integrações de transportadoras, gateways de email/WhatsApp, criação de novas tabelas grandes de negócio. Estrutura pronta para receber tudo isso.
+Nova tabela `module_events` (append-only) para virar o Log em Administração e alimentar timelines. Trigger em `orders` emite eventos automaticamente. O `emit()` do cliente (Fase 1) passa a espelhar em `module_events` via server function.
 
-## Arquitetura
+**Schema:**
+- `module_events` — id, event_type, actor_user_id, subject_type, subject_id, payload jsonb, created_at
+- RLS: SELECT só admin; INSERT via service role (server fn `logEvent`).
+- Trigger `on_order_insert` insere `order.created`; trigger `on_order_status_change` insere `order.status_changed`.
 
-```text
-src/routes/
-  _admin/                          [já existe — não mexer nos submódulos atuais]
-    admin.modulos.tsx              [atualizar: passar de 4 para 7 cards]
-  _ops/                            [NOVO — módulo Operações]
-    route.tsx                      layout com sidebar própria
-    ops.index.tsx                  dashboard
-    ops.pedidos.tsx                lê orders do Commerce
-    ops.pedidos.$id.tsx            timeline do pedido
-    ops.expedicao.tsx
-    ops.producao.tsx
-  _crm/                            [NOVO]
-    route.tsx
-    crm.index.tsx                  dashboard
-    crm.clientes.tsx               lista com LTV, última compra
-    crm.clientes.$id.tsx           ficha 360º (pedidos, cursos, exp, obs)
-    crm.segmentos.tsx
-  _academy/                        [NOVO — área do admin p/ gerir cursos + libera acesso]
-    route.tsx
-    academy.index.tsx
-    academy.cursos.tsx
-    academy.alunos.tsx
-    academy.certificados.tsx
-  _marketing/                      [NOVO]
-    route.tsx
-    marketing.index.tsx            dashboard: seguidores, leads, ROI
-    marketing.campanhas.tsx
-    marketing.calendario.tsx
-    marketing.social.tsx           placeholders IG/TikTok/etc
-    marketing.automacoes.tsx
-    marketing.ia.tsx               shell preparado p/ IA (sem implementar)
-  _administracao/                  [NOVO]
-    route.tsx
-    administracao.index.tsx
-    administracao.usuarios.tsx     usa profiles + user_roles
-    administracao.papeis.tsx
-    administracao.integracoes.tsx
-    administracao.logs.tsx
-    administracao.empresa.tsx
-```
+### 2. Ops — Timeline real do pedido
 
-Todos os layouts de módulo reutilizam o mesmo padrão do `_admin.tsx` atual: sidebar 240px + `← Módulos`, header do módulo, área de conteúdo com breadcrumb.
+- Nova rota `_ops/ops.pedidos.$id.tsx` (ficha do pedido) mostrando: dados, itens, endereço, **timeline** lida de `module_events` filtrada por `subject_id = order.id`.
+- Botões de transição de status (Pagar → Em produção → Enviado → Entregue → Cancelar) atuando direto no `orders.status` — o trigger cuida do log.
+- Lista `ops.pedidos.tsx` passa a linkar para a ficha (hoje aponta para `/admin/pedidos`).
 
-**Core (invisível)** — criar dois arquivos utilitários compartilhados, sem tabelas novas nesta fase:
+### 3. CRM — Notas de cliente
 
-- `src/lib/core/events.ts` — barramento in-memory (`emit`, `on`) para os módulos comunicarem no cliente (ex.: Commerce emite `order.created`, Ops/CRM ouvem). Documentado para ser trocado por Postgres NOTIFY / edge function no futuro.
-- `src/lib/core/module-registry.ts` — fonte única dos 7 módulos (id, label, ícone, rota, permissões requeridas). `admin.modulos.tsx` e o header passam a ler daqui. Facilita adicionar módulo futuro em 1 lugar só.
+- Nova tabela `customer_notes` (id, customer_id, author_user_id, body, created_at).
+- RLS: admin lê/escreve todas.
+- Ficha `crm.clientes.$id.tsx` ganha seção "Observações" funcional (adicionar/ver notas) no lugar do placeholder atual.
 
-**Permissões** — sem migração agora. Cada `route.tsx` de módulo faz `beforeLoad` só verificando `admin` (igual aos existentes). O registry já declara `requiredRoles` de cada módulo para quando for expandido.
+### 4. Academy — Matrícula automática
 
-## Componentes de UI compartilhados (novos)
+- Nova tabela `enrollments` (id, user_id, product_id, order_id, status: 'active'|'revoked', created_at).
+- Trigger `on_order_paid`: quando `orders.status` vira `paid`, para cada `order_items` cujo produto tenha `category.slug = 'cursos'`, cria linha em `enrollments`.
+- `academy.alunos.tsx` passa a listar `enrollments` reais com nome do curso + cliente.
+- Card "Cursos" na ficha CRM passa a mostrar matrículas reais do cliente.
 
-- `src/components/module-shell.tsx` — layout genérico (sidebar + main + breadcrumb + botão voltar Módulos). Cada `route.tsx` novo usa isso, evita repetir markup.
-- `src/components/empty-state.tsx` — estado vazio editorial (eyebrow + display + texto + CTA opcional).
-- `src/components/stat-card.tsx` — card de métrica do dashboard.
-- `src/components/data-table.tsx` — tabela leve com busca + filtros básicos (não substitui shadcn; é um wrapper mínimo no estilo da casa).
-- `src/components/skeleton-row.tsx` — skeleton loading no tom da paleta.
+### 5. Administração — Logs vivos
 
-## Integrações de dados (reutilizando o que já existe)
+- `administracao.logs.tsx` passa a ler `module_events` (últimos 100), com filtro por tipo e ator.
+- Layout editorial: eyebrow timestamp, display event_type, subtexto payload resumido.
 
-- **Ops → Pedidos**: `select * from orders` (mesma query do `_admin/admin.pedidos.tsx`), agrupado por status operacional.
-- **CRM → Clientes**: `profiles` join com agregados de `orders` (LTV = sum(total_cents), última compra = max(created_at), total de pedidos).
-- **Academy → Alunos**: por enquanto lista `order_items` cujo `product` tenha categoria "cursos" (placeholder; matrícula real fica p/ fase 2).
-- **Administração → Usuários**: `profiles` + `user_roles` (leitura). Alteração de papel via update em `user_roles` (já existe).
-- **Marketing**: 100% dashboard com valores placeholder + empty states rotulados "Conectar Instagram", "Configurar automação", etc. Nada quebra, nada mente.
+### 6. Marketing — Conversões reais no painel
 
-## Atualizações em arquivos existentes
+- Dashboard `marketing.index.tsx`: as métricas "Conversões" e "Receita" passam a vir de `orders` (pagos últimos 30 dias). Seguidores/Leads/ROI ficam placeholder até canal ser conectado.
 
-- `src/routes/_admin/admin.modulos.tsx` — passa a mapear `module-registry`. Ganha os 5 novos cards.
-- `src/components/site-header.tsx` — link "Módulos" continua igual (aponta pra `/admin/modulos`).
-- `src/routes/login.tsx` — sem mudanças (admin já cai em `/admin/modulos`).
+## O que NÃO entra nesta fase
 
-Nada em Commerce (`_admin/admin.produtos`, `.categorias`, `.pedidos`, `.clientes`) ou Studio (`_studio/*`) é tocado.
+- Emissão de etiqueta / integração com transportadoras.
+- Provedor de IA em `marketing.ia.tsx`.
+- Player de vídeo, upload de aulas, certificado emitido em Academy (apenas matrícula/acesso).
+- Provedores de Email/WhatsApp em automações.
+- Tabela de `campaigns` — segue placeholder até haver operação de marketing real.
 
-## Design
+## Migrações previstas (uma só)
 
-Mantém o vocabulário editorial atual: eyebrow uppercase tracked, display Instrument Serif com itálico de destaque, muito respiro, grades com `gap-px bg-border`, sem sombras pesadas, hover discreto (`bg-[color:var(--muted)]`). Dashboards com no máximo 4 stat cards por linha; tabelas com hairlines superior/inferior, sem zebra.
+Uma única migração cria `module_events`, `customer_notes`, `enrollments`, os triggers em `orders`, GRANTs e políticas RLS. Nada altera tabelas existentes.
 
-## Fora de escopo (fica documentado no code para fase 2)
+## Detalhes técnicos
 
-- Emissão de etiqueta / integração Correios / Melhor Envio.
-- Provider de IA real em `marketing.ia.tsx`.
-- Player de vídeo / progresso de aula em Academy (a fase 1 só lista cursos e alunos).
-- Provider de email/WhatsApp em automações.
-- Tabelas novas de `courses`, `lessons`, `campaigns`, `automations` — serão adicionadas quando cada feature for ativada; nesta fase os módulos operam sobre dados existentes e placeholders bem sinalizados.
+- Triggers ficam em `SECURITY DEFINER` com `search_path = public`, seguindo o padrão das funções atuais (`handle_new_user`, `has_role`).
+- Server function `addCustomerNote` usa `requireSupabaseAuth` + checagem `has_role(admin)`.
+- `enrollments` join com `products` (name) e `profiles` (full_name) — reaproveita o que já existe, sem duplicar dados de curso.
+- Timeline lê `module_events.subject_type='order' AND subject_id=<uuid>`.
 
-## Confirmação necessária
+## Confirmação
 
-Confirma que posso seguir por essa Fase 1 (estrutura + integrações de leitura sobre o que já existe, sem novas tabelas)? Se sim, entrego tudo de uma vez e depois abrimos ticket a ticket para "acender" cada submódulo com dados/integrações reais.
+Se aprovar, entrego migração + código em uma passada. Depois seguimos com Marketing (canais/campanhas com persistência) e Academy (aulas/vídeo/certificados) em fases dedicadas.
