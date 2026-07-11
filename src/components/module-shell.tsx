@@ -1,6 +1,7 @@
 import { Link, Outlet } from "@tanstack/react-router";
 import type { ReactNode } from "react";
 import { NotificationsBell } from "@/components/notifications-bell";
+import { OmniSearch } from "@/components/omni-search";
 
 export type ModuleNavItem = { to: string; label: string; exact?: boolean };
 
@@ -26,6 +27,8 @@ export function ModuleShell({
         <Link to="/admin/modulos" className="eyebrow text-muted-foreground hover:text-foreground">
           ← Módulos
         </Link>
+
+        <OmniSearch />
 
         <nav className="space-y-1 text-sm border-t border-border pt-6">
           {nav.map((item) => (
