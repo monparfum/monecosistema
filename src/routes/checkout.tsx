@@ -94,9 +94,8 @@ function Checkout() {
       );
       if (itemsError) throw itemsError;
 
-      clear();
-      toast.success(`Pedido ${order.order_number} criado`);
-      navigate({ to: "/pedidos" });
+      toast.success(`Pedido ${order.order_number} criado — prossiga com o pagamento`);
+      navigate({ to: "/checkout/pagamento/$orderId", params: { orderId: order.id } });
     } catch (err) {
       toast.error((err as Error).message);
     } finally {
