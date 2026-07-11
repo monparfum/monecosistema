@@ -56,6 +56,45 @@ export type Database = {
         }
         Relationships: []
       }
+      campaigns: {
+        Row: {
+          channel: string
+          created_at: string
+          created_by: string | null
+          description: string | null
+          ends_at: string | null
+          id: string
+          name: string
+          starts_at: string | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          channel: string
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          ends_at?: string | null
+          id?: string
+          name: string
+          starts_at?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          channel?: string
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          ends_at?: string | null
+          id?: string
+          name?: string
+          starts_at?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       categories: {
         Row: {
           created_at: string
@@ -77,6 +116,60 @@ export type Database = {
           id?: string
           name?: string
           slug?: string
+        }
+        Relationships: []
+      }
+      company_settings: {
+        Row: {
+          address_city: string | null
+          address_country: string | null
+          address_line1: string | null
+          address_postal_code: string | null
+          address_state: string | null
+          cnpj: string | null
+          currency: string
+          email: string | null
+          id: string
+          legal_name: string | null
+          logo_url: string | null
+          name: string
+          phone: string | null
+          singleton: boolean
+          updated_at: string
+        }
+        Insert: {
+          address_city?: string | null
+          address_country?: string | null
+          address_line1?: string | null
+          address_postal_code?: string | null
+          address_state?: string | null
+          cnpj?: string | null
+          currency?: string
+          email?: string | null
+          id?: string
+          legal_name?: string | null
+          logo_url?: string | null
+          name?: string
+          phone?: string | null
+          singleton?: boolean
+          updated_at?: string
+        }
+        Update: {
+          address_city?: string | null
+          address_country?: string | null
+          address_line1?: string | null
+          address_postal_code?: string | null
+          address_state?: string | null
+          cnpj?: string | null
+          currency?: string
+          email?: string | null
+          id?: string
+          legal_name?: string | null
+          logo_url?: string | null
+          name?: string
+          phone?: string | null
+          singleton?: boolean
+          updated_at?: string
         }
         Relationships: []
       }
