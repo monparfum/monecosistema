@@ -27,6 +27,7 @@ import { Route as OpsRouteImport } from './routes/_ops'
 import { Route as MarketingRouteImport } from './routes/_marketing'
 import { Route as CrmRouteImport } from './routes/_crm'
 import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
+import { Route as AdministracaoRouteImport } from './routes/_administracao'
 import { Route as AdminRouteImport } from './routes/_admin'
 import { Route as AcademyRouteImport } from './routes/_academy'
 import { Route as SlugRouteImport } from './routes/$slug'
@@ -39,6 +40,7 @@ import { Route as AuthenticatedContaRouteImport } from './routes/_authenticated/
 import { Route as OpsOpsIndexRouteImport } from './routes/_ops/ops.index'
 import { Route as MarketingMarketingIndexRouteImport } from './routes/_marketing/marketing.index'
 import { Route as CrmCrmIndexRouteImport } from './routes/_crm/crm.index'
+import { Route as AdministracaoAdministracaoIndexRouteImport } from './routes/_administracao/administracao.index'
 import { Route as AdminAdminIndexRouteImport } from './routes/_admin/admin.index'
 import { Route as AcademyAcademyIndexRouteImport } from './routes/_academy/academy.index'
 import { Route as StudioStudioPaginasRouteImport } from './routes/_studio/studio.paginas'
@@ -54,6 +56,11 @@ import { Route as MarketingMarketingCalendarioRouteImport } from './routes/_mark
 import { Route as MarketingMarketingAutomacoesRouteImport } from './routes/_marketing/marketing.automacoes'
 import { Route as CrmCrmSegmentosRouteImport } from './routes/_crm/crm.segmentos'
 import { Route as CrmCrmClientesRouteImport } from './routes/_crm/crm.clientes'
+import { Route as AdministracaoAdministracaoUsuariosRouteImport } from './routes/_administracao/administracao.usuarios'
+import { Route as AdministracaoAdministracaoPapeisRouteImport } from './routes/_administracao/administracao.papeis'
+import { Route as AdministracaoAdministracaoLogsRouteImport } from './routes/_administracao/administracao.logs'
+import { Route as AdministracaoAdministracaoIntegracoesRouteImport } from './routes/_administracao/administracao.integracoes'
+import { Route as AdministracaoAdministracaoEmpresaRouteImport } from './routes/_administracao/administracao.empresa'
 import { Route as AdminAdminProdutosRouteImport } from './routes/_admin/admin.produtos'
 import { Route as AdminAdminPedidosRouteImport } from './routes/_admin/admin.pedidos'
 import { Route as AdminAdminModulosRouteImport } from './routes/_admin/admin.modulos'
@@ -151,6 +158,10 @@ const AuthenticatedRoute = AuthenticatedRouteImport.update({
   id: '/_authenticated',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdministracaoRoute = AdministracaoRouteImport.update({
+  id: '/_administracao',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminRoute = AdminRouteImport.update({
   id: '/_admin',
   getParentRoute: () => rootRouteImport,
@@ -209,6 +220,12 @@ const CrmCrmIndexRoute = CrmCrmIndexRouteImport.update({
   path: '/crm/',
   getParentRoute: () => CrmRoute,
 } as any)
+const AdministracaoAdministracaoIndexRoute =
+  AdministracaoAdministracaoIndexRouteImport.update({
+    id: '/administracao/',
+    path: '/administracao/',
+    getParentRoute: () => AdministracaoRoute,
+  } as any)
 const AdminAdminIndexRoute = AdminAdminIndexRouteImport.update({
   id: '/admin/',
   path: '/admin/',
@@ -288,6 +305,36 @@ const CrmCrmClientesRoute = CrmCrmClientesRouteImport.update({
   path: '/crm/clientes',
   getParentRoute: () => CrmRoute,
 } as any)
+const AdministracaoAdministracaoUsuariosRoute =
+  AdministracaoAdministracaoUsuariosRouteImport.update({
+    id: '/administracao/usuarios',
+    path: '/administracao/usuarios',
+    getParentRoute: () => AdministracaoRoute,
+  } as any)
+const AdministracaoAdministracaoPapeisRoute =
+  AdministracaoAdministracaoPapeisRouteImport.update({
+    id: '/administracao/papeis',
+    path: '/administracao/papeis',
+    getParentRoute: () => AdministracaoRoute,
+  } as any)
+const AdministracaoAdministracaoLogsRoute =
+  AdministracaoAdministracaoLogsRouteImport.update({
+    id: '/administracao/logs',
+    path: '/administracao/logs',
+    getParentRoute: () => AdministracaoRoute,
+  } as any)
+const AdministracaoAdministracaoIntegracoesRoute =
+  AdministracaoAdministracaoIntegracoesRouteImport.update({
+    id: '/administracao/integracoes',
+    path: '/administracao/integracoes',
+    getParentRoute: () => AdministracaoRoute,
+  } as any)
+const AdministracaoAdministracaoEmpresaRoute =
+  AdministracaoAdministracaoEmpresaRouteImport.update({
+    id: '/administracao/empresa',
+    path: '/administracao/empresa',
+    getParentRoute: () => AdministracaoRoute,
+  } as any)
 const AdminAdminProdutosRoute = AdminAdminProdutosRouteImport.update({
   id: '/admin/produtos',
   path: '/admin/produtos',
@@ -374,6 +421,11 @@ export interface FileRoutesByFullPath {
   '/admin/modulos': typeof AdminAdminModulosRoute
   '/admin/pedidos': typeof AdminAdminPedidosRoute
   '/admin/produtos': typeof AdminAdminProdutosRouteWithChildren
+  '/administracao/empresa': typeof AdministracaoAdministracaoEmpresaRoute
+  '/administracao/integracoes': typeof AdministracaoAdministracaoIntegracoesRoute
+  '/administracao/logs': typeof AdministracaoAdministracaoLogsRoute
+  '/administracao/papeis': typeof AdministracaoAdministracaoPapeisRoute
+  '/administracao/usuarios': typeof AdministracaoAdministracaoUsuariosRoute
   '/crm/clientes': typeof CrmCrmClientesRouteWithChildren
   '/crm/segmentos': typeof CrmCrmSegmentosRoute
   '/marketing/automacoes': typeof MarketingMarketingAutomacoesRoute
@@ -389,6 +441,7 @@ export interface FileRoutesByFullPath {
   '/studio/paginas': typeof StudioStudioPaginasRouteWithChildren
   '/academy/': typeof AcademyAcademyIndexRoute
   '/admin/': typeof AdminAdminIndexRoute
+  '/administracao/': typeof AdministracaoAdministracaoIndexRoute
   '/crm/': typeof CrmCrmIndexRoute
   '/marketing/': typeof MarketingMarketingIndexRoute
   '/ops/': typeof OpsOpsIndexRoute
@@ -425,6 +478,11 @@ export interface FileRoutesByTo {
   '/admin/modulos': typeof AdminAdminModulosRoute
   '/admin/pedidos': typeof AdminAdminPedidosRoute
   '/admin/produtos': typeof AdminAdminProdutosRouteWithChildren
+  '/administracao/empresa': typeof AdministracaoAdministracaoEmpresaRoute
+  '/administracao/integracoes': typeof AdministracaoAdministracaoIntegracoesRoute
+  '/administracao/logs': typeof AdministracaoAdministracaoLogsRoute
+  '/administracao/papeis': typeof AdministracaoAdministracaoPapeisRoute
+  '/administracao/usuarios': typeof AdministracaoAdministracaoUsuariosRoute
   '/crm/clientes': typeof CrmCrmClientesRouteWithChildren
   '/crm/segmentos': typeof CrmCrmSegmentosRoute
   '/marketing/automacoes': typeof MarketingMarketingAutomacoesRoute
@@ -440,6 +498,7 @@ export interface FileRoutesByTo {
   '/studio/paginas': typeof StudioStudioPaginasRouteWithChildren
   '/academy': typeof AcademyAcademyIndexRoute
   '/admin': typeof AdminAdminIndexRoute
+  '/administracao': typeof AdministracaoAdministracaoIndexRoute
   '/crm': typeof CrmCrmIndexRoute
   '/marketing': typeof MarketingMarketingIndexRoute
   '/ops': typeof OpsOpsIndexRoute
@@ -453,6 +512,7 @@ export interface FileRoutesById {
   '/$slug': typeof SlugRoute
   '/_academy': typeof AcademyRouteWithChildren
   '/_admin': typeof AdminRouteWithChildren
+  '/_administracao': typeof AdministracaoRouteWithChildren
   '/_authenticated': typeof AuthenticatedRouteWithChildren
   '/_crm': typeof CrmRouteWithChildren
   '/_marketing': typeof MarketingRouteWithChildren
@@ -484,6 +544,11 @@ export interface FileRoutesById {
   '/_admin/admin/modulos': typeof AdminAdminModulosRoute
   '/_admin/admin/pedidos': typeof AdminAdminPedidosRoute
   '/_admin/admin/produtos': typeof AdminAdminProdutosRouteWithChildren
+  '/_administracao/administracao/empresa': typeof AdministracaoAdministracaoEmpresaRoute
+  '/_administracao/administracao/integracoes': typeof AdministracaoAdministracaoIntegracoesRoute
+  '/_administracao/administracao/logs': typeof AdministracaoAdministracaoLogsRoute
+  '/_administracao/administracao/papeis': typeof AdministracaoAdministracaoPapeisRoute
+  '/_administracao/administracao/usuarios': typeof AdministracaoAdministracaoUsuariosRoute
   '/_crm/crm/clientes': typeof CrmCrmClientesRouteWithChildren
   '/_crm/crm/segmentos': typeof CrmCrmSegmentosRoute
   '/_marketing/marketing/automacoes': typeof MarketingMarketingAutomacoesRoute
@@ -499,6 +564,7 @@ export interface FileRoutesById {
   '/_studio/studio/paginas': typeof StudioStudioPaginasRouteWithChildren
   '/_academy/academy/': typeof AcademyAcademyIndexRoute
   '/_admin/admin/': typeof AdminAdminIndexRoute
+  '/_administracao/administracao/': typeof AdministracaoAdministracaoIndexRoute
   '/_crm/crm/': typeof CrmCrmIndexRoute
   '/_marketing/marketing/': typeof MarketingMarketingIndexRoute
   '/_ops/ops/': typeof OpsOpsIndexRoute
@@ -537,6 +603,11 @@ export interface FileRouteTypes {
     | '/admin/modulos'
     | '/admin/pedidos'
     | '/admin/produtos'
+    | '/administracao/empresa'
+    | '/administracao/integracoes'
+    | '/administracao/logs'
+    | '/administracao/papeis'
+    | '/administracao/usuarios'
     | '/crm/clientes'
     | '/crm/segmentos'
     | '/marketing/automacoes'
@@ -552,6 +623,7 @@ export interface FileRouteTypes {
     | '/studio/paginas'
     | '/academy/'
     | '/admin/'
+    | '/administracao/'
     | '/crm/'
     | '/marketing/'
     | '/ops/'
@@ -588,6 +660,11 @@ export interface FileRouteTypes {
     | '/admin/modulos'
     | '/admin/pedidos'
     | '/admin/produtos'
+    | '/administracao/empresa'
+    | '/administracao/integracoes'
+    | '/administracao/logs'
+    | '/administracao/papeis'
+    | '/administracao/usuarios'
     | '/crm/clientes'
     | '/crm/segmentos'
     | '/marketing/automacoes'
@@ -603,6 +680,7 @@ export interface FileRouteTypes {
     | '/studio/paginas'
     | '/academy'
     | '/admin'
+    | '/administracao'
     | '/crm'
     | '/marketing'
     | '/ops'
@@ -615,6 +693,7 @@ export interface FileRouteTypes {
     | '/$slug'
     | '/_academy'
     | '/_admin'
+    | '/_administracao'
     | '/_authenticated'
     | '/_crm'
     | '/_marketing'
@@ -646,6 +725,11 @@ export interface FileRouteTypes {
     | '/_admin/admin/modulos'
     | '/_admin/admin/pedidos'
     | '/_admin/admin/produtos'
+    | '/_administracao/administracao/empresa'
+    | '/_administracao/administracao/integracoes'
+    | '/_administracao/administracao/logs'
+    | '/_administracao/administracao/papeis'
+    | '/_administracao/administracao/usuarios'
     | '/_crm/crm/clientes'
     | '/_crm/crm/segmentos'
     | '/_marketing/marketing/automacoes'
@@ -661,6 +745,7 @@ export interface FileRouteTypes {
     | '/_studio/studio/paginas'
     | '/_academy/academy/'
     | '/_admin/admin/'
+    | '/_administracao/administracao/'
     | '/_crm/crm/'
     | '/_marketing/marketing/'
     | '/_ops/ops/'
@@ -674,6 +759,7 @@ export interface RootRouteChildren {
   SlugRoute: typeof SlugRoute
   AcademyRoute: typeof AcademyRouteWithChildren
   AdminRoute: typeof AdminRouteWithChildren
+  AdministracaoRoute: typeof AdministracaoRouteWithChildren
   AuthenticatedRoute: typeof AuthenticatedRouteWithChildren
   CrmRoute: typeof CrmRouteWithChildren
   MarketingRoute: typeof MarketingRouteWithChildren
@@ -824,6 +910,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_administracao': {
+      id: '/_administracao'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AdministracaoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_admin': {
       id: '/_admin'
       path: ''
@@ -907,6 +1000,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/crm/'
       preLoaderRoute: typeof CrmCrmIndexRouteImport
       parentRoute: typeof CrmRoute
+    }
+    '/_administracao/administracao/': {
+      id: '/_administracao/administracao/'
+      path: '/administracao'
+      fullPath: '/administracao/'
+      preLoaderRoute: typeof AdministracaoAdministracaoIndexRouteImport
+      parentRoute: typeof AdministracaoRoute
     }
     '/_admin/admin/': {
       id: '/_admin/admin/'
@@ -1012,6 +1112,41 @@ declare module '@tanstack/react-router' {
       fullPath: '/crm/clientes'
       preLoaderRoute: typeof CrmCrmClientesRouteImport
       parentRoute: typeof CrmRoute
+    }
+    '/_administracao/administracao/usuarios': {
+      id: '/_administracao/administracao/usuarios'
+      path: '/administracao/usuarios'
+      fullPath: '/administracao/usuarios'
+      preLoaderRoute: typeof AdministracaoAdministracaoUsuariosRouteImport
+      parentRoute: typeof AdministracaoRoute
+    }
+    '/_administracao/administracao/papeis': {
+      id: '/_administracao/administracao/papeis'
+      path: '/administracao/papeis'
+      fullPath: '/administracao/papeis'
+      preLoaderRoute: typeof AdministracaoAdministracaoPapeisRouteImport
+      parentRoute: typeof AdministracaoRoute
+    }
+    '/_administracao/administracao/logs': {
+      id: '/_administracao/administracao/logs'
+      path: '/administracao/logs'
+      fullPath: '/administracao/logs'
+      preLoaderRoute: typeof AdministracaoAdministracaoLogsRouteImport
+      parentRoute: typeof AdministracaoRoute
+    }
+    '/_administracao/administracao/integracoes': {
+      id: '/_administracao/administracao/integracoes'
+      path: '/administracao/integracoes'
+      fullPath: '/administracao/integracoes'
+      preLoaderRoute: typeof AdministracaoAdministracaoIntegracoesRouteImport
+      parentRoute: typeof AdministracaoRoute
+    }
+    '/_administracao/administracao/empresa': {
+      id: '/_administracao/administracao/empresa'
+      path: '/administracao/empresa'
+      fullPath: '/administracao/empresa'
+      preLoaderRoute: typeof AdministracaoAdministracaoEmpresaRouteImport
+      parentRoute: typeof AdministracaoRoute
     }
     '/_admin/admin/produtos': {
       id: '/_admin/admin/produtos'
@@ -1141,6 +1276,31 @@ const AdminRouteChildren: AdminRouteChildren = {
 
 const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
 
+interface AdministracaoRouteChildren {
+  AdministracaoAdministracaoEmpresaRoute: typeof AdministracaoAdministracaoEmpresaRoute
+  AdministracaoAdministracaoIntegracoesRoute: typeof AdministracaoAdministracaoIntegracoesRoute
+  AdministracaoAdministracaoLogsRoute: typeof AdministracaoAdministracaoLogsRoute
+  AdministracaoAdministracaoPapeisRoute: typeof AdministracaoAdministracaoPapeisRoute
+  AdministracaoAdministracaoUsuariosRoute: typeof AdministracaoAdministracaoUsuariosRoute
+  AdministracaoAdministracaoIndexRoute: typeof AdministracaoAdministracaoIndexRoute
+}
+
+const AdministracaoRouteChildren: AdministracaoRouteChildren = {
+  AdministracaoAdministracaoEmpresaRoute:
+    AdministracaoAdministracaoEmpresaRoute,
+  AdministracaoAdministracaoIntegracoesRoute:
+    AdministracaoAdministracaoIntegracoesRoute,
+  AdministracaoAdministracaoLogsRoute: AdministracaoAdministracaoLogsRoute,
+  AdministracaoAdministracaoPapeisRoute: AdministracaoAdministracaoPapeisRoute,
+  AdministracaoAdministracaoUsuariosRoute:
+    AdministracaoAdministracaoUsuariosRoute,
+  AdministracaoAdministracaoIndexRoute: AdministracaoAdministracaoIndexRoute,
+}
+
+const AdministracaoRouteWithChildren = AdministracaoRoute._addFileChildren(
+  AdministracaoRouteChildren,
+)
+
 interface AuthenticatedRouteChildren {
   AuthenticatedContaRoute: typeof AuthenticatedContaRoute
   AuthenticatedPedidosRoute: typeof AuthenticatedPedidosRoute
@@ -1262,6 +1422,7 @@ const rootRouteChildren: RootRouteChildren = {
   SlugRoute: SlugRoute,
   AcademyRoute: AcademyRouteWithChildren,
   AdminRoute: AdminRouteWithChildren,
+  AdministracaoRoute: AdministracaoRouteWithChildren,
   AuthenticatedRoute: AuthenticatedRouteWithChildren,
   CrmRoute: CrmRouteWithChildren,
   MarketingRoute: MarketingRouteWithChildren,
