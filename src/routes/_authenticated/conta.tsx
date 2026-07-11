@@ -21,7 +21,7 @@ function Conta() {
         </dl>
         <div className="mt-10 flex flex-wrap gap-4">
           <Link to="/pedidos" className="bg-foreground text-background px-5 py-2.5 text-sm">Meus pedidos</Link>
-          <Link to="/cursos" className="border border-border px-5 py-2.5 text-sm">Meus cursos</Link>
+          <Link to="/meus-cursos" className="border border-border px-5 py-2.5 text-sm">Meus cursos</Link>
           <button onClick={signOut} className="border border-border px-5 py-2.5 text-sm">Sair</button>
         </div>
       </div>

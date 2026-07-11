@@ -5,7 +5,7 @@ import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { useAuth } from "@/lib/auth-context";
 
-export const Route = createFileRoute("/_authenticated/cursos")({
+export const Route = createFileRoute("/_authenticated/meus-cursos")({
   head: () => ({ meta: [{ title: "Meus cursos — Mon Parfum" }] }),
   component: MeusCursos,
 });
