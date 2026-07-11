@@ -21,8 +21,8 @@ function Certificados() {
         .order("created_at", { ascending: false });
       const ids = Array.from(new Set((enrs ?? []).map((e) => e.user_id)));
       const { data: profs } = ids.length
-        ? await supabase.from("profiles").select("id, full_name, email").in("id", ids)
-        : { data: [] as Array<{ id: string; full_name: string | null; email: string | null }> };
+        ? await supabase.from("profiles").select("id, full_name").in("id", ids)
+        : { data: [] as Array<{ id: string; full_name: string | null }> };
       const byId = new Map((profs ?? []).map((p) => [p.id, p]));
       return (enrs ?? []).map((e) => ({ ...e, profile: byId.get(e.user_id) }));
     },
@@ -43,7 +43,7 @@ function Certificados() {
               <Award className="size-8 text-[color:var(--gold)]" strokeWidth={1} />
               <div className="flex-1">
                 <div className="eyebrow">{new Date(c.created_at).toLocaleDateString("pt-BR")}</div>
-                <div className="font-display text-xl mt-1">{c.profile?.full_name ?? c.profile?.email ?? "Aluno"}</div>
+                <div className="font-display text-xl mt-1">{c.profile?.full_name ?? "Aluno"}</div>
                 <div className="text-sm text-muted-foreground mt-1">
                   Concluiu <em>{c.products?.name}</em>
                   {c.products?.brand && ` · ${c.products.brand}`}
