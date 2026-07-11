@@ -70,6 +70,7 @@ import { Route as AcademyAcademyCursosRouteImport } from './routes/_academy/acad
 import { Route as AcademyAcademyCertificadosRouteImport } from './routes/_academy/academy.certificados'
 import { Route as AcademyAcademyAlunosRouteImport } from './routes/_academy/academy.alunos'
 import { Route as StudioStudioPaginasSlugRouteImport } from './routes/_studio/studio.paginas.$slug'
+import { Route as OpsOpsPedidosIdRouteImport } from './routes/_ops/ops.pedidos.$id'
 import { Route as CrmCrmClientesIdRouteImport } from './routes/_crm/crm.clientes.$id'
 import { Route as AdminAdminProdutosNovoRouteImport } from './routes/_admin/admin.produtos.novo'
 
@@ -381,6 +382,11 @@ const StudioStudioPaginasSlugRoute = StudioStudioPaginasSlugRouteImport.update({
   path: '/$slug',
   getParentRoute: () => StudioStudioPaginasRoute,
 } as any)
+const OpsOpsPedidosIdRoute = OpsOpsPedidosIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => OpsOpsPedidosRoute,
+} as any)
 const CrmCrmClientesIdRoute = CrmCrmClientesIdRouteImport.update({
   id: '/$id',
   path: '/$id',
@@ -434,7 +440,7 @@ export interface FileRoutesByFullPath {
   '/marketing/ia': typeof MarketingMarketingIaRoute
   '/marketing/social': typeof MarketingMarketingSocialRoute
   '/ops/expedicao': typeof OpsOpsExpedicaoRoute
-  '/ops/pedidos': typeof OpsOpsPedidosRoute
+  '/ops/pedidos': typeof OpsOpsPedidosRouteWithChildren
   '/ops/producao': typeof OpsOpsProducaoRoute
   '/studio/equipe': typeof StudioStudioEquipeRoute
   '/studio/midia': typeof StudioStudioMidiaRoute
@@ -447,6 +453,7 @@ export interface FileRoutesByFullPath {
   '/ops/': typeof OpsOpsIndexRoute
   '/admin/produtos/novo': typeof AdminAdminProdutosNovoRoute
   '/crm/clientes/$id': typeof CrmCrmClientesIdRoute
+  '/ops/pedidos/$id': typeof OpsOpsPedidosIdRoute
   '/studio/paginas/$slug': typeof StudioStudioPaginasSlugRoute
 }
 export interface FileRoutesByTo {
@@ -491,7 +498,7 @@ export interface FileRoutesByTo {
   '/marketing/ia': typeof MarketingMarketingIaRoute
   '/marketing/social': typeof MarketingMarketingSocialRoute
   '/ops/expedicao': typeof OpsOpsExpedicaoRoute
-  '/ops/pedidos': typeof OpsOpsPedidosRoute
+  '/ops/pedidos': typeof OpsOpsPedidosRouteWithChildren
   '/ops/producao': typeof OpsOpsProducaoRoute
   '/studio/equipe': typeof StudioStudioEquipeRoute
   '/studio/midia': typeof StudioStudioMidiaRoute
@@ -504,6 +511,7 @@ export interface FileRoutesByTo {
   '/ops': typeof OpsOpsIndexRoute
   '/admin/produtos/novo': typeof AdminAdminProdutosNovoRoute
   '/crm/clientes/$id': typeof CrmCrmClientesIdRoute
+  '/ops/pedidos/$id': typeof OpsOpsPedidosIdRoute
   '/studio/paginas/$slug': typeof StudioStudioPaginasSlugRoute
 }
 export interface FileRoutesById {
@@ -557,7 +565,7 @@ export interface FileRoutesById {
   '/_marketing/marketing/ia': typeof MarketingMarketingIaRoute
   '/_marketing/marketing/social': typeof MarketingMarketingSocialRoute
   '/_ops/ops/expedicao': typeof OpsOpsExpedicaoRoute
-  '/_ops/ops/pedidos': typeof OpsOpsPedidosRoute
+  '/_ops/ops/pedidos': typeof OpsOpsPedidosRouteWithChildren
   '/_ops/ops/producao': typeof OpsOpsProducaoRoute
   '/_studio/studio/equipe': typeof StudioStudioEquipeRoute
   '/_studio/studio/midia': typeof StudioStudioMidiaRoute
@@ -570,6 +578,7 @@ export interface FileRoutesById {
   '/_ops/ops/': typeof OpsOpsIndexRoute
   '/_admin/admin/produtos/novo': typeof AdminAdminProdutosNovoRoute
   '/_crm/crm/clientes/$id': typeof CrmCrmClientesIdRoute
+  '/_ops/ops/pedidos/$id': typeof OpsOpsPedidosIdRoute
   '/_studio/studio/paginas/$slug': typeof StudioStudioPaginasSlugRoute
 }
 export interface FileRouteTypes {
@@ -629,6 +638,7 @@ export interface FileRouteTypes {
     | '/ops/'
     | '/admin/produtos/novo'
     | '/crm/clientes/$id'
+    | '/ops/pedidos/$id'
     | '/studio/paginas/$slug'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -686,6 +696,7 @@ export interface FileRouteTypes {
     | '/ops'
     | '/admin/produtos/novo'
     | '/crm/clientes/$id'
+    | '/ops/pedidos/$id'
     | '/studio/paginas/$slug'
   id:
     | '__root__'
@@ -751,6 +762,7 @@ export interface FileRouteTypes {
     | '/_ops/ops/'
     | '/_admin/admin/produtos/novo'
     | '/_crm/crm/clientes/$id'
+    | '/_ops/ops/pedidos/$id'
     | '/_studio/studio/paginas/$slug'
   fileRoutesById: FileRoutesById
 }
@@ -1211,6 +1223,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof StudioStudioPaginasSlugRouteImport
       parentRoute: typeof StudioStudioPaginasRoute
     }
+    '/_ops/ops/pedidos/$id': {
+      id: '/_ops/ops/pedidos/$id'
+      path: '/$id'
+      fullPath: '/ops/pedidos/$id'
+      preLoaderRoute: typeof OpsOpsPedidosIdRouteImport
+      parentRoute: typeof OpsOpsPedidosRoute
+    }
     '/_crm/crm/clientes/$id': {
       id: '/_crm/crm/clientes/$id'
       path: '/$id'
@@ -1363,16 +1382,28 @@ const MarketingRouteWithChildren = MarketingRoute._addFileChildren(
   MarketingRouteChildren,
 )
 
+interface OpsOpsPedidosRouteChildren {
+  OpsOpsPedidosIdRoute: typeof OpsOpsPedidosIdRoute
+}
+
+const OpsOpsPedidosRouteChildren: OpsOpsPedidosRouteChildren = {
+  OpsOpsPedidosIdRoute: OpsOpsPedidosIdRoute,
+}
+
+const OpsOpsPedidosRouteWithChildren = OpsOpsPedidosRoute._addFileChildren(
+  OpsOpsPedidosRouteChildren,
+)
+
 interface OpsRouteChildren {
   OpsOpsExpedicaoRoute: typeof OpsOpsExpedicaoRoute
-  OpsOpsPedidosRoute: typeof OpsOpsPedidosRoute
+  OpsOpsPedidosRoute: typeof OpsOpsPedidosRouteWithChildren
   OpsOpsProducaoRoute: typeof OpsOpsProducaoRoute
   OpsOpsIndexRoute: typeof OpsOpsIndexRoute
 }
 
 const OpsRouteChildren: OpsRouteChildren = {
   OpsOpsExpedicaoRoute: OpsOpsExpedicaoRoute,
-  OpsOpsPedidosRoute: OpsOpsPedidosRoute,
+  OpsOpsPedidosRoute: OpsOpsPedidosRouteWithChildren,
   OpsOpsProducaoRoute: OpsOpsProducaoRoute,
   OpsOpsIndexRoute: OpsOpsIndexRoute,
 }
