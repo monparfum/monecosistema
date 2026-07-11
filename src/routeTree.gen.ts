@@ -24,6 +24,7 @@ import { Route as BusinessplanRouteImport } from './routes/businessplan'
 import { Route as BuscaRouteImport } from './routes/busca'
 import { Route as StudioRouteImport } from './routes/_studio'
 import { Route as OpsRouteImport } from './routes/_ops'
+import { Route as CrmRouteImport } from './routes/_crm'
 import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as AdminRouteImport } from './routes/_admin'
 import { Route as SlugRouteImport } from './routes/$slug'
@@ -34,6 +35,7 @@ import { Route as StudioStudioRouteImport } from './routes/_studio/studio'
 import { Route as AuthenticatedPedidosRouteImport } from './routes/_authenticated/pedidos'
 import { Route as AuthenticatedContaRouteImport } from './routes/_authenticated/conta'
 import { Route as OpsOpsIndexRouteImport } from './routes/_ops/ops.index'
+import { Route as CrmCrmIndexRouteImport } from './routes/_crm/crm.index'
 import { Route as AdminAdminIndexRouteImport } from './routes/_admin/admin.index'
 import { Route as StudioStudioPaginasRouteImport } from './routes/_studio/studio.paginas'
 import { Route as StudioStudioMidiaRouteImport } from './routes/_studio/studio.midia'
@@ -41,12 +43,15 @@ import { Route as StudioStudioEquipeRouteImport } from './routes/_studio/studio.
 import { Route as OpsOpsProducaoRouteImport } from './routes/_ops/ops.producao'
 import { Route as OpsOpsPedidosRouteImport } from './routes/_ops/ops.pedidos'
 import { Route as OpsOpsExpedicaoRouteImport } from './routes/_ops/ops.expedicao'
+import { Route as CrmCrmSegmentosRouteImport } from './routes/_crm/crm.segmentos'
+import { Route as CrmCrmClientesRouteImport } from './routes/_crm/crm.clientes'
 import { Route as AdminAdminProdutosRouteImport } from './routes/_admin/admin.produtos'
 import { Route as AdminAdminPedidosRouteImport } from './routes/_admin/admin.pedidos'
 import { Route as AdminAdminModulosRouteImport } from './routes/_admin/admin.modulos'
 import { Route as AdminAdminClientesRouteImport } from './routes/_admin/admin.clientes'
 import { Route as AdminAdminCategoriasRouteImport } from './routes/_admin/admin.categorias'
 import { Route as StudioStudioPaginasSlugRouteImport } from './routes/_studio/studio.paginas.$slug'
+import { Route as CrmCrmClientesIdRouteImport } from './routes/_crm/crm.clientes.$id'
 import { Route as AdminAdminProdutosNovoRouteImport } from './routes/_admin/admin.produtos.novo'
 
 const WorkshopsRoute = WorkshopsRouteImport.update({
@@ -122,6 +127,10 @@ const OpsRoute = OpsRouteImport.update({
   id: '/_ops',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CrmRoute = CrmRouteImport.update({
+  id: '/_crm',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthenticatedRoute = AuthenticatedRouteImport.update({
   id: '/_authenticated',
   getParentRoute: () => rootRouteImport,
@@ -170,6 +179,11 @@ const OpsOpsIndexRoute = OpsOpsIndexRouteImport.update({
   path: '/ops/',
   getParentRoute: () => OpsRoute,
 } as any)
+const CrmCrmIndexRoute = CrmCrmIndexRouteImport.update({
+  id: '/crm/',
+  path: '/crm/',
+  getParentRoute: () => CrmRoute,
+} as any)
 const AdminAdminIndexRoute = AdminAdminIndexRouteImport.update({
   id: '/admin/',
   path: '/admin/',
@@ -205,6 +219,16 @@ const OpsOpsExpedicaoRoute = OpsOpsExpedicaoRouteImport.update({
   path: '/ops/expedicao',
   getParentRoute: () => OpsRoute,
 } as any)
+const CrmCrmSegmentosRoute = CrmCrmSegmentosRouteImport.update({
+  id: '/crm/segmentos',
+  path: '/crm/segmentos',
+  getParentRoute: () => CrmRoute,
+} as any)
+const CrmCrmClientesRoute = CrmCrmClientesRouteImport.update({
+  id: '/crm/clientes',
+  path: '/crm/clientes',
+  getParentRoute: () => CrmRoute,
+} as any)
 const AdminAdminProdutosRoute = AdminAdminProdutosRouteImport.update({
   id: '/admin/produtos',
   path: '/admin/produtos',
@@ -234,6 +258,11 @@ const StudioStudioPaginasSlugRoute = StudioStudioPaginasSlugRouteImport.update({
   id: '/$slug',
   path: '/$slug',
   getParentRoute: () => StudioStudioPaginasRoute,
+} as any)
+const CrmCrmClientesIdRoute = CrmCrmClientesIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => CrmCrmClientesRoute,
 } as any)
 const AdminAdminProdutosNovoRoute = AdminAdminProdutosNovoRouteImport.update({
   id: '/novo',
@@ -267,6 +296,8 @@ export interface FileRoutesByFullPath {
   '/admin/modulos': typeof AdminAdminModulosRoute
   '/admin/pedidos': typeof AdminAdminPedidosRoute
   '/admin/produtos': typeof AdminAdminProdutosRouteWithChildren
+  '/crm/clientes': typeof CrmCrmClientesRouteWithChildren
+  '/crm/segmentos': typeof CrmCrmSegmentosRoute
   '/ops/expedicao': typeof OpsOpsExpedicaoRoute
   '/ops/pedidos': typeof OpsOpsPedidosRoute
   '/ops/producao': typeof OpsOpsProducaoRoute
@@ -274,8 +305,10 @@ export interface FileRoutesByFullPath {
   '/studio/midia': typeof StudioStudioMidiaRoute
   '/studio/paginas': typeof StudioStudioPaginasRouteWithChildren
   '/admin/': typeof AdminAdminIndexRoute
+  '/crm/': typeof CrmCrmIndexRoute
   '/ops/': typeof OpsOpsIndexRoute
   '/admin/produtos/novo': typeof AdminAdminProdutosNovoRoute
+  '/crm/clientes/$id': typeof CrmCrmClientesIdRoute
   '/studio/paginas/$slug': typeof StudioStudioPaginasSlugRoute
 }
 export interface FileRoutesByTo {
@@ -304,6 +337,8 @@ export interface FileRoutesByTo {
   '/admin/modulos': typeof AdminAdminModulosRoute
   '/admin/pedidos': typeof AdminAdminPedidosRoute
   '/admin/produtos': typeof AdminAdminProdutosRouteWithChildren
+  '/crm/clientes': typeof CrmCrmClientesRouteWithChildren
+  '/crm/segmentos': typeof CrmCrmSegmentosRoute
   '/ops/expedicao': typeof OpsOpsExpedicaoRoute
   '/ops/pedidos': typeof OpsOpsPedidosRoute
   '/ops/producao': typeof OpsOpsProducaoRoute
@@ -311,8 +346,10 @@ export interface FileRoutesByTo {
   '/studio/midia': typeof StudioStudioMidiaRoute
   '/studio/paginas': typeof StudioStudioPaginasRouteWithChildren
   '/admin': typeof AdminAdminIndexRoute
+  '/crm': typeof CrmCrmIndexRoute
   '/ops': typeof OpsOpsIndexRoute
   '/admin/produtos/novo': typeof AdminAdminProdutosNovoRoute
+  '/crm/clientes/$id': typeof CrmCrmClientesIdRoute
   '/studio/paginas/$slug': typeof StudioStudioPaginasSlugRoute
 }
 export interface FileRoutesById {
@@ -321,6 +358,7 @@ export interface FileRoutesById {
   '/$slug': typeof SlugRoute
   '/_admin': typeof AdminRouteWithChildren
   '/_authenticated': typeof AuthenticatedRouteWithChildren
+  '/_crm': typeof CrmRouteWithChildren
   '/_ops': typeof OpsRouteWithChildren
   '/_studio': typeof StudioRouteWithChildren
   '/busca': typeof BuscaRoute
@@ -346,6 +384,8 @@ export interface FileRoutesById {
   '/_admin/admin/modulos': typeof AdminAdminModulosRoute
   '/_admin/admin/pedidos': typeof AdminAdminPedidosRoute
   '/_admin/admin/produtos': typeof AdminAdminProdutosRouteWithChildren
+  '/_crm/crm/clientes': typeof CrmCrmClientesRouteWithChildren
+  '/_crm/crm/segmentos': typeof CrmCrmSegmentosRoute
   '/_ops/ops/expedicao': typeof OpsOpsExpedicaoRoute
   '/_ops/ops/pedidos': typeof OpsOpsPedidosRoute
   '/_ops/ops/producao': typeof OpsOpsProducaoRoute
@@ -353,8 +393,10 @@ export interface FileRoutesById {
   '/_studio/studio/midia': typeof StudioStudioMidiaRoute
   '/_studio/studio/paginas': typeof StudioStudioPaginasRouteWithChildren
   '/_admin/admin/': typeof AdminAdminIndexRoute
+  '/_crm/crm/': typeof CrmCrmIndexRoute
   '/_ops/ops/': typeof OpsOpsIndexRoute
   '/_admin/admin/produtos/novo': typeof AdminAdminProdutosNovoRoute
+  '/_crm/crm/clientes/$id': typeof CrmCrmClientesIdRoute
   '/_studio/studio/paginas/$slug': typeof StudioStudioPaginasSlugRoute
 }
 export interface FileRouteTypes {
@@ -385,6 +427,8 @@ export interface FileRouteTypes {
     | '/admin/modulos'
     | '/admin/pedidos'
     | '/admin/produtos'
+    | '/crm/clientes'
+    | '/crm/segmentos'
     | '/ops/expedicao'
     | '/ops/pedidos'
     | '/ops/producao'
@@ -392,8 +436,10 @@ export interface FileRouteTypes {
     | '/studio/midia'
     | '/studio/paginas'
     | '/admin/'
+    | '/crm/'
     | '/ops/'
     | '/admin/produtos/novo'
+    | '/crm/clientes/$id'
     | '/studio/paginas/$slug'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -422,6 +468,8 @@ export interface FileRouteTypes {
     | '/admin/modulos'
     | '/admin/pedidos'
     | '/admin/produtos'
+    | '/crm/clientes'
+    | '/crm/segmentos'
     | '/ops/expedicao'
     | '/ops/pedidos'
     | '/ops/producao'
@@ -429,8 +477,10 @@ export interface FileRouteTypes {
     | '/studio/midia'
     | '/studio/paginas'
     | '/admin'
+    | '/crm'
     | '/ops'
     | '/admin/produtos/novo'
+    | '/crm/clientes/$id'
     | '/studio/paginas/$slug'
   id:
     | '__root__'
@@ -438,6 +488,7 @@ export interface FileRouteTypes {
     | '/$slug'
     | '/_admin'
     | '/_authenticated'
+    | '/_crm'
     | '/_ops'
     | '/_studio'
     | '/busca'
@@ -463,6 +514,8 @@ export interface FileRouteTypes {
     | '/_admin/admin/modulos'
     | '/_admin/admin/pedidos'
     | '/_admin/admin/produtos'
+    | '/_crm/crm/clientes'
+    | '/_crm/crm/segmentos'
     | '/_ops/ops/expedicao'
     | '/_ops/ops/pedidos'
     | '/_ops/ops/producao'
@@ -470,8 +523,10 @@ export interface FileRouteTypes {
     | '/_studio/studio/midia'
     | '/_studio/studio/paginas'
     | '/_admin/admin/'
+    | '/_crm/crm/'
     | '/_ops/ops/'
     | '/_admin/admin/produtos/novo'
+    | '/_crm/crm/clientes/$id'
     | '/_studio/studio/paginas/$slug'
   fileRoutesById: FileRoutesById
 }
@@ -480,6 +535,7 @@ export interface RootRouteChildren {
   SlugRoute: typeof SlugRoute
   AdminRoute: typeof AdminRouteWithChildren
   AuthenticatedRoute: typeof AuthenticatedRouteWithChildren
+  CrmRoute: typeof CrmRouteWithChildren
   OpsRoute: typeof OpsRouteWithChildren
   StudioRoute: typeof StudioRouteWithChildren
   BuscaRoute: typeof BuscaRoute
@@ -606,6 +662,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof OpsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_crm': {
+      id: '/_crm'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof CrmRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_authenticated': {
       id: '/_authenticated'
       path: ''
@@ -676,6 +739,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof OpsOpsIndexRouteImport
       parentRoute: typeof OpsRoute
     }
+    '/_crm/crm/': {
+      id: '/_crm/crm/'
+      path: '/crm'
+      fullPath: '/crm/'
+      preLoaderRoute: typeof CrmCrmIndexRouteImport
+      parentRoute: typeof CrmRoute
+    }
     '/_admin/admin/': {
       id: '/_admin/admin/'
       path: '/admin'
@@ -725,6 +795,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof OpsOpsExpedicaoRouteImport
       parentRoute: typeof OpsRoute
     }
+    '/_crm/crm/segmentos': {
+      id: '/_crm/crm/segmentos'
+      path: '/crm/segmentos'
+      fullPath: '/crm/segmentos'
+      preLoaderRoute: typeof CrmCrmSegmentosRouteImport
+      parentRoute: typeof CrmRoute
+    }
+    '/_crm/crm/clientes': {
+      id: '/_crm/crm/clientes'
+      path: '/crm/clientes'
+      fullPath: '/crm/clientes'
+      preLoaderRoute: typeof CrmCrmClientesRouteImport
+      parentRoute: typeof CrmRoute
+    }
     '/_admin/admin/produtos': {
       id: '/_admin/admin/produtos'
       path: '/admin/produtos'
@@ -766,6 +850,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/studio/paginas/$slug'
       preLoaderRoute: typeof StudioStudioPaginasSlugRouteImport
       parentRoute: typeof StudioStudioPaginasRoute
+    }
+    '/_crm/crm/clientes/$id': {
+      id: '/_crm/crm/clientes/$id'
+      path: '/$id'
+      fullPath: '/crm/clientes/$id'
+      preLoaderRoute: typeof CrmCrmClientesIdRouteImport
+      parentRoute: typeof CrmCrmClientesRoute
     }
     '/_admin/admin/produtos/novo': {
       id: '/_admin/admin/produtos/novo'
@@ -821,6 +912,32 @@ const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
 const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
   AuthenticatedRouteChildren,
 )
+
+interface CrmCrmClientesRouteChildren {
+  CrmCrmClientesIdRoute: typeof CrmCrmClientesIdRoute
+}
+
+const CrmCrmClientesRouteChildren: CrmCrmClientesRouteChildren = {
+  CrmCrmClientesIdRoute: CrmCrmClientesIdRoute,
+}
+
+const CrmCrmClientesRouteWithChildren = CrmCrmClientesRoute._addFileChildren(
+  CrmCrmClientesRouteChildren,
+)
+
+interface CrmRouteChildren {
+  CrmCrmClientesRoute: typeof CrmCrmClientesRouteWithChildren
+  CrmCrmSegmentosRoute: typeof CrmCrmSegmentosRoute
+  CrmCrmIndexRoute: typeof CrmCrmIndexRoute
+}
+
+const CrmRouteChildren: CrmRouteChildren = {
+  CrmCrmClientesRoute: CrmCrmClientesRouteWithChildren,
+  CrmCrmSegmentosRoute: CrmCrmSegmentosRoute,
+  CrmCrmIndexRoute: CrmCrmIndexRoute,
+}
+
+const CrmRouteWithChildren = CrmRoute._addFileChildren(CrmRouteChildren)
 
 interface OpsRouteChildren {
   OpsOpsExpedicaoRoute: typeof OpsOpsExpedicaoRoute
@@ -881,6 +998,7 @@ const rootRouteChildren: RootRouteChildren = {
   SlugRoute: SlugRoute,
   AdminRoute: AdminRouteWithChildren,
   AuthenticatedRoute: AuthenticatedRouteWithChildren,
+  CrmRoute: CrmRouteWithChildren,
   OpsRoute: OpsRouteWithChildren,
   StudioRoute: StudioRouteWithChildren,
   BuscaRoute: BuscaRoute,
