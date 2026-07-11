@@ -23,6 +23,7 @@ import { Route as CadastroRouteImport } from './routes/cadastro'
 import { Route as BusinessplanRouteImport } from './routes/businessplan'
 import { Route as BuscaRouteImport } from './routes/busca'
 import { Route as StudioRouteImport } from './routes/_studio'
+import { Route as OpsRouteImport } from './routes/_ops'
 import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as AdminRouteImport } from './routes/_admin'
 import { Route as SlugRouteImport } from './routes/$slug'
@@ -32,10 +33,14 @@ import { Route as CategoriaSlugRouteImport } from './routes/categoria.$slug'
 import { Route as StudioStudioRouteImport } from './routes/_studio/studio'
 import { Route as AuthenticatedPedidosRouteImport } from './routes/_authenticated/pedidos'
 import { Route as AuthenticatedContaRouteImport } from './routes/_authenticated/conta'
+import { Route as OpsOpsIndexRouteImport } from './routes/_ops/ops.index'
 import { Route as AdminAdminIndexRouteImport } from './routes/_admin/admin.index'
 import { Route as StudioStudioPaginasRouteImport } from './routes/_studio/studio.paginas'
 import { Route as StudioStudioMidiaRouteImport } from './routes/_studio/studio.midia'
 import { Route as StudioStudioEquipeRouteImport } from './routes/_studio/studio.equipe'
+import { Route as OpsOpsProducaoRouteImport } from './routes/_ops/ops.producao'
+import { Route as OpsOpsPedidosRouteImport } from './routes/_ops/ops.pedidos'
+import { Route as OpsOpsExpedicaoRouteImport } from './routes/_ops/ops.expedicao'
 import { Route as AdminAdminProdutosRouteImport } from './routes/_admin/admin.produtos'
 import { Route as AdminAdminPedidosRouteImport } from './routes/_admin/admin.pedidos'
 import { Route as AdminAdminModulosRouteImport } from './routes/_admin/admin.modulos'
@@ -113,6 +118,10 @@ const StudioRoute = StudioRouteImport.update({
   id: '/_studio',
   getParentRoute: () => rootRouteImport,
 } as any)
+const OpsRoute = OpsRouteImport.update({
+  id: '/_ops',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthenticatedRoute = AuthenticatedRouteImport.update({
   id: '/_authenticated',
   getParentRoute: () => rootRouteImport,
@@ -156,6 +165,11 @@ const AuthenticatedContaRoute = AuthenticatedContaRouteImport.update({
   path: '/conta',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
+const OpsOpsIndexRoute = OpsOpsIndexRouteImport.update({
+  id: '/ops/',
+  path: '/ops/',
+  getParentRoute: () => OpsRoute,
+} as any)
 const AdminAdminIndexRoute = AdminAdminIndexRouteImport.update({
   id: '/admin/',
   path: '/admin/',
@@ -175,6 +189,21 @@ const StudioStudioEquipeRoute = StudioStudioEquipeRouteImport.update({
   id: '/equipe',
   path: '/equipe',
   getParentRoute: () => StudioStudioRoute,
+} as any)
+const OpsOpsProducaoRoute = OpsOpsProducaoRouteImport.update({
+  id: '/ops/producao',
+  path: '/ops/producao',
+  getParentRoute: () => OpsRoute,
+} as any)
+const OpsOpsPedidosRoute = OpsOpsPedidosRouteImport.update({
+  id: '/ops/pedidos',
+  path: '/ops/pedidos',
+  getParentRoute: () => OpsRoute,
+} as any)
+const OpsOpsExpedicaoRoute = OpsOpsExpedicaoRouteImport.update({
+  id: '/ops/expedicao',
+  path: '/ops/expedicao',
+  getParentRoute: () => OpsRoute,
 } as any)
 const AdminAdminProdutosRoute = AdminAdminProdutosRouteImport.update({
   id: '/admin/produtos',
@@ -238,10 +267,14 @@ export interface FileRoutesByFullPath {
   '/admin/modulos': typeof AdminAdminModulosRoute
   '/admin/pedidos': typeof AdminAdminPedidosRoute
   '/admin/produtos': typeof AdminAdminProdutosRouteWithChildren
+  '/ops/expedicao': typeof OpsOpsExpedicaoRoute
+  '/ops/pedidos': typeof OpsOpsPedidosRoute
+  '/ops/producao': typeof OpsOpsProducaoRoute
   '/studio/equipe': typeof StudioStudioEquipeRoute
   '/studio/midia': typeof StudioStudioMidiaRoute
   '/studio/paginas': typeof StudioStudioPaginasRouteWithChildren
   '/admin/': typeof AdminAdminIndexRoute
+  '/ops/': typeof OpsOpsIndexRoute
   '/admin/produtos/novo': typeof AdminAdminProdutosNovoRoute
   '/studio/paginas/$slug': typeof StudioStudioPaginasSlugRoute
 }
@@ -271,10 +304,14 @@ export interface FileRoutesByTo {
   '/admin/modulos': typeof AdminAdminModulosRoute
   '/admin/pedidos': typeof AdminAdminPedidosRoute
   '/admin/produtos': typeof AdminAdminProdutosRouteWithChildren
+  '/ops/expedicao': typeof OpsOpsExpedicaoRoute
+  '/ops/pedidos': typeof OpsOpsPedidosRoute
+  '/ops/producao': typeof OpsOpsProducaoRoute
   '/studio/equipe': typeof StudioStudioEquipeRoute
   '/studio/midia': typeof StudioStudioMidiaRoute
   '/studio/paginas': typeof StudioStudioPaginasRouteWithChildren
   '/admin': typeof AdminAdminIndexRoute
+  '/ops': typeof OpsOpsIndexRoute
   '/admin/produtos/novo': typeof AdminAdminProdutosNovoRoute
   '/studio/paginas/$slug': typeof StudioStudioPaginasSlugRoute
 }
@@ -284,6 +321,7 @@ export interface FileRoutesById {
   '/$slug': typeof SlugRoute
   '/_admin': typeof AdminRouteWithChildren
   '/_authenticated': typeof AuthenticatedRouteWithChildren
+  '/_ops': typeof OpsRouteWithChildren
   '/_studio': typeof StudioRouteWithChildren
   '/busca': typeof BuscaRoute
   '/businessplan': typeof BusinessplanRoute
@@ -308,10 +346,14 @@ export interface FileRoutesById {
   '/_admin/admin/modulos': typeof AdminAdminModulosRoute
   '/_admin/admin/pedidos': typeof AdminAdminPedidosRoute
   '/_admin/admin/produtos': typeof AdminAdminProdutosRouteWithChildren
+  '/_ops/ops/expedicao': typeof OpsOpsExpedicaoRoute
+  '/_ops/ops/pedidos': typeof OpsOpsPedidosRoute
+  '/_ops/ops/producao': typeof OpsOpsProducaoRoute
   '/_studio/studio/equipe': typeof StudioStudioEquipeRoute
   '/_studio/studio/midia': typeof StudioStudioMidiaRoute
   '/_studio/studio/paginas': typeof StudioStudioPaginasRouteWithChildren
   '/_admin/admin/': typeof AdminAdminIndexRoute
+  '/_ops/ops/': typeof OpsOpsIndexRoute
   '/_admin/admin/produtos/novo': typeof AdminAdminProdutosNovoRoute
   '/_studio/studio/paginas/$slug': typeof StudioStudioPaginasSlugRoute
 }
@@ -343,10 +385,14 @@ export interface FileRouteTypes {
     | '/admin/modulos'
     | '/admin/pedidos'
     | '/admin/produtos'
+    | '/ops/expedicao'
+    | '/ops/pedidos'
+    | '/ops/producao'
     | '/studio/equipe'
     | '/studio/midia'
     | '/studio/paginas'
     | '/admin/'
+    | '/ops/'
     | '/admin/produtos/novo'
     | '/studio/paginas/$slug'
   fileRoutesByTo: FileRoutesByTo
@@ -376,10 +422,14 @@ export interface FileRouteTypes {
     | '/admin/modulos'
     | '/admin/pedidos'
     | '/admin/produtos'
+    | '/ops/expedicao'
+    | '/ops/pedidos'
+    | '/ops/producao'
     | '/studio/equipe'
     | '/studio/midia'
     | '/studio/paginas'
     | '/admin'
+    | '/ops'
     | '/admin/produtos/novo'
     | '/studio/paginas/$slug'
   id:
@@ -388,6 +438,7 @@ export interface FileRouteTypes {
     | '/$slug'
     | '/_admin'
     | '/_authenticated'
+    | '/_ops'
     | '/_studio'
     | '/busca'
     | '/businessplan'
@@ -412,10 +463,14 @@ export interface FileRouteTypes {
     | '/_admin/admin/modulos'
     | '/_admin/admin/pedidos'
     | '/_admin/admin/produtos'
+    | '/_ops/ops/expedicao'
+    | '/_ops/ops/pedidos'
+    | '/_ops/ops/producao'
     | '/_studio/studio/equipe'
     | '/_studio/studio/midia'
     | '/_studio/studio/paginas'
     | '/_admin/admin/'
+    | '/_ops/ops/'
     | '/_admin/admin/produtos/novo'
     | '/_studio/studio/paginas/$slug'
   fileRoutesById: FileRoutesById
@@ -425,6 +480,7 @@ export interface RootRouteChildren {
   SlugRoute: typeof SlugRoute
   AdminRoute: typeof AdminRouteWithChildren
   AuthenticatedRoute: typeof AuthenticatedRouteWithChildren
+  OpsRoute: typeof OpsRouteWithChildren
   StudioRoute: typeof StudioRouteWithChildren
   BuscaRoute: typeof BuscaRoute
   BusinessplanRoute: typeof BusinessplanRoute
@@ -543,6 +599,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof StudioRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_ops': {
+      id: '/_ops'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof OpsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_authenticated': {
       id: '/_authenticated'
       path: ''
@@ -606,6 +669,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedContaRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_ops/ops/': {
+      id: '/_ops/ops/'
+      path: '/ops'
+      fullPath: '/ops/'
+      preLoaderRoute: typeof OpsOpsIndexRouteImport
+      parentRoute: typeof OpsRoute
+    }
     '/_admin/admin/': {
       id: '/_admin/admin/'
       path: '/admin'
@@ -633,6 +703,27 @@ declare module '@tanstack/react-router' {
       fullPath: '/studio/equipe'
       preLoaderRoute: typeof StudioStudioEquipeRouteImport
       parentRoute: typeof StudioStudioRoute
+    }
+    '/_ops/ops/producao': {
+      id: '/_ops/ops/producao'
+      path: '/ops/producao'
+      fullPath: '/ops/producao'
+      preLoaderRoute: typeof OpsOpsProducaoRouteImport
+      parentRoute: typeof OpsRoute
+    }
+    '/_ops/ops/pedidos': {
+      id: '/_ops/ops/pedidos'
+      path: '/ops/pedidos'
+      fullPath: '/ops/pedidos'
+      preLoaderRoute: typeof OpsOpsPedidosRouteImport
+      parentRoute: typeof OpsRoute
+    }
+    '/_ops/ops/expedicao': {
+      id: '/_ops/ops/expedicao'
+      path: '/ops/expedicao'
+      fullPath: '/ops/expedicao'
+      preLoaderRoute: typeof OpsOpsExpedicaoRouteImport
+      parentRoute: typeof OpsRoute
     }
     '/_admin/admin/produtos': {
       id: '/_admin/admin/produtos'
@@ -731,6 +822,22 @@ const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
   AuthenticatedRouteChildren,
 )
 
+interface OpsRouteChildren {
+  OpsOpsExpedicaoRoute: typeof OpsOpsExpedicaoRoute
+  OpsOpsPedidosRoute: typeof OpsOpsPedidosRoute
+  OpsOpsProducaoRoute: typeof OpsOpsProducaoRoute
+  OpsOpsIndexRoute: typeof OpsOpsIndexRoute
+}
+
+const OpsRouteChildren: OpsRouteChildren = {
+  OpsOpsExpedicaoRoute: OpsOpsExpedicaoRoute,
+  OpsOpsPedidosRoute: OpsOpsPedidosRoute,
+  OpsOpsProducaoRoute: OpsOpsProducaoRoute,
+  OpsOpsIndexRoute: OpsOpsIndexRoute,
+}
+
+const OpsRouteWithChildren = OpsRoute._addFileChildren(OpsRouteChildren)
+
 interface StudioStudioPaginasRouteChildren {
   StudioStudioPaginasSlugRoute: typeof StudioStudioPaginasSlugRoute
 }
@@ -774,6 +881,7 @@ const rootRouteChildren: RootRouteChildren = {
   SlugRoute: SlugRoute,
   AdminRoute: AdminRouteWithChildren,
   AuthenticatedRoute: AuthenticatedRouteWithChildren,
+  OpsRoute: OpsRouteWithChildren,
   StudioRoute: StudioRouteWithChildren,
   BuscaRoute: BuscaRoute,
   BusinessplanRoute: BusinessplanRoute,
