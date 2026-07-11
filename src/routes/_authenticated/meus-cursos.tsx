@@ -1,9 +1,10 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { useAuth } from "@/lib/auth-context";
+import { toast } from "sonner";
 
 export const Route = createFileRoute("/_authenticated/meus-cursos")({
   head: () => ({ meta: [{ title: "Meus cursos — Mon Parfum" }] }),
@@ -12,6 +13,7 @@ export const Route = createFileRoute("/_authenticated/meus-cursos")({
 
 function MeusCursos() {
   const { user } = useAuth();
+  const qc = useQueryClient();
   const { data, isLoading } = useQuery({
     queryKey: ["meus-cursos", user?.id],
     enabled: !!user?.id,
@@ -21,6 +23,18 @@ function MeusCursos() {
       .eq("user_id", user!.id)
       .order("created_at", { ascending: false })
     ).data ?? [],
+  });
+
+  const complete = useMutation({
+    mutationFn: async (id: string) => {
+      const { error } = await supabase.from("enrollments").update({ status: "completed" }).eq("id", id);
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      toast.success("Curso concluído. Certificado emitido.");
+      qc.invalidateQueries({ queryKey: ["meus-cursos"] });
+    },
+    onError: (e: Error) => toast.error(e.message),
   });
 
   return (
@@ -47,7 +61,19 @@ function MeusCursos() {
                   <div className="eyebrow">{e.products?.brand} · matriculado {new Date(e.created_at).toLocaleDateString("pt-BR")}</div>
                   <h2 className="font-display text-2xl mt-1 leading-tight">{e.products?.name}</h2>
                   {e.products?.description && <p className="text-sm text-muted-foreground mt-3 line-clamp-3">{e.products.description}</p>}
-                  <p className="text-xs text-muted-foreground mt-4 italic">Player disponível em breve.</p>
+                  <div className="mt-4 flex items-center gap-4">
+                    {e.status === "completed" ? (
+                      <span className="eyebrow text-[color:var(--gold)]">Concluído · certificado emitido</span>
+                    ) : (
+                      <button
+                        onClick={() => complete.mutate(e.id)}
+                        disabled={complete.isPending}
+                        className="editorial-link text-xs disabled:opacity-40"
+                      >
+                        Marcar como concluído →
+                      </button>
+                    )}
+                  </div>
                 </div>
               </article>
             ))}
