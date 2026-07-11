@@ -13,22 +13,49 @@ export const Route = createFileRoute("/_admin")({
 });
 
 function AdminLayout() {
+  const location = typeof window !== "undefined" ? window.location.pathname : "";
+  const isModules = location === "/admin/modulos";
   return (
-    <div className="min-h-screen bg-background grid grid-cols-[220px_1fr]">
-      <aside className="border-r border-border p-6 space-y-6">
-        <Link to="/" className="font-display text-2xl block">Mon Parfum</Link>
-        <div className="eyebrow">Admin</div>
-        <nav className="space-y-2 text-sm">
-          <Link to="/admin/modulos" className="block hover:underline" activeProps={{ className: "block underline" }}>Módulos</Link>
-          <Link to="/admin" className="block hover:underline" activeOptions={{ exact: true }} activeProps={{ className: "block underline" }}>Painel</Link>
-          <Link to="/admin/produtos" className="block hover:underline" activeProps={{ className: "block underline" }}>Produtos</Link>
-          <Link to="/admin/categorias" className="block hover:underline" activeProps={{ className: "block underline" }}>Categorias</Link>
-          <Link to="/admin/pedidos" className="block hover:underline" activeProps={{ className: "block underline" }}>Pedidos</Link>
-          <Link to="/admin/clientes" className="block hover:underline" activeProps={{ className: "block underline" }}>Clientes</Link>
-        </nav>
-        <Link to="/" className="text-xs text-muted-foreground border-b border-border">← Voltar à loja</Link>
+    <div className="min-h-screen bg-background grid grid-cols-[240px_1fr]">
+      <aside className="border-r border-border p-6 flex flex-col gap-6 sticky top-0 h-screen">
+        <div>
+          <Link to="/" className="font-display text-2xl block leading-none">Mon Parfum</Link>
+          <div className="eyebrow mt-1">{isModules ? "Admin" : "Módulo · E-commerce"}</div>
+        </div>
+
+        <Link to="/admin/modulos" className="eyebrow text-muted-foreground hover:text-foreground">
+          ← Módulos
+        </Link>
+
+        {!isModules && (
+          <nav className="space-y-1 text-sm border-t border-border pt-6">
+            <SideLink to="/admin" exact>Painel</SideLink>
+            <SideLink to="/admin/produtos">Produtos</SideLink>
+            <SideLink to="/admin/categorias">Categorias</SideLink>
+            <SideLink to="/admin/pedidos">Pedidos</SideLink>
+            <SideLink to="/admin/clientes">Clientes</SideLink>
+          </nav>
+        )}
+
+        <div className="mt-auto pt-6 border-t border-border space-y-2">
+          <Link to="/studio" className="eyebrow text-muted-foreground hover:text-foreground block">Estúdio →</Link>
+          <Link to="/" className="eyebrow text-muted-foreground hover:text-foreground block">Ver site →</Link>
+        </div>
       </aside>
       <main className="p-10"><Outlet /></main>
     </div>
+  );
+}
+
+function SideLink({ to, exact, children }: { to: string; exact?: boolean; children: React.ReactNode }) {
+  return (
+    <Link
+      to={to}
+      activeOptions={{ exact }}
+      activeProps={{ className: "block py-2 px-3 bg-[color:var(--muted)] text-foreground border-l-2 border-foreground" }}
+      inactiveProps={{ className: "block py-2 px-3 text-muted-foreground hover:text-foreground border-l-2 border-transparent" }}
+    >
+      {children}
+    </Link>
   );
 }

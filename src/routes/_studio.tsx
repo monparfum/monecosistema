@@ -58,8 +58,13 @@ function StudioLayout() {
     <div className="min-h-screen bg-background text-foreground grid grid-cols-[240px_1fr]">
       <aside className="border-r border-border px-6 py-8 sticky top-0 h-screen flex flex-col">
         <Link to="/" className="font-display text-2xl leading-none">Mon Parfum</Link>
-        <div className="eyebrow mt-1 mb-10">Studio</div>
-        <nav className="flex-1 space-y-1 text-sm">
+        <div className="eyebrow mt-1 mb-6">Módulo · Estúdio</div>
+        {isAdmin && (
+          <Link to="/admin/modulos" className="eyebrow text-muted-foreground hover:text-foreground mb-6">
+            ← Módulos
+          </Link>
+        )}
+        <nav className="flex-1 space-y-1 text-sm border-t border-border pt-6">
           <StudioLink to="/studio" exact>Visão geral</StudioLink>
           <StudioLink to="/studio/paginas">Páginas</StudioLink>
           <StudioLink to="/studio/midia">Mídia</StudioLink>
