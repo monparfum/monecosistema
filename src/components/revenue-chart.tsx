@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, Tooltip } from "recharts";
 import { supabase } from "@/integrations/supabase/client";
 
-const PAID_STATUSES = ["paid", "processing", "shipped", "delivered"];
+const PAID_STATUSES = ["paid", "processing", "shipped", "delivered"] as const;
 
 function dayKey(d: Date) {
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
