@@ -22,14 +22,27 @@ function Login() {
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
-    setLoading(false);
-    if (error) return toast.error(error.message);
+    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+    if (error) {
+      setLoading(false);
+      return toast.error(error.message);
+    }
     toast.success("Bem-vindo de volta");
     if (redirect) {
       window.location.assign(redirect);
       return;
     }
+    // Admins vão direto para a central de Módulos
+    const uid = data.user?.id;
+    if (uid) {
+      const { data: roles } = await supabase.from("user_roles").select("role").eq("user_id", uid);
+      if (roles?.some((r) => r.role === "admin")) {
+        setLoading(false);
+        navigate({ to: "/admin/modulos" });
+        return;
+      }
+    }
+    setLoading(false);
     navigate({ to: "/conta" });
   };
 
