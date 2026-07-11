@@ -1,5 +1,6 @@
 import { Link, Outlet } from "@tanstack/react-router";
 import type { ReactNode } from "react";
+import { NotificationsBell } from "@/components/notifications-bell";
 
 export type ModuleNavItem = { to: string; label: string; exact?: boolean };
 
@@ -34,7 +35,8 @@ export function ModuleShell({
           ))}
         </nav>
 
-        <div className="mt-auto pt-6 border-t border-border space-y-2">
+        <div className="mt-auto pt-6 border-t border-border space-y-3">
+          <NotificationsBell />
           {footer}
           <Link to="/" className="eyebrow text-muted-foreground hover:text-foreground block">
             Ver site →
