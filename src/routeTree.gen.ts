@@ -32,7 +32,7 @@ import { Route as CategoriaSlugRouteImport } from './routes/categoria.$slug'
 import { Route as StudioStudioRouteImport } from './routes/_studio/studio'
 import { Route as AuthenticatedPedidosRouteImport } from './routes/_authenticated/pedidos'
 import { Route as AuthenticatedContaRouteImport } from './routes/_authenticated/conta'
-import { Route as AdminAdminRouteImport } from './routes/_admin/admin'
+import { Route as AdminAdminIndexRouteImport } from './routes/_admin/admin.index'
 import { Route as StudioStudioPaginasRouteImport } from './routes/_studio/studio.paginas'
 import { Route as StudioStudioMidiaRouteImport } from './routes/_studio/studio.midia'
 import { Route as StudioStudioEquipeRouteImport } from './routes/_studio/studio.equipe'
@@ -156,9 +156,9 @@ const AuthenticatedContaRoute = AuthenticatedContaRouteImport.update({
   path: '/conta',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
-const AdminAdminRoute = AdminAdminRouteImport.update({
-  id: '/admin',
-  path: '/admin',
+const AdminAdminIndexRoute = AdminAdminIndexRouteImport.update({
+  id: '/admin/',
+  path: '/admin/',
   getParentRoute: () => AdminRoute,
 } as any)
 const StudioStudioPaginasRoute = StudioStudioPaginasRouteImport.update({
@@ -177,29 +177,29 @@ const StudioStudioEquipeRoute = StudioStudioEquipeRouteImport.update({
   getParentRoute: () => StudioStudioRoute,
 } as any)
 const AdminAdminProdutosRoute = AdminAdminProdutosRouteImport.update({
-  id: '/produtos',
-  path: '/produtos',
-  getParentRoute: () => AdminAdminRoute,
+  id: '/admin/produtos',
+  path: '/admin/produtos',
+  getParentRoute: () => AdminRoute,
 } as any)
 const AdminAdminPedidosRoute = AdminAdminPedidosRouteImport.update({
-  id: '/pedidos',
-  path: '/pedidos',
-  getParentRoute: () => AdminAdminRoute,
+  id: '/admin/pedidos',
+  path: '/admin/pedidos',
+  getParentRoute: () => AdminRoute,
 } as any)
 const AdminAdminModulosRoute = AdminAdminModulosRouteImport.update({
-  id: '/modulos',
-  path: '/modulos',
-  getParentRoute: () => AdminAdminRoute,
+  id: '/admin/modulos',
+  path: '/admin/modulos',
+  getParentRoute: () => AdminRoute,
 } as any)
 const AdminAdminClientesRoute = AdminAdminClientesRouteImport.update({
-  id: '/clientes',
-  path: '/clientes',
-  getParentRoute: () => AdminAdminRoute,
+  id: '/admin/clientes',
+  path: '/admin/clientes',
+  getParentRoute: () => AdminRoute,
 } as any)
 const AdminAdminCategoriasRoute = AdminAdminCategoriasRouteImport.update({
-  id: '/categorias',
-  path: '/categorias',
-  getParentRoute: () => AdminAdminRoute,
+  id: '/admin/categorias',
+  path: '/admin/categorias',
+  getParentRoute: () => AdminRoute,
 } as any)
 const StudioStudioPaginasSlugRoute = StudioStudioPaginasSlugRouteImport.update({
   id: '/$slug',
@@ -228,7 +228,6 @@ export interface FileRoutesByFullPath {
   '/login': typeof LoginRoute
   '/sobre': typeof SobreRoute
   '/workshops': typeof WorkshopsRoute
-  '/admin': typeof AdminAdminRouteWithChildren
   '/conta': typeof AuthenticatedContaRoute
   '/pedidos': typeof AuthenticatedPedidosRoute
   '/studio': typeof StudioStudioRouteWithChildren
@@ -242,6 +241,7 @@ export interface FileRoutesByFullPath {
   '/studio/equipe': typeof StudioStudioEquipeRoute
   '/studio/midia': typeof StudioStudioMidiaRoute
   '/studio/paginas': typeof StudioStudioPaginasRouteWithChildren
+  '/admin/': typeof AdminAdminIndexRoute
   '/admin/produtos/novo': typeof AdminAdminProdutosNovoRoute
   '/studio/paginas/$slug': typeof StudioStudioPaginasSlugRoute
 }
@@ -261,7 +261,6 @@ export interface FileRoutesByTo {
   '/login': typeof LoginRoute
   '/sobre': typeof SobreRoute
   '/workshops': typeof WorkshopsRoute
-  '/admin': typeof AdminAdminRouteWithChildren
   '/conta': typeof AuthenticatedContaRoute
   '/pedidos': typeof AuthenticatedPedidosRoute
   '/studio': typeof StudioStudioRouteWithChildren
@@ -275,6 +274,7 @@ export interface FileRoutesByTo {
   '/studio/equipe': typeof StudioStudioEquipeRoute
   '/studio/midia': typeof StudioStudioMidiaRoute
   '/studio/paginas': typeof StudioStudioPaginasRouteWithChildren
+  '/admin': typeof AdminAdminIndexRoute
   '/admin/produtos/novo': typeof AdminAdminProdutosNovoRoute
   '/studio/paginas/$slug': typeof StudioStudioPaginasSlugRoute
 }
@@ -298,7 +298,6 @@ export interface FileRoutesById {
   '/login': typeof LoginRoute
   '/sobre': typeof SobreRoute
   '/workshops': typeof WorkshopsRoute
-  '/_admin/admin': typeof AdminAdminRouteWithChildren
   '/_authenticated/conta': typeof AuthenticatedContaRoute
   '/_authenticated/pedidos': typeof AuthenticatedPedidosRoute
   '/_studio/studio': typeof StudioStudioRouteWithChildren
@@ -312,6 +311,7 @@ export interface FileRoutesById {
   '/_studio/studio/equipe': typeof StudioStudioEquipeRoute
   '/_studio/studio/midia': typeof StudioStudioMidiaRoute
   '/_studio/studio/paginas': typeof StudioStudioPaginasRouteWithChildren
+  '/_admin/admin/': typeof AdminAdminIndexRoute
   '/_admin/admin/produtos/novo': typeof AdminAdminProdutosNovoRoute
   '/_studio/studio/paginas/$slug': typeof StudioStudioPaginasSlugRoute
 }
@@ -333,7 +333,6 @@ export interface FileRouteTypes {
     | '/login'
     | '/sobre'
     | '/workshops'
-    | '/admin'
     | '/conta'
     | '/pedidos'
     | '/studio'
@@ -347,6 +346,7 @@ export interface FileRouteTypes {
     | '/studio/equipe'
     | '/studio/midia'
     | '/studio/paginas'
+    | '/admin/'
     | '/admin/produtos/novo'
     | '/studio/paginas/$slug'
   fileRoutesByTo: FileRoutesByTo
@@ -366,7 +366,6 @@ export interface FileRouteTypes {
     | '/login'
     | '/sobre'
     | '/workshops'
-    | '/admin'
     | '/conta'
     | '/pedidos'
     | '/studio'
@@ -380,6 +379,7 @@ export interface FileRouteTypes {
     | '/studio/equipe'
     | '/studio/midia'
     | '/studio/paginas'
+    | '/admin'
     | '/admin/produtos/novo'
     | '/studio/paginas/$slug'
   id:
@@ -402,7 +402,6 @@ export interface FileRouteTypes {
     | '/login'
     | '/sobre'
     | '/workshops'
-    | '/_admin/admin'
     | '/_authenticated/conta'
     | '/_authenticated/pedidos'
     | '/_studio/studio'
@@ -416,6 +415,7 @@ export interface FileRouteTypes {
     | '/_studio/studio/equipe'
     | '/_studio/studio/midia'
     | '/_studio/studio/paginas'
+    | '/_admin/admin/'
     | '/_admin/admin/produtos/novo'
     | '/_studio/studio/paginas/$slug'
   fileRoutesById: FileRoutesById
@@ -606,11 +606,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedContaRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
-    '/_admin/admin': {
-      id: '/_admin/admin'
+    '/_admin/admin/': {
+      id: '/_admin/admin/'
       path: '/admin'
-      fullPath: '/admin'
-      preLoaderRoute: typeof AdminAdminRouteImport
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AdminAdminIndexRouteImport
       parentRoute: typeof AdminRoute
     }
     '/_studio/studio/paginas': {
@@ -636,38 +636,38 @@ declare module '@tanstack/react-router' {
     }
     '/_admin/admin/produtos': {
       id: '/_admin/admin/produtos'
-      path: '/produtos'
+      path: '/admin/produtos'
       fullPath: '/admin/produtos'
       preLoaderRoute: typeof AdminAdminProdutosRouteImport
-      parentRoute: typeof AdminAdminRoute
+      parentRoute: typeof AdminRoute
     }
     '/_admin/admin/pedidos': {
       id: '/_admin/admin/pedidos'
-      path: '/pedidos'
+      path: '/admin/pedidos'
       fullPath: '/admin/pedidos'
       preLoaderRoute: typeof AdminAdminPedidosRouteImport
-      parentRoute: typeof AdminAdminRoute
+      parentRoute: typeof AdminRoute
     }
     '/_admin/admin/modulos': {
       id: '/_admin/admin/modulos'
-      path: '/modulos'
+      path: '/admin/modulos'
       fullPath: '/admin/modulos'
       preLoaderRoute: typeof AdminAdminModulosRouteImport
-      parentRoute: typeof AdminAdminRoute
+      parentRoute: typeof AdminRoute
     }
     '/_admin/admin/clientes': {
       id: '/_admin/admin/clientes'
-      path: '/clientes'
+      path: '/admin/clientes'
       fullPath: '/admin/clientes'
       preLoaderRoute: typeof AdminAdminClientesRouteImport
-      parentRoute: typeof AdminAdminRoute
+      parentRoute: typeof AdminRoute
     }
     '/_admin/admin/categorias': {
       id: '/_admin/admin/categorias'
-      path: '/categorias'
+      path: '/admin/categorias'
       fullPath: '/admin/categorias'
       preLoaderRoute: typeof AdminAdminCategoriasRouteImport
-      parentRoute: typeof AdminAdminRoute
+      parentRoute: typeof AdminRoute
     }
     '/_studio/studio/paginas/$slug': {
       id: '/_studio/studio/paginas/$slug'
@@ -697,32 +697,22 @@ const AdminAdminProdutosRouteChildren: AdminAdminProdutosRouteChildren = {
 const AdminAdminProdutosRouteWithChildren =
   AdminAdminProdutosRoute._addFileChildren(AdminAdminProdutosRouteChildren)
 
-interface AdminAdminRouteChildren {
+interface AdminRouteChildren {
   AdminAdminCategoriasRoute: typeof AdminAdminCategoriasRoute
   AdminAdminClientesRoute: typeof AdminAdminClientesRoute
   AdminAdminModulosRoute: typeof AdminAdminModulosRoute
   AdminAdminPedidosRoute: typeof AdminAdminPedidosRoute
   AdminAdminProdutosRoute: typeof AdminAdminProdutosRouteWithChildren
+  AdminAdminIndexRoute: typeof AdminAdminIndexRoute
 }
 
-const AdminAdminRouteChildren: AdminAdminRouteChildren = {
+const AdminRouteChildren: AdminRouteChildren = {
   AdminAdminCategoriasRoute: AdminAdminCategoriasRoute,
   AdminAdminClientesRoute: AdminAdminClientesRoute,
   AdminAdminModulosRoute: AdminAdminModulosRoute,
   AdminAdminPedidosRoute: AdminAdminPedidosRoute,
   AdminAdminProdutosRoute: AdminAdminProdutosRouteWithChildren,
-}
-
-const AdminAdminRouteWithChildren = AdminAdminRoute._addFileChildren(
-  AdminAdminRouteChildren,
-)
-
-interface AdminRouteChildren {
-  AdminAdminRoute: typeof AdminAdminRouteWithChildren
-}
-
-const AdminRouteChildren: AdminRouteChildren = {
-  AdminAdminRoute: AdminAdminRouteWithChildren,
+  AdminAdminIndexRoute: AdminAdminIndexRoute,
 }
 
 const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
@@ -804,13 +794,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}

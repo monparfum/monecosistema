@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { formatBRL } from "@/lib/format";
 
-export const Route = createFileRoute("/_admin/admin")({ component: Dashboard });
+export const Route = createFileRoute("/_admin/admin/")({ component: Dashboard });
 
 function Dashboard() {
   const { data } = useQuery({
