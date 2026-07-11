@@ -36,6 +36,7 @@ import { Route as ProdutoSlugRouteImport } from './routes/produto.$slug'
 import { Route as CategoriaSlugRouteImport } from './routes/categoria.$slug'
 import { Route as StudioStudioRouteImport } from './routes/_studio/studio'
 import { Route as AuthenticatedPedidosRouteImport } from './routes/_authenticated/pedidos'
+import { Route as AuthenticatedMeusCursosRouteImport } from './routes/_authenticated/meus-cursos'
 import { Route as AuthenticatedContaRouteImport } from './routes/_authenticated/conta'
 import { Route as OpsOpsIndexRouteImport } from './routes/_ops/ops.index'
 import { Route as MarketingMarketingIndexRouteImport } from './routes/_marketing/marketing.index'
@@ -199,6 +200,11 @@ const StudioStudioRoute = StudioStudioRouteImport.update({
 const AuthenticatedPedidosRoute = AuthenticatedPedidosRouteImport.update({
   id: '/pedidos',
   path: '/pedidos',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+const AuthenticatedMeusCursosRoute = AuthenticatedMeusCursosRouteImport.update({
+  id: '/meus-cursos',
+  path: '/meus-cursos',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
 const AuthenticatedContaRoute = AuthenticatedContaRouteImport.update({
@@ -415,6 +421,7 @@ export interface FileRoutesByFullPath {
   '/sobre': typeof SobreRoute
   '/workshops': typeof WorkshopsRoute
   '/conta': typeof AuthenticatedContaRoute
+  '/meus-cursos': typeof AuthenticatedMeusCursosRoute
   '/pedidos': typeof AuthenticatedPedidosRoute
   '/studio': typeof StudioStudioRouteWithChildren
   '/categoria/$slug': typeof CategoriaSlugRoute
@@ -473,6 +480,7 @@ export interface FileRoutesByTo {
   '/sobre': typeof SobreRoute
   '/workshops': typeof WorkshopsRoute
   '/conta': typeof AuthenticatedContaRoute
+  '/meus-cursos': typeof AuthenticatedMeusCursosRoute
   '/pedidos': typeof AuthenticatedPedidosRoute
   '/studio': typeof StudioStudioRouteWithChildren
   '/categoria/$slug': typeof CategoriaSlugRoute
@@ -540,6 +548,7 @@ export interface FileRoutesById {
   '/sobre': typeof SobreRoute
   '/workshops': typeof WorkshopsRoute
   '/_authenticated/conta': typeof AuthenticatedContaRoute
+  '/_authenticated/meus-cursos': typeof AuthenticatedMeusCursosRoute
   '/_authenticated/pedidos': typeof AuthenticatedPedidosRoute
   '/_studio/studio': typeof StudioStudioRouteWithChildren
   '/categoria/$slug': typeof CategoriaSlugRoute
@@ -600,6 +609,7 @@ export interface FileRouteTypes {
     | '/sobre'
     | '/workshops'
     | '/conta'
+    | '/meus-cursos'
     | '/pedidos'
     | '/studio'
     | '/categoria/$slug'
@@ -658,6 +668,7 @@ export interface FileRouteTypes {
     | '/sobre'
     | '/workshops'
     | '/conta'
+    | '/meus-cursos'
     | '/pedidos'
     | '/studio'
     | '/categoria/$slug'
@@ -724,6 +735,7 @@ export interface FileRouteTypes {
     | '/sobre'
     | '/workshops'
     | '/_authenticated/conta'
+    | '/_authenticated/meus-cursos'
     | '/_authenticated/pedidos'
     | '/_studio/studio'
     | '/categoria/$slug'
@@ -983,6 +995,13 @@ declare module '@tanstack/react-router' {
       path: '/pedidos'
       fullPath: '/pedidos'
       preLoaderRoute: typeof AuthenticatedPedidosRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/meus-cursos': {
+      id: '/_authenticated/meus-cursos'
+      path: '/meus-cursos'
+      fullPath: '/meus-cursos'
+      preLoaderRoute: typeof AuthenticatedMeusCursosRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
     '/_authenticated/conta': {
@@ -1322,11 +1341,13 @@ const AdministracaoRouteWithChildren = AdministracaoRoute._addFileChildren(
 
 interface AuthenticatedRouteChildren {
   AuthenticatedContaRoute: typeof AuthenticatedContaRoute
+  AuthenticatedMeusCursosRoute: typeof AuthenticatedMeusCursosRoute
   AuthenticatedPedidosRoute: typeof AuthenticatedPedidosRoute
 }
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedContaRoute: AuthenticatedContaRoute,
+  AuthenticatedMeusCursosRoute: AuthenticatedMeusCursosRoute,
   AuthenticatedPedidosRoute: AuthenticatedPedidosRoute,
 }
 
