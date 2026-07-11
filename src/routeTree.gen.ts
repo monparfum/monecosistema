@@ -27,6 +27,7 @@ import { Route as OpsRouteImport } from './routes/_ops'
 import { Route as CrmRouteImport } from './routes/_crm'
 import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as AdminRouteImport } from './routes/_admin'
+import { Route as AcademyRouteImport } from './routes/_academy'
 import { Route as SlugRouteImport } from './routes/$slug'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ProdutoSlugRouteImport } from './routes/produto.$slug'
@@ -37,6 +38,7 @@ import { Route as AuthenticatedContaRouteImport } from './routes/_authenticated/
 import { Route as OpsOpsIndexRouteImport } from './routes/_ops/ops.index'
 import { Route as CrmCrmIndexRouteImport } from './routes/_crm/crm.index'
 import { Route as AdminAdminIndexRouteImport } from './routes/_admin/admin.index'
+import { Route as AcademyAcademyIndexRouteImport } from './routes/_academy/academy.index'
 import { Route as StudioStudioPaginasRouteImport } from './routes/_studio/studio.paginas'
 import { Route as StudioStudioMidiaRouteImport } from './routes/_studio/studio.midia'
 import { Route as StudioStudioEquipeRouteImport } from './routes/_studio/studio.equipe'
@@ -50,6 +52,9 @@ import { Route as AdminAdminPedidosRouteImport } from './routes/_admin/admin.ped
 import { Route as AdminAdminModulosRouteImport } from './routes/_admin/admin.modulos'
 import { Route as AdminAdminClientesRouteImport } from './routes/_admin/admin.clientes'
 import { Route as AdminAdminCategoriasRouteImport } from './routes/_admin/admin.categorias'
+import { Route as AcademyAcademyCursosRouteImport } from './routes/_academy/academy.cursos'
+import { Route as AcademyAcademyCertificadosRouteImport } from './routes/_academy/academy.certificados'
+import { Route as AcademyAcademyAlunosRouteImport } from './routes/_academy/academy.alunos'
 import { Route as StudioStudioPaginasSlugRouteImport } from './routes/_studio/studio.paginas.$slug'
 import { Route as CrmCrmClientesIdRouteImport } from './routes/_crm/crm.clientes.$id'
 import { Route as AdminAdminProdutosNovoRouteImport } from './routes/_admin/admin.produtos.novo'
@@ -139,6 +144,10 @@ const AdminRoute = AdminRouteImport.update({
   id: '/_admin',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AcademyRoute = AcademyRouteImport.update({
+  id: '/_academy',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SlugRoute = SlugRouteImport.update({
   id: '/$slug',
   path: '/$slug',
@@ -188,6 +197,11 @@ const AdminAdminIndexRoute = AdminAdminIndexRouteImport.update({
   id: '/admin/',
   path: '/admin/',
   getParentRoute: () => AdminRoute,
+} as any)
+const AcademyAcademyIndexRoute = AcademyAcademyIndexRouteImport.update({
+  id: '/academy/',
+  path: '/academy/',
+  getParentRoute: () => AcademyRoute,
 } as any)
 const StudioStudioPaginasRoute = StudioStudioPaginasRouteImport.update({
   id: '/paginas',
@@ -254,6 +268,22 @@ const AdminAdminCategoriasRoute = AdminAdminCategoriasRouteImport.update({
   path: '/admin/categorias',
   getParentRoute: () => AdminRoute,
 } as any)
+const AcademyAcademyCursosRoute = AcademyAcademyCursosRouteImport.update({
+  id: '/academy/cursos',
+  path: '/academy/cursos',
+  getParentRoute: () => AcademyRoute,
+} as any)
+const AcademyAcademyCertificadosRoute =
+  AcademyAcademyCertificadosRouteImport.update({
+    id: '/academy/certificados',
+    path: '/academy/certificados',
+    getParentRoute: () => AcademyRoute,
+  } as any)
+const AcademyAcademyAlunosRoute = AcademyAcademyAlunosRouteImport.update({
+  id: '/academy/alunos',
+  path: '/academy/alunos',
+  getParentRoute: () => AcademyRoute,
+} as any)
 const StudioStudioPaginasSlugRoute = StudioStudioPaginasSlugRouteImport.update({
   id: '/$slug',
   path: '/$slug',
@@ -291,6 +321,9 @@ export interface FileRoutesByFullPath {
   '/studio': typeof StudioStudioRouteWithChildren
   '/categoria/$slug': typeof CategoriaSlugRoute
   '/produto/$slug': typeof ProdutoSlugRoute
+  '/academy/alunos': typeof AcademyAcademyAlunosRoute
+  '/academy/certificados': typeof AcademyAcademyCertificadosRoute
+  '/academy/cursos': typeof AcademyAcademyCursosRoute
   '/admin/categorias': typeof AdminAdminCategoriasRoute
   '/admin/clientes': typeof AdminAdminClientesRoute
   '/admin/modulos': typeof AdminAdminModulosRoute
@@ -304,6 +337,7 @@ export interface FileRoutesByFullPath {
   '/studio/equipe': typeof StudioStudioEquipeRoute
   '/studio/midia': typeof StudioStudioMidiaRoute
   '/studio/paginas': typeof StudioStudioPaginasRouteWithChildren
+  '/academy/': typeof AcademyAcademyIndexRoute
   '/admin/': typeof AdminAdminIndexRoute
   '/crm/': typeof CrmCrmIndexRoute
   '/ops/': typeof OpsOpsIndexRoute
@@ -332,6 +366,9 @@ export interface FileRoutesByTo {
   '/studio': typeof StudioStudioRouteWithChildren
   '/categoria/$slug': typeof CategoriaSlugRoute
   '/produto/$slug': typeof ProdutoSlugRoute
+  '/academy/alunos': typeof AcademyAcademyAlunosRoute
+  '/academy/certificados': typeof AcademyAcademyCertificadosRoute
+  '/academy/cursos': typeof AcademyAcademyCursosRoute
   '/admin/categorias': typeof AdminAdminCategoriasRoute
   '/admin/clientes': typeof AdminAdminClientesRoute
   '/admin/modulos': typeof AdminAdminModulosRoute
@@ -345,6 +382,7 @@ export interface FileRoutesByTo {
   '/studio/equipe': typeof StudioStudioEquipeRoute
   '/studio/midia': typeof StudioStudioMidiaRoute
   '/studio/paginas': typeof StudioStudioPaginasRouteWithChildren
+  '/academy': typeof AcademyAcademyIndexRoute
   '/admin': typeof AdminAdminIndexRoute
   '/crm': typeof CrmCrmIndexRoute
   '/ops': typeof OpsOpsIndexRoute
@@ -356,6 +394,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/$slug': typeof SlugRoute
+  '/_academy': typeof AcademyRouteWithChildren
   '/_admin': typeof AdminRouteWithChildren
   '/_authenticated': typeof AuthenticatedRouteWithChildren
   '/_crm': typeof CrmRouteWithChildren
@@ -379,6 +418,9 @@ export interface FileRoutesById {
   '/_studio/studio': typeof StudioStudioRouteWithChildren
   '/categoria/$slug': typeof CategoriaSlugRoute
   '/produto/$slug': typeof ProdutoSlugRoute
+  '/_academy/academy/alunos': typeof AcademyAcademyAlunosRoute
+  '/_academy/academy/certificados': typeof AcademyAcademyCertificadosRoute
+  '/_academy/academy/cursos': typeof AcademyAcademyCursosRoute
   '/_admin/admin/categorias': typeof AdminAdminCategoriasRoute
   '/_admin/admin/clientes': typeof AdminAdminClientesRoute
   '/_admin/admin/modulos': typeof AdminAdminModulosRoute
@@ -392,6 +434,7 @@ export interface FileRoutesById {
   '/_studio/studio/equipe': typeof StudioStudioEquipeRoute
   '/_studio/studio/midia': typeof StudioStudioMidiaRoute
   '/_studio/studio/paginas': typeof StudioStudioPaginasRouteWithChildren
+  '/_academy/academy/': typeof AcademyAcademyIndexRoute
   '/_admin/admin/': typeof AdminAdminIndexRoute
   '/_crm/crm/': typeof CrmCrmIndexRoute
   '/_ops/ops/': typeof OpsOpsIndexRoute
@@ -422,6 +465,9 @@ export interface FileRouteTypes {
     | '/studio'
     | '/categoria/$slug'
     | '/produto/$slug'
+    | '/academy/alunos'
+    | '/academy/certificados'
+    | '/academy/cursos'
     | '/admin/categorias'
     | '/admin/clientes'
     | '/admin/modulos'
@@ -435,6 +481,7 @@ export interface FileRouteTypes {
     | '/studio/equipe'
     | '/studio/midia'
     | '/studio/paginas'
+    | '/academy/'
     | '/admin/'
     | '/crm/'
     | '/ops/'
@@ -463,6 +510,9 @@ export interface FileRouteTypes {
     | '/studio'
     | '/categoria/$slug'
     | '/produto/$slug'
+    | '/academy/alunos'
+    | '/academy/certificados'
+    | '/academy/cursos'
     | '/admin/categorias'
     | '/admin/clientes'
     | '/admin/modulos'
@@ -476,6 +526,7 @@ export interface FileRouteTypes {
     | '/studio/equipe'
     | '/studio/midia'
     | '/studio/paginas'
+    | '/academy'
     | '/admin'
     | '/crm'
     | '/ops'
@@ -486,6 +537,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/$slug'
+    | '/_academy'
     | '/_admin'
     | '/_authenticated'
     | '/_crm'
@@ -509,6 +561,9 @@ export interface FileRouteTypes {
     | '/_studio/studio'
     | '/categoria/$slug'
     | '/produto/$slug'
+    | '/_academy/academy/alunos'
+    | '/_academy/academy/certificados'
+    | '/_academy/academy/cursos'
     | '/_admin/admin/categorias'
     | '/_admin/admin/clientes'
     | '/_admin/admin/modulos'
@@ -522,6 +577,7 @@ export interface FileRouteTypes {
     | '/_studio/studio/equipe'
     | '/_studio/studio/midia'
     | '/_studio/studio/paginas'
+    | '/_academy/academy/'
     | '/_admin/admin/'
     | '/_crm/crm/'
     | '/_ops/ops/'
@@ -533,6 +589,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   SlugRoute: typeof SlugRoute
+  AcademyRoute: typeof AcademyRouteWithChildren
   AdminRoute: typeof AdminRouteWithChildren
   AuthenticatedRoute: typeof AuthenticatedRouteWithChildren
   CrmRoute: typeof CrmRouteWithChildren
@@ -683,6 +740,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_academy': {
+      id: '/_academy'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AcademyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/$slug': {
       id: '/$slug'
       path: '/$slug'
@@ -752,6 +816,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/admin/'
       preLoaderRoute: typeof AdminAdminIndexRouteImport
       parentRoute: typeof AdminRoute
+    }
+    '/_academy/academy/': {
+      id: '/_academy/academy/'
+      path: '/academy'
+      fullPath: '/academy/'
+      preLoaderRoute: typeof AcademyAcademyIndexRouteImport
+      parentRoute: typeof AcademyRoute
     }
     '/_studio/studio/paginas': {
       id: '/_studio/studio/paginas'
@@ -844,6 +915,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminAdminCategoriasRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/_academy/academy/cursos': {
+      id: '/_academy/academy/cursos'
+      path: '/academy/cursos'
+      fullPath: '/academy/cursos'
+      preLoaderRoute: typeof AcademyAcademyCursosRouteImport
+      parentRoute: typeof AcademyRoute
+    }
+    '/_academy/academy/certificados': {
+      id: '/_academy/academy/certificados'
+      path: '/academy/certificados'
+      fullPath: '/academy/certificados'
+      preLoaderRoute: typeof AcademyAcademyCertificadosRouteImport
+      parentRoute: typeof AcademyRoute
+    }
+    '/_academy/academy/alunos': {
+      id: '/_academy/academy/alunos'
+      path: '/academy/alunos'
+      fullPath: '/academy/alunos'
+      preLoaderRoute: typeof AcademyAcademyAlunosRouteImport
+      parentRoute: typeof AcademyRoute
+    }
     '/_studio/studio/paginas/$slug': {
       id: '/_studio/studio/paginas/$slug'
       path: '/$slug'
@@ -867,6 +959,23 @@ declare module '@tanstack/react-router' {
     }
   }
 }
+
+interface AcademyRouteChildren {
+  AcademyAcademyAlunosRoute: typeof AcademyAcademyAlunosRoute
+  AcademyAcademyCertificadosRoute: typeof AcademyAcademyCertificadosRoute
+  AcademyAcademyCursosRoute: typeof AcademyAcademyCursosRoute
+  AcademyAcademyIndexRoute: typeof AcademyAcademyIndexRoute
+}
+
+const AcademyRouteChildren: AcademyRouteChildren = {
+  AcademyAcademyAlunosRoute: AcademyAcademyAlunosRoute,
+  AcademyAcademyCertificadosRoute: AcademyAcademyCertificadosRoute,
+  AcademyAcademyCursosRoute: AcademyAcademyCursosRoute,
+  AcademyAcademyIndexRoute: AcademyAcademyIndexRoute,
+}
+
+const AcademyRouteWithChildren =
+  AcademyRoute._addFileChildren(AcademyRouteChildren)
 
 interface AdminAdminProdutosRouteChildren {
   AdminAdminProdutosNovoRoute: typeof AdminAdminProdutosNovoRoute
@@ -996,6 +1105,7 @@ const StudioRouteWithChildren =
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   SlugRoute: SlugRoute,
+  AcademyRoute: AcademyRouteWithChildren,
   AdminRoute: AdminRouteWithChildren,
   AuthenticatedRoute: AuthenticatedRouteWithChildren,
   CrmRoute: CrmRouteWithChildren,
