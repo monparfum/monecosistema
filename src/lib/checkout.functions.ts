@@ -9,6 +9,15 @@ type CheckoutResult = { clientSecret: string } | { error: string };
 
 const UUID = /^[0-9a-f-]{36}$/i;
 
+// Com cupom, o gateway recebe o valor já descontado numa linha só (não aceita item negativo)
+function chargeLines(o: { order_number: string; subtotal_cents: number; shipping_cents: number; total_cents: number; coupon_code: string | null },
+  items: { name: string; quantity: number; unitCents: number }[]) {
+  const productsCents = o.total_cents - o.shipping_cents;
+  if (productsCents === o.subtotal_cents) return items;
+  const n = items.reduce((s, i) => s + i.quantity, 0);
+  return [{ name: `Pedido ${o.order_number} · ${n} ${n === 1 ? "item" : "itens"} (cupom ${o.coupon_code ?? ""})`.trim(), quantity: 1, unitCents: productsCents }];
+}
+
 // Quais gateways o servidor tem configurados (Stripe também depende da pk no cliente)
 export const getPaymentOptions = createServerFn({ method: "GET" }).handler(async () => {
   const pk = stripePublishableKey();
@@ -32,14 +41,15 @@ export const createMercadoPagoCheckout = createServerFn({ method: "POST" })
     if (!mercadoPago.mercadoPagoEnabled()) throw new Error("Mercado Pago não configurado");
     const { data: order } = await context.supabase
       .from("orders")
-      .select("id, order_number, email, status, user_id, shipping_cents, order_items(product_name, quantity, unit_price_cents)")
+      .select("id, order_number, email, status, user_id, subtotal_cents, shipping_cents, total_cents, coupon_code, order_items(product_name, quantity, unit_price_cents)")
       .eq("id", data.orderId)
       .maybeSingle();
     if (!order || order.user_id !== context.userId) throw new Error("Pedido não encontrado");
     if (order.status !== "pending_payment") throw new Error("Pedido já processado");
     const url = await mercadoPago.createPreference({
       orderId: order.id, orderNumber: order.order_number, email: order.email, origin: data.origin,
-      items: order.order_items.map((i) => ({ title: i.product_name, quantity: i.quantity, unitCents: i.unit_price_cents })),
+      items: chargeLines(order, order.order_items.map((i) => ({ name: i.product_name, quantity: i.quantity, unitCents: i.unit_price_cents })))
+        .map((i) => ({ title: i.name, quantity: i.quantity, unitCents: i.unitCents })),
       shippingCents: order.shipping_cents,
     });
     return { url };
@@ -69,7 +79,7 @@ export const createOrderCheckoutSession = createServerFn({ method: "POST" })
       const { supabase, userId } = context;
       const { data: order, error } = await supabase
         .from("orders")
-        .select("id, order_number, total_cents, subtotal_cents, shipping_cents, email, status, user_id")
+        .select("id, order_number, total_cents, subtotal_cents, shipping_cents, coupon_code, email, status, user_id")
         .eq("id", data.orderId)
         .maybeSingle();
       if (error || !order) throw new Error("Pedido não encontrado");
@@ -84,14 +94,8 @@ export const createOrderCheckoutSession = createServerFn({ method: "POST" })
 
       const stripe = createStripeClient(currentStripeEnv());
 
-      const line_items = items.map((i) => ({
-        price_data: {
-          currency: "brl",
-          product_data: { name: i.product_name },
-          unit_amount: i.unit_price_cents,
-        },
-        quantity: i.quantity,
-      }));
+      const line_items = chargeLines(order, items.map((i) => ({ name: i.product_name, quantity: i.quantity, unitCents: i.unit_price_cents })))
+        .map((i) => ({ price_data: { currency: "brl", product_data: { name: i.name }, unit_amount: i.unitCents }, quantity: i.quantity }));
 
       if ((order.shipping_cents ?? 0) > 0) {
         line_items.push({

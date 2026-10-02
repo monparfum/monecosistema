@@ -30,14 +30,7 @@ export const LOST_REASONS = ["Preço", "Sem orçamento", "Data indisponível", "
 export const SEGMENTS = ["Tecnologia", "Financeiro", "Saúde", "Indústria", "Varejo", "Moda e beleza", "Agro", "Educação", "Jurídico", "Imobiliário", "Hotelaria e turismo", "Agência / eventos", "Setor público", "Outro"];
 export const SIZES = ["Até 50 pessoas", "51–200", "201–1.000", "Mais de 1.000"];
 
-// Valor digitado em R$ ("1.500,00") -> centavos; null se vazio, NaN se inválido
-export const parseBRL = (raw: string) => {
-  const v = raw.trim();
-  if (!v) return null;
-  const n = Math.round(Number(v.replace(/[R$\s.]/g, "").replace(",", ".")) * 100);
-  return Number.isFinite(n) && n >= 0 ? n : NaN;
-};
-export const centsToInput = (c: number | null) => (c != null ? (c / 100).toFixed(2).replace(".", ",") : "");
+export { parseBRLInput as parseBRL, centsInput as centsToInput } from "@/lib/format";
 export const fmtDate = (d: string | null) => (d ? new Date(d.length === 10 ? d + "T12:00" : d).toLocaleDateString("pt-BR") : "—");
 
 export const PAYLOAD_LABEL: Record<string, string> = {

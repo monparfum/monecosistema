@@ -15,6 +15,7 @@ import { Route as AdminRouteImport } from './routes/_admin'
 import { Route as AdministracaoRouteImport } from './routes/_administracao'
 import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as CrmRouteImport } from './routes/_crm'
+import { Route as FinanceiroRouteImport } from './routes/_financeiro'
 import { Route as MarketingRouteImport } from './routes/_marketing'
 import { Route as OpsRouteImport } from './routes/_ops'
 import { Route as StudioRouteImport } from './routes/_studio'
@@ -43,8 +44,10 @@ import { Route as ProdutosIndexRouteImport } from './routes/produtos.index'
 import { Route as ProdutosSlugRouteImport } from './routes/produtos.$slug'
 import { Route as AdminAdminIndexRouteImport } from './routes/_admin/admin.index'
 import { Route as AdminAdminCategoriasRouteImport } from './routes/_admin/admin.categorias'
-import { Route as AdminAdminClientesRouteImport } from './routes/_admin/admin.clientes'
+import { Route as AdminAdminConfiguracoesRouteImport } from './routes/_admin/admin.configuracoes'
 import { Route as AdminAdminContatosRouteImport } from './routes/_admin/admin.contatos'
+import { Route as AdminAdminCuponsRouteImport } from './routes/_admin/admin.cupons'
+import { Route as AdminAdminEstoqueRouteImport } from './routes/_admin/admin.estoque'
 import { Route as AdminAdminModulosRouteImport } from './routes/_admin/admin.modulos'
 import { Route as AdminAdminPedidosRouteImport } from './routes/_admin/admin.pedidos'
 import { Route as AdministracaoAdministracaoIndexRouteImport } from './routes/_administracao/administracao.index'
@@ -56,10 +59,19 @@ import { Route as AdministracaoAdministracaoPapeisRouteImport } from './routes/_
 import { Route as AdministracaoAdministracaoUsuariosRouteImport } from './routes/_administracao/administracao.usuarios'
 import { Route as CrmCrmIndexRouteImport } from './routes/_crm/crm.index'
 import { Route as CrmCrmProspeccaoRouteImport } from './routes/_crm/crm.prospeccao'
+import { Route as FinanceiroFinanceiroIndexRouteImport } from './routes/_financeiro/financeiro.index'
+import { Route as FinanceiroFinanceiroAPagarRouteImport } from './routes/_financeiro/financeiro.a-pagar'
+import { Route as FinanceiroFinanceiroAReceberRouteImport } from './routes/_financeiro/financeiro.a-receber'
+import { Route as FinanceiroFinanceiroCadastrosRouteImport } from './routes/_financeiro/financeiro.cadastros'
+import { Route as FinanceiroFinanceiroDreRouteImport } from './routes/_financeiro/financeiro.dre'
+import { Route as FinanceiroFinanceiroFluxoDeCaixaRouteImport } from './routes/_financeiro/financeiro.fluxo-de-caixa'
+import { Route as FinanceiroFinanceiroLancamentosRouteImport } from './routes/_financeiro/financeiro.lancamentos'
+import { Route as FinanceiroFinanceiroRecorrenciasRouteImport } from './routes/_financeiro/financeiro.recorrencias'
 import { Route as MarketingMarketingIndexRouteImport } from './routes/_marketing/marketing.index'
 import { Route as MarketingMarketingAutomacoesRouteImport } from './routes/_marketing/marketing.automacoes'
 import { Route as MarketingMarketingCalendarioRouteImport } from './routes/_marketing/marketing.calendario'
 import { Route as MarketingMarketingCampanhasRouteImport } from './routes/_marketing/marketing.campanhas'
+import { Route as MarketingMarketingContatosRouteImport } from './routes/_marketing/marketing.contatos'
 import { Route as MarketingMarketingIaRouteImport } from './routes/_marketing/marketing.ia'
 import { Route as MarketingMarketingSocialRouteImport } from './routes/_marketing/marketing.social'
 import { Route as OpsOpsIndexRouteImport } from './routes/_ops/ops.index'
@@ -69,6 +81,8 @@ import { Route as StudioStudioEquipeRouteImport } from './routes/_studio/studio.
 import { Route as StudioStudioMidiaRouteImport } from './routes/_studio/studio.midia'
 import { Route as StudioStudioPaginasRouteImport } from './routes/_studio/studio.paginas'
 import { Route as CheckoutPagamentoOrderIdRouteImport } from './routes/checkout.pagamento.$orderId'
+import { Route as AdminAdminClientesIndexRouteImport } from './routes/_admin/admin.clientes.index'
+import { Route as AdminAdminClientesIdRouteImport } from './routes/_admin/admin.clientes.$id'
 import { Route as AdminAdminProdutosIndexRouteImport } from './routes/_admin/admin.produtos.index'
 import { Route as AdminAdminProdutosIdRouteImport } from './routes/_admin/admin.produtos.$id'
 import { Route as AdminAdminProdutosNovoRouteImport } from './routes/_admin/admin.produtos.novo'
@@ -108,6 +122,10 @@ const AuthenticatedRoute = AuthenticatedRouteImport.update({
 } as any)
 const CrmRoute = CrmRouteImport.update({
   id: '/_crm',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FinanceiroRoute = FinanceiroRouteImport.update({
+  id: '/_financeiro',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MarketingRoute = MarketingRouteImport.update({
@@ -247,14 +265,24 @@ const AdminAdminCategoriasRoute = AdminAdminCategoriasRouteImport.update({
   path: '/admin/categorias',
   getParentRoute: () => AdminRoute,
 } as any)
-const AdminAdminClientesRoute = AdminAdminClientesRouteImport.update({
-  id: '/admin/clientes',
-  path: '/admin/clientes',
+const AdminAdminConfiguracoesRoute = AdminAdminConfiguracoesRouteImport.update({
+  id: '/admin/configuracoes',
+  path: '/admin/configuracoes',
   getParentRoute: () => AdminRoute,
 } as any)
 const AdminAdminContatosRoute = AdminAdminContatosRouteImport.update({
   id: '/admin/contatos',
   path: '/admin/contatos',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminAdminCuponsRoute = AdminAdminCuponsRouteImport.update({
+  id: '/admin/cupons',
+  path: '/admin/cupons',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminAdminEstoqueRoute = AdminAdminEstoqueRouteImport.update({
+  id: '/admin/estoque',
+  path: '/admin/estoque',
   getParentRoute: () => AdminRoute,
 } as any)
 const AdminAdminModulosRoute = AdminAdminModulosRouteImport.update({
@@ -319,6 +347,53 @@ const CrmCrmProspeccaoRoute = CrmCrmProspeccaoRouteImport.update({
   path: '/crm/prospeccao',
   getParentRoute: () => CrmRoute,
 } as any)
+const FinanceiroFinanceiroIndexRoute =
+  FinanceiroFinanceiroIndexRouteImport.update({
+    id: '/financeiro/',
+    path: '/financeiro/',
+    getParentRoute: () => FinanceiroRoute,
+  } as any)
+const FinanceiroFinanceiroAPagarRoute =
+  FinanceiroFinanceiroAPagarRouteImport.update({
+    id: '/financeiro/a-pagar',
+    path: '/financeiro/a-pagar',
+    getParentRoute: () => FinanceiroRoute,
+  } as any)
+const FinanceiroFinanceiroAReceberRoute =
+  FinanceiroFinanceiroAReceberRouteImport.update({
+    id: '/financeiro/a-receber',
+    path: '/financeiro/a-receber',
+    getParentRoute: () => FinanceiroRoute,
+  } as any)
+const FinanceiroFinanceiroCadastrosRoute =
+  FinanceiroFinanceiroCadastrosRouteImport.update({
+    id: '/financeiro/cadastros',
+    path: '/financeiro/cadastros',
+    getParentRoute: () => FinanceiroRoute,
+  } as any)
+const FinanceiroFinanceiroDreRoute = FinanceiroFinanceiroDreRouteImport.update({
+  id: '/financeiro/dre',
+  path: '/financeiro/dre',
+  getParentRoute: () => FinanceiroRoute,
+} as any)
+const FinanceiroFinanceiroFluxoDeCaixaRoute =
+  FinanceiroFinanceiroFluxoDeCaixaRouteImport.update({
+    id: '/financeiro/fluxo-de-caixa',
+    path: '/financeiro/fluxo-de-caixa',
+    getParentRoute: () => FinanceiroRoute,
+  } as any)
+const FinanceiroFinanceiroLancamentosRoute =
+  FinanceiroFinanceiroLancamentosRouteImport.update({
+    id: '/financeiro/lancamentos',
+    path: '/financeiro/lancamentos',
+    getParentRoute: () => FinanceiroRoute,
+  } as any)
+const FinanceiroFinanceiroRecorrenciasRoute =
+  FinanceiroFinanceiroRecorrenciasRouteImport.update({
+    id: '/financeiro/recorrencias',
+    path: '/financeiro/recorrencias',
+    getParentRoute: () => FinanceiroRoute,
+  } as any)
 const MarketingMarketingIndexRoute = MarketingMarketingIndexRouteImport.update({
   id: '/marketing/',
   path: '/marketing/',
@@ -340,6 +415,12 @@ const MarketingMarketingCampanhasRoute =
   MarketingMarketingCampanhasRouteImport.update({
     id: '/marketing/campanhas',
     path: '/marketing/campanhas',
+    getParentRoute: () => MarketingRoute,
+  } as any)
+const MarketingMarketingContatosRoute =
+  MarketingMarketingContatosRouteImport.update({
+    id: '/marketing/contatos',
+    path: '/marketing/contatos',
     getParentRoute: () => MarketingRoute,
   } as any)
 const MarketingMarketingIaRoute = MarketingMarketingIaRouteImport.update({
@@ -389,6 +470,16 @@ const CheckoutPagamentoOrderIdRoute =
     path: '/checkout/pagamento/$orderId',
     getParentRoute: () => rootRouteImport,
   } as any)
+const AdminAdminClientesIndexRoute = AdminAdminClientesIndexRouteImport.update({
+  id: '/admin/clientes/',
+  path: '/admin/clientes/',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminAdminClientesIdRoute = AdminAdminClientesIdRouteImport.update({
+  id: '/admin/clientes/$id',
+  path: '/admin/clientes/$id',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminAdminProdutosIndexRoute = AdminAdminProdutosIndexRouteImport.update({
   id: '/admin/produtos/',
   path: '/admin/produtos/',
@@ -489,8 +580,10 @@ export interface FileRoutesByFullPath {
   '/cursos/': typeof CursosIndexRoute
   '/produtos/': typeof ProdutosIndexRoute
   '/admin/categorias': typeof AdminAdminCategoriasRoute
-  '/admin/clientes': typeof AdminAdminClientesRoute
+  '/admin/configuracoes': typeof AdminAdminConfiguracoesRoute
   '/admin/contatos': typeof AdminAdminContatosRoute
+  '/admin/cupons': typeof AdminAdminCuponsRoute
+  '/admin/estoque': typeof AdminAdminEstoqueRoute
   '/admin/modulos': typeof AdminAdminModulosRoute
   '/admin/pedidos': typeof AdminAdminPedidosRoute
   '/administracao/comunicacoes': typeof AdministracaoAdministracaoComunicacoesRoute
@@ -500,9 +593,17 @@ export interface FileRoutesByFullPath {
   '/administracao/papeis': typeof AdministracaoAdministracaoPapeisRoute
   '/administracao/usuarios': typeof AdministracaoAdministracaoUsuariosRoute
   '/crm/prospeccao': typeof CrmCrmProspeccaoRoute
+  '/financeiro/a-pagar': typeof FinanceiroFinanceiroAPagarRoute
+  '/financeiro/a-receber': typeof FinanceiroFinanceiroAReceberRoute
+  '/financeiro/cadastros': typeof FinanceiroFinanceiroCadastrosRoute
+  '/financeiro/dre': typeof FinanceiroFinanceiroDreRoute
+  '/financeiro/fluxo-de-caixa': typeof FinanceiroFinanceiroFluxoDeCaixaRoute
+  '/financeiro/lancamentos': typeof FinanceiroFinanceiroLancamentosRoute
+  '/financeiro/recorrencias': typeof FinanceiroFinanceiroRecorrenciasRoute
   '/marketing/automacoes': typeof MarketingMarketingAutomacoesRoute
   '/marketing/calendario': typeof MarketingMarketingCalendarioRoute
   '/marketing/campanhas': typeof MarketingMarketingCampanhasRoute
+  '/marketing/contatos': typeof MarketingMarketingContatosRoute
   '/marketing/ia': typeof MarketingMarketingIaRoute
   '/marketing/social': typeof MarketingMarketingSocialRoute
   '/ops/expedicao': typeof OpsOpsExpedicaoRoute
@@ -514,8 +615,10 @@ export interface FileRoutesByFullPath {
   '/admin/': typeof AdminAdminIndexRoute
   '/administracao/': typeof AdministracaoAdministracaoIndexRoute
   '/crm/': typeof CrmCrmIndexRoute
+  '/financeiro/': typeof FinanceiroFinanceiroIndexRoute
   '/marketing/': typeof MarketingMarketingIndexRoute
   '/ops/': typeof OpsOpsIndexRoute
+  '/admin/clientes/$id': typeof AdminAdminClientesIdRoute
   '/admin/produtos/$id': typeof AdminAdminProdutosIdRoute
   '/admin/produtos/novo': typeof AdminAdminProdutosNovoRoute
   '/admin/site/$page': typeof AdminAdminSitePageRoute
@@ -525,6 +628,7 @@ export interface FileRoutesByFullPath {
   '/studio/paginas/$slug': typeof StudioStudioPaginasSlugRoute
   '/api/public/payments/mercadopago': typeof ApiPublicPaymentsMercadopagoRoute
   '/api/public/payments/webhook': typeof ApiPublicPaymentsWebhookRoute
+  '/admin/clientes/': typeof AdminAdminClientesIndexRoute
   '/admin/produtos/': typeof AdminAdminProdutosIndexRoute
   '/admin/site/': typeof AdminAdminSiteIndexRoute
   '/crm/empresas/': typeof CrmCrmEmpresasIndexRoute
@@ -558,8 +662,10 @@ export interface FileRoutesByTo {
   '/cursos': typeof CursosIndexRoute
   '/produtos': typeof ProdutosIndexRoute
   '/admin/categorias': typeof AdminAdminCategoriasRoute
-  '/admin/clientes': typeof AdminAdminClientesRoute
+  '/admin/configuracoes': typeof AdminAdminConfiguracoesRoute
   '/admin/contatos': typeof AdminAdminContatosRoute
+  '/admin/cupons': typeof AdminAdminCuponsRoute
+  '/admin/estoque': typeof AdminAdminEstoqueRoute
   '/admin/modulos': typeof AdminAdminModulosRoute
   '/admin/pedidos': typeof AdminAdminPedidosRoute
   '/administracao/comunicacoes': typeof AdministracaoAdministracaoComunicacoesRoute
@@ -569,9 +675,17 @@ export interface FileRoutesByTo {
   '/administracao/papeis': typeof AdministracaoAdministracaoPapeisRoute
   '/administracao/usuarios': typeof AdministracaoAdministracaoUsuariosRoute
   '/crm/prospeccao': typeof CrmCrmProspeccaoRoute
+  '/financeiro/a-pagar': typeof FinanceiroFinanceiroAPagarRoute
+  '/financeiro/a-receber': typeof FinanceiroFinanceiroAReceberRoute
+  '/financeiro/cadastros': typeof FinanceiroFinanceiroCadastrosRoute
+  '/financeiro/dre': typeof FinanceiroFinanceiroDreRoute
+  '/financeiro/fluxo-de-caixa': typeof FinanceiroFinanceiroFluxoDeCaixaRoute
+  '/financeiro/lancamentos': typeof FinanceiroFinanceiroLancamentosRoute
+  '/financeiro/recorrencias': typeof FinanceiroFinanceiroRecorrenciasRoute
   '/marketing/automacoes': typeof MarketingMarketingAutomacoesRoute
   '/marketing/calendario': typeof MarketingMarketingCalendarioRoute
   '/marketing/campanhas': typeof MarketingMarketingCampanhasRoute
+  '/marketing/contatos': typeof MarketingMarketingContatosRoute
   '/marketing/ia': typeof MarketingMarketingIaRoute
   '/marketing/social': typeof MarketingMarketingSocialRoute
   '/ops/expedicao': typeof OpsOpsExpedicaoRoute
@@ -583,8 +697,10 @@ export interface FileRoutesByTo {
   '/admin': typeof AdminAdminIndexRoute
   '/administracao': typeof AdministracaoAdministracaoIndexRoute
   '/crm': typeof CrmCrmIndexRoute
+  '/financeiro': typeof FinanceiroFinanceiroIndexRoute
   '/marketing': typeof MarketingMarketingIndexRoute
   '/ops': typeof OpsOpsIndexRoute
+  '/admin/clientes/$id': typeof AdminAdminClientesIdRoute
   '/admin/produtos/$id': typeof AdminAdminProdutosIdRoute
   '/admin/produtos/novo': typeof AdminAdminProdutosNovoRoute
   '/admin/site/$page': typeof AdminAdminSitePageRoute
@@ -594,6 +710,7 @@ export interface FileRoutesByTo {
   '/studio/paginas/$slug': typeof StudioStudioPaginasSlugRoute
   '/api/public/payments/mercadopago': typeof ApiPublicPaymentsMercadopagoRoute
   '/api/public/payments/webhook': typeof ApiPublicPaymentsWebhookRoute
+  '/admin/clientes': typeof AdminAdminClientesIndexRoute
   '/admin/produtos': typeof AdminAdminProdutosIndexRoute
   '/admin/site': typeof AdminAdminSiteIndexRoute
   '/crm/empresas': typeof CrmCrmEmpresasIndexRoute
@@ -608,6 +725,7 @@ export interface FileRoutesById {
   '/_administracao': typeof AdministracaoRouteWithChildren
   '/_authenticated': typeof AuthenticatedRouteWithChildren
   '/_crm': typeof CrmRouteWithChildren
+  '/_financeiro': typeof FinanceiroRouteWithChildren
   '/_marketing': typeof MarketingRouteWithChildren
   '/_ops': typeof OpsRouteWithChildren
   '/_studio': typeof StudioRouteWithChildren
@@ -635,8 +753,10 @@ export interface FileRoutesById {
   '/cursos/': typeof CursosIndexRoute
   '/produtos/': typeof ProdutosIndexRoute
   '/_admin/admin/categorias': typeof AdminAdminCategoriasRoute
-  '/_admin/admin/clientes': typeof AdminAdminClientesRoute
+  '/_admin/admin/configuracoes': typeof AdminAdminConfiguracoesRoute
   '/_admin/admin/contatos': typeof AdminAdminContatosRoute
+  '/_admin/admin/cupons': typeof AdminAdminCuponsRoute
+  '/_admin/admin/estoque': typeof AdminAdminEstoqueRoute
   '/_admin/admin/modulos': typeof AdminAdminModulosRoute
   '/_admin/admin/pedidos': typeof AdminAdminPedidosRoute
   '/_administracao/administracao/comunicacoes': typeof AdministracaoAdministracaoComunicacoesRoute
@@ -646,9 +766,17 @@ export interface FileRoutesById {
   '/_administracao/administracao/papeis': typeof AdministracaoAdministracaoPapeisRoute
   '/_administracao/administracao/usuarios': typeof AdministracaoAdministracaoUsuariosRoute
   '/_crm/crm/prospeccao': typeof CrmCrmProspeccaoRoute
+  '/_financeiro/financeiro/a-pagar': typeof FinanceiroFinanceiroAPagarRoute
+  '/_financeiro/financeiro/a-receber': typeof FinanceiroFinanceiroAReceberRoute
+  '/_financeiro/financeiro/cadastros': typeof FinanceiroFinanceiroCadastrosRoute
+  '/_financeiro/financeiro/dre': typeof FinanceiroFinanceiroDreRoute
+  '/_financeiro/financeiro/fluxo-de-caixa': typeof FinanceiroFinanceiroFluxoDeCaixaRoute
+  '/_financeiro/financeiro/lancamentos': typeof FinanceiroFinanceiroLancamentosRoute
+  '/_financeiro/financeiro/recorrencias': typeof FinanceiroFinanceiroRecorrenciasRoute
   '/_marketing/marketing/automacoes': typeof MarketingMarketingAutomacoesRoute
   '/_marketing/marketing/calendario': typeof MarketingMarketingCalendarioRoute
   '/_marketing/marketing/campanhas': typeof MarketingMarketingCampanhasRoute
+  '/_marketing/marketing/contatos': typeof MarketingMarketingContatosRoute
   '/_marketing/marketing/ia': typeof MarketingMarketingIaRoute
   '/_marketing/marketing/social': typeof MarketingMarketingSocialRoute
   '/_ops/ops/expedicao': typeof OpsOpsExpedicaoRoute
@@ -660,8 +788,10 @@ export interface FileRoutesById {
   '/_admin/admin/': typeof AdminAdminIndexRoute
   '/_administracao/administracao/': typeof AdministracaoAdministracaoIndexRoute
   '/_crm/crm/': typeof CrmCrmIndexRoute
+  '/_financeiro/financeiro/': typeof FinanceiroFinanceiroIndexRoute
   '/_marketing/marketing/': typeof MarketingMarketingIndexRoute
   '/_ops/ops/': typeof OpsOpsIndexRoute
+  '/_admin/admin/clientes/$id': typeof AdminAdminClientesIdRoute
   '/_admin/admin/produtos/$id': typeof AdminAdminProdutosIdRoute
   '/_admin/admin/produtos/novo': typeof AdminAdminProdutosNovoRoute
   '/_admin/admin/site/$page': typeof AdminAdminSitePageRoute
@@ -671,6 +801,7 @@ export interface FileRoutesById {
   '/_studio/studio/paginas/$slug': typeof StudioStudioPaginasSlugRoute
   '/api/public/payments/mercadopago': typeof ApiPublicPaymentsMercadopagoRoute
   '/api/public/payments/webhook': typeof ApiPublicPaymentsWebhookRoute
+  '/_admin/admin/clientes/': typeof AdminAdminClientesIndexRoute
   '/_admin/admin/produtos/': typeof AdminAdminProdutosIndexRoute
   '/_admin/admin/site/': typeof AdminAdminSiteIndexRoute
   '/_crm/crm/empresas/': typeof CrmCrmEmpresasIndexRoute
@@ -706,8 +837,10 @@ export interface FileRouteTypes {
     | '/cursos/'
     | '/produtos/'
     | '/admin/categorias'
-    | '/admin/clientes'
+    | '/admin/configuracoes'
     | '/admin/contatos'
+    | '/admin/cupons'
+    | '/admin/estoque'
     | '/admin/modulos'
     | '/admin/pedidos'
     | '/administracao/comunicacoes'
@@ -717,9 +850,17 @@ export interface FileRouteTypes {
     | '/administracao/papeis'
     | '/administracao/usuarios'
     | '/crm/prospeccao'
+    | '/financeiro/a-pagar'
+    | '/financeiro/a-receber'
+    | '/financeiro/cadastros'
+    | '/financeiro/dre'
+    | '/financeiro/fluxo-de-caixa'
+    | '/financeiro/lancamentos'
+    | '/financeiro/recorrencias'
     | '/marketing/automacoes'
     | '/marketing/calendario'
     | '/marketing/campanhas'
+    | '/marketing/contatos'
     | '/marketing/ia'
     | '/marketing/social'
     | '/ops/expedicao'
@@ -731,8 +872,10 @@ export interface FileRouteTypes {
     | '/admin/'
     | '/administracao/'
     | '/crm/'
+    | '/financeiro/'
     | '/marketing/'
     | '/ops/'
+    | '/admin/clientes/$id'
     | '/admin/produtos/$id'
     | '/admin/produtos/novo'
     | '/admin/site/$page'
@@ -742,6 +885,7 @@ export interface FileRouteTypes {
     | '/studio/paginas/$slug'
     | '/api/public/payments/mercadopago'
     | '/api/public/payments/webhook'
+    | '/admin/clientes/'
     | '/admin/produtos/'
     | '/admin/site/'
     | '/crm/empresas/'
@@ -775,8 +919,10 @@ export interface FileRouteTypes {
     | '/cursos'
     | '/produtos'
     | '/admin/categorias'
-    | '/admin/clientes'
+    | '/admin/configuracoes'
     | '/admin/contatos'
+    | '/admin/cupons'
+    | '/admin/estoque'
     | '/admin/modulos'
     | '/admin/pedidos'
     | '/administracao/comunicacoes'
@@ -786,9 +932,17 @@ export interface FileRouteTypes {
     | '/administracao/papeis'
     | '/administracao/usuarios'
     | '/crm/prospeccao'
+    | '/financeiro/a-pagar'
+    | '/financeiro/a-receber'
+    | '/financeiro/cadastros'
+    | '/financeiro/dre'
+    | '/financeiro/fluxo-de-caixa'
+    | '/financeiro/lancamentos'
+    | '/financeiro/recorrencias'
     | '/marketing/automacoes'
     | '/marketing/calendario'
     | '/marketing/campanhas'
+    | '/marketing/contatos'
     | '/marketing/ia'
     | '/marketing/social'
     | '/ops/expedicao'
@@ -800,8 +954,10 @@ export interface FileRouteTypes {
     | '/admin'
     | '/administracao'
     | '/crm'
+    | '/financeiro'
     | '/marketing'
     | '/ops'
+    | '/admin/clientes/$id'
     | '/admin/produtos/$id'
     | '/admin/produtos/novo'
     | '/admin/site/$page'
@@ -811,6 +967,7 @@ export interface FileRouteTypes {
     | '/studio/paginas/$slug'
     | '/api/public/payments/mercadopago'
     | '/api/public/payments/webhook'
+    | '/admin/clientes'
     | '/admin/produtos'
     | '/admin/site'
     | '/crm/empresas'
@@ -824,6 +981,7 @@ export interface FileRouteTypes {
     | '/_administracao'
     | '/_authenticated'
     | '/_crm'
+    | '/_financeiro'
     | '/_marketing'
     | '/_ops'
     | '/_studio'
@@ -851,8 +1009,10 @@ export interface FileRouteTypes {
     | '/cursos/'
     | '/produtos/'
     | '/_admin/admin/categorias'
-    | '/_admin/admin/clientes'
+    | '/_admin/admin/configuracoes'
     | '/_admin/admin/contatos'
+    | '/_admin/admin/cupons'
+    | '/_admin/admin/estoque'
     | '/_admin/admin/modulos'
     | '/_admin/admin/pedidos'
     | '/_administracao/administracao/comunicacoes'
@@ -862,9 +1022,17 @@ export interface FileRouteTypes {
     | '/_administracao/administracao/papeis'
     | '/_administracao/administracao/usuarios'
     | '/_crm/crm/prospeccao'
+    | '/_financeiro/financeiro/a-pagar'
+    | '/_financeiro/financeiro/a-receber'
+    | '/_financeiro/financeiro/cadastros'
+    | '/_financeiro/financeiro/dre'
+    | '/_financeiro/financeiro/fluxo-de-caixa'
+    | '/_financeiro/financeiro/lancamentos'
+    | '/_financeiro/financeiro/recorrencias'
     | '/_marketing/marketing/automacoes'
     | '/_marketing/marketing/calendario'
     | '/_marketing/marketing/campanhas'
+    | '/_marketing/marketing/contatos'
     | '/_marketing/marketing/ia'
     | '/_marketing/marketing/social'
     | '/_ops/ops/expedicao'
@@ -876,8 +1044,10 @@ export interface FileRouteTypes {
     | '/_admin/admin/'
     | '/_administracao/administracao/'
     | '/_crm/crm/'
+    | '/_financeiro/financeiro/'
     | '/_marketing/marketing/'
     | '/_ops/ops/'
+    | '/_admin/admin/clientes/$id'
     | '/_admin/admin/produtos/$id'
     | '/_admin/admin/produtos/novo'
     | '/_admin/admin/site/$page'
@@ -887,6 +1057,7 @@ export interface FileRouteTypes {
     | '/_studio/studio/paginas/$slug'
     | '/api/public/payments/mercadopago'
     | '/api/public/payments/webhook'
+    | '/_admin/admin/clientes/'
     | '/_admin/admin/produtos/'
     | '/_admin/admin/site/'
     | '/_crm/crm/empresas/'
@@ -901,6 +1072,7 @@ export interface RootRouteChildren {
   AdministracaoRoute: typeof AdministracaoRouteWithChildren
   AuthenticatedRoute: typeof AuthenticatedRouteWithChildren
   CrmRoute: typeof CrmRouteWithChildren
+  FinanceiroRoute: typeof FinanceiroRouteWithChildren
   MarketingRoute: typeof MarketingRouteWithChildren
   OpsRoute: typeof OpsRouteWithChildren
   StudioRoute: typeof StudioRouteWithChildren
@@ -971,6 +1143,13 @@ declare module '@tanstack/react-router' {
       path: ''
       fullPath: '/'
       preLoaderRoute: typeof CrmRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_financeiro': {
+      id: '/_financeiro'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof FinanceiroRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_marketing': {
@@ -1169,11 +1348,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminAdminCategoriasRouteImport
       parentRoute: typeof AdminRoute
     }
-    '/_admin/admin/clientes': {
-      id: '/_admin/admin/clientes'
-      path: '/admin/clientes'
-      fullPath: '/admin/clientes'
-      preLoaderRoute: typeof AdminAdminClientesRouteImport
+    '/_admin/admin/configuracoes': {
+      id: '/_admin/admin/configuracoes'
+      path: '/admin/configuracoes'
+      fullPath: '/admin/configuracoes'
+      preLoaderRoute: typeof AdminAdminConfiguracoesRouteImport
       parentRoute: typeof AdminRoute
     }
     '/_admin/admin/contatos': {
@@ -1181,6 +1360,20 @@ declare module '@tanstack/react-router' {
       path: '/admin/contatos'
       fullPath: '/admin/contatos'
       preLoaderRoute: typeof AdminAdminContatosRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/_admin/admin/cupons': {
+      id: '/_admin/admin/cupons'
+      path: '/admin/cupons'
+      fullPath: '/admin/cupons'
+      preLoaderRoute: typeof AdminAdminCuponsRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/_admin/admin/estoque': {
+      id: '/_admin/admin/estoque'
+      path: '/admin/estoque'
+      fullPath: '/admin/estoque'
+      preLoaderRoute: typeof AdminAdminEstoqueRouteImport
       parentRoute: typeof AdminRoute
     }
     '/_admin/admin/modulos': {
@@ -1260,6 +1453,62 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CrmCrmProspeccaoRouteImport
       parentRoute: typeof CrmRoute
     }
+    '/_financeiro/financeiro/': {
+      id: '/_financeiro/financeiro/'
+      path: '/financeiro'
+      fullPath: '/financeiro/'
+      preLoaderRoute: typeof FinanceiroFinanceiroIndexRouteImport
+      parentRoute: typeof FinanceiroRoute
+    }
+    '/_financeiro/financeiro/a-pagar': {
+      id: '/_financeiro/financeiro/a-pagar'
+      path: '/financeiro/a-pagar'
+      fullPath: '/financeiro/a-pagar'
+      preLoaderRoute: typeof FinanceiroFinanceiroAPagarRouteImport
+      parentRoute: typeof FinanceiroRoute
+    }
+    '/_financeiro/financeiro/a-receber': {
+      id: '/_financeiro/financeiro/a-receber'
+      path: '/financeiro/a-receber'
+      fullPath: '/financeiro/a-receber'
+      preLoaderRoute: typeof FinanceiroFinanceiroAReceberRouteImport
+      parentRoute: typeof FinanceiroRoute
+    }
+    '/_financeiro/financeiro/cadastros': {
+      id: '/_financeiro/financeiro/cadastros'
+      path: '/financeiro/cadastros'
+      fullPath: '/financeiro/cadastros'
+      preLoaderRoute: typeof FinanceiroFinanceiroCadastrosRouteImport
+      parentRoute: typeof FinanceiroRoute
+    }
+    '/_financeiro/financeiro/dre': {
+      id: '/_financeiro/financeiro/dre'
+      path: '/financeiro/dre'
+      fullPath: '/financeiro/dre'
+      preLoaderRoute: typeof FinanceiroFinanceiroDreRouteImport
+      parentRoute: typeof FinanceiroRoute
+    }
+    '/_financeiro/financeiro/fluxo-de-caixa': {
+      id: '/_financeiro/financeiro/fluxo-de-caixa'
+      path: '/financeiro/fluxo-de-caixa'
+      fullPath: '/financeiro/fluxo-de-caixa'
+      preLoaderRoute: typeof FinanceiroFinanceiroFluxoDeCaixaRouteImport
+      parentRoute: typeof FinanceiroRoute
+    }
+    '/_financeiro/financeiro/lancamentos': {
+      id: '/_financeiro/financeiro/lancamentos'
+      path: '/financeiro/lancamentos'
+      fullPath: '/financeiro/lancamentos'
+      preLoaderRoute: typeof FinanceiroFinanceiroLancamentosRouteImport
+      parentRoute: typeof FinanceiroRoute
+    }
+    '/_financeiro/financeiro/recorrencias': {
+      id: '/_financeiro/financeiro/recorrencias'
+      path: '/financeiro/recorrencias'
+      fullPath: '/financeiro/recorrencias'
+      preLoaderRoute: typeof FinanceiroFinanceiroRecorrenciasRouteImport
+      parentRoute: typeof FinanceiroRoute
+    }
     '/_marketing/marketing/': {
       id: '/_marketing/marketing/'
       path: '/marketing'
@@ -1286,6 +1535,13 @@ declare module '@tanstack/react-router' {
       path: '/marketing/campanhas'
       fullPath: '/marketing/campanhas'
       preLoaderRoute: typeof MarketingMarketingCampanhasRouteImport
+      parentRoute: typeof MarketingRoute
+    }
+    '/_marketing/marketing/contatos': {
+      id: '/_marketing/marketing/contatos'
+      path: '/marketing/contatos'
+      fullPath: '/marketing/contatos'
+      preLoaderRoute: typeof MarketingMarketingContatosRouteImport
       parentRoute: typeof MarketingRoute
     }
     '/_marketing/marketing/ia': {
@@ -1350,6 +1606,20 @@ declare module '@tanstack/react-router' {
       fullPath: '/checkout/pagamento/$orderId'
       preLoaderRoute: typeof CheckoutPagamentoOrderIdRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/_admin/admin/clientes/': {
+      id: '/_admin/admin/clientes/'
+      path: '/admin/clientes'
+      fullPath: '/admin/clientes/'
+      preLoaderRoute: typeof AdminAdminClientesIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/_admin/admin/clientes/$id': {
+      id: '/_admin/admin/clientes/$id'
+      path: '/admin/clientes/$id'
+      fullPath: '/admin/clientes/$id'
+      preLoaderRoute: typeof AdminAdminClientesIdRouteImport
+      parentRoute: typeof AdminRoute
     }
     '/_admin/admin/produtos/': {
       id: '/_admin/admin/produtos/'
@@ -1454,28 +1724,36 @@ declare module '@tanstack/react-router' {
 
 interface AdminRouteChildren {
   AdminAdminCategoriasRoute: typeof AdminAdminCategoriasRoute
-  AdminAdminClientesRoute: typeof AdminAdminClientesRoute
+  AdminAdminConfiguracoesRoute: typeof AdminAdminConfiguracoesRoute
   AdminAdminContatosRoute: typeof AdminAdminContatosRoute
+  AdminAdminCuponsRoute: typeof AdminAdminCuponsRoute
+  AdminAdminEstoqueRoute: typeof AdminAdminEstoqueRoute
   AdminAdminModulosRoute: typeof AdminAdminModulosRoute
   AdminAdminPedidosRoute: typeof AdminAdminPedidosRoute
   AdminAdminIndexRoute: typeof AdminAdminIndexRoute
+  AdminAdminClientesIdRoute: typeof AdminAdminClientesIdRoute
   AdminAdminProdutosIdRoute: typeof AdminAdminProdutosIdRoute
   AdminAdminProdutosNovoRoute: typeof AdminAdminProdutosNovoRoute
   AdminAdminSitePageRoute: typeof AdminAdminSitePageRoute
+  AdminAdminClientesIndexRoute: typeof AdminAdminClientesIndexRoute
   AdminAdminProdutosIndexRoute: typeof AdminAdminProdutosIndexRoute
   AdminAdminSiteIndexRoute: typeof AdminAdminSiteIndexRoute
 }
 
 const AdminRouteChildren: AdminRouteChildren = {
   AdminAdminCategoriasRoute: AdminAdminCategoriasRoute,
-  AdminAdminClientesRoute: AdminAdminClientesRoute,
+  AdminAdminConfiguracoesRoute: AdminAdminConfiguracoesRoute,
   AdminAdminContatosRoute: AdminAdminContatosRoute,
+  AdminAdminCuponsRoute: AdminAdminCuponsRoute,
+  AdminAdminEstoqueRoute: AdminAdminEstoqueRoute,
   AdminAdminModulosRoute: AdminAdminModulosRoute,
   AdminAdminPedidosRoute: AdminAdminPedidosRoute,
   AdminAdminIndexRoute: AdminAdminIndexRoute,
+  AdminAdminClientesIdRoute: AdminAdminClientesIdRoute,
   AdminAdminProdutosIdRoute: AdminAdminProdutosIdRoute,
   AdminAdminProdutosNovoRoute: AdminAdminProdutosNovoRoute,
   AdminAdminSitePageRoute: AdminAdminSitePageRoute,
+  AdminAdminClientesIndexRoute: AdminAdminClientesIndexRoute,
   AdminAdminProdutosIndexRoute: AdminAdminProdutosIndexRoute,
   AdminAdminSiteIndexRoute: AdminAdminSiteIndexRoute,
 }
@@ -1544,10 +1822,37 @@ const CrmRouteChildren: CrmRouteChildren = {
 
 const CrmRouteWithChildren = CrmRoute._addFileChildren(CrmRouteChildren)
 
+interface FinanceiroRouteChildren {
+  FinanceiroFinanceiroAPagarRoute: typeof FinanceiroFinanceiroAPagarRoute
+  FinanceiroFinanceiroAReceberRoute: typeof FinanceiroFinanceiroAReceberRoute
+  FinanceiroFinanceiroCadastrosRoute: typeof FinanceiroFinanceiroCadastrosRoute
+  FinanceiroFinanceiroDreRoute: typeof FinanceiroFinanceiroDreRoute
+  FinanceiroFinanceiroFluxoDeCaixaRoute: typeof FinanceiroFinanceiroFluxoDeCaixaRoute
+  FinanceiroFinanceiroLancamentosRoute: typeof FinanceiroFinanceiroLancamentosRoute
+  FinanceiroFinanceiroRecorrenciasRoute: typeof FinanceiroFinanceiroRecorrenciasRoute
+  FinanceiroFinanceiroIndexRoute: typeof FinanceiroFinanceiroIndexRoute
+}
+
+const FinanceiroRouteChildren: FinanceiroRouteChildren = {
+  FinanceiroFinanceiroAPagarRoute: FinanceiroFinanceiroAPagarRoute,
+  FinanceiroFinanceiroAReceberRoute: FinanceiroFinanceiroAReceberRoute,
+  FinanceiroFinanceiroCadastrosRoute: FinanceiroFinanceiroCadastrosRoute,
+  FinanceiroFinanceiroDreRoute: FinanceiroFinanceiroDreRoute,
+  FinanceiroFinanceiroFluxoDeCaixaRoute: FinanceiroFinanceiroFluxoDeCaixaRoute,
+  FinanceiroFinanceiroLancamentosRoute: FinanceiroFinanceiroLancamentosRoute,
+  FinanceiroFinanceiroRecorrenciasRoute: FinanceiroFinanceiroRecorrenciasRoute,
+  FinanceiroFinanceiroIndexRoute: FinanceiroFinanceiroIndexRoute,
+}
+
+const FinanceiroRouteWithChildren = FinanceiroRoute._addFileChildren(
+  FinanceiroRouteChildren,
+)
+
 interface MarketingRouteChildren {
   MarketingMarketingAutomacoesRoute: typeof MarketingMarketingAutomacoesRoute
   MarketingMarketingCalendarioRoute: typeof MarketingMarketingCalendarioRoute
   MarketingMarketingCampanhasRoute: typeof MarketingMarketingCampanhasRoute
+  MarketingMarketingContatosRoute: typeof MarketingMarketingContatosRoute
   MarketingMarketingIaRoute: typeof MarketingMarketingIaRoute
   MarketingMarketingSocialRoute: typeof MarketingMarketingSocialRoute
   MarketingMarketingIndexRoute: typeof MarketingMarketingIndexRoute
@@ -1557,6 +1862,7 @@ const MarketingRouteChildren: MarketingRouteChildren = {
   MarketingMarketingAutomacoesRoute: MarketingMarketingAutomacoesRoute,
   MarketingMarketingCalendarioRoute: MarketingMarketingCalendarioRoute,
   MarketingMarketingCampanhasRoute: MarketingMarketingCampanhasRoute,
+  MarketingMarketingContatosRoute: MarketingMarketingContatosRoute,
   MarketingMarketingIaRoute: MarketingMarketingIaRoute,
   MarketingMarketingSocialRoute: MarketingMarketingSocialRoute,
   MarketingMarketingIndexRoute: MarketingMarketingIndexRoute,
@@ -1629,6 +1935,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdministracaoRoute: AdministracaoRouteWithChildren,
   AuthenticatedRoute: AuthenticatedRouteWithChildren,
   CrmRoute: CrmRouteWithChildren,
+  FinanceiroRoute: FinanceiroRouteWithChildren,
   MarketingRoute: MarketingRouteWithChildren,
   OpsRoute: OpsRouteWithChildren,
   StudioRoute: StudioRouteWithChildren,

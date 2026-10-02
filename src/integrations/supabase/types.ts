@@ -121,6 +121,9 @@ export type Database = {
       }
       company_settings: {
         Row: {
+          flat_shipping_cents: number
+          free_shipping_min_cents: number | null
+          low_stock_threshold: number
           address_city: string | null
           address_country: string | null
           address_line1: string | null
@@ -141,6 +144,9 @@ export type Database = {
           address_complement: string | null
         }
         Insert: {
+          flat_shipping_cents?: number
+          free_shipping_min_cents?: number | null
+          low_stock_threshold?: number
           address_city?: string | null
           address_country?: string | null
           address_line1?: string | null
@@ -158,6 +164,9 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          flat_shipping_cents?: number
+          free_shipping_min_cents?: number | null
+          low_stock_threshold?: number
           address_city?: string | null
           address_country?: string | null
           address_line1?: string | null
@@ -177,6 +186,12 @@ export type Database = {
           address_district?: string | null
           address_complement?: string | null
         }
+        Relationships: []
+      }
+      coupons: {
+        Row: { active: boolean; code: string; created_at: string; description: string | null; ends_at: string | null; id: string; kind: string; max_uses: number | null; min_subtotal_cents: number; once_per_customer: boolean; starts_at: string | null; value: number }
+        Insert: { active?: boolean; code: string; created_at?: string; description?: string | null; ends_at?: string | null; id?: string; kind: string; max_uses?: number | null; min_subtotal_cents?: number; once_per_customer?: boolean; starts_at?: string | null; value?: number }
+        Update: { active?: boolean; code?: string; created_at?: string; description?: string | null; ends_at?: string | null; id?: string; kind?: string; max_uses?: number | null; min_subtotal_cents?: number; once_per_customer?: boolean; starts_at?: string | null; value?: number }
         Relationships: []
       }
       corporate_accounts: {
@@ -256,6 +271,30 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      fin_accounts: {
+        Row: { active: boolean; created_at: string; id: string; initial_balance_cents: number; initial_date: string; kind: string; name: string; system_key: string | null }
+        Insert: { active?: boolean; created_at?: string; id?: string; initial_balance_cents?: number; initial_date?: string; kind?: string; name: string; system_key?: string | null }
+        Update: { active?: boolean; created_at?: string; id?: string; initial_balance_cents?: number; initial_date?: string; kind?: string; name?: string; system_key?: string | null }
+        Relationships: []
+      }
+      fin_categories: {
+        Row: { active: boolean; created_at: string; dre_group: string; id: string; kind: string; name: string; system_key: string | null }
+        Insert: { active?: boolean; created_at?: string; dre_group: string; id?: string; kind: string; name: string; system_key?: string | null }
+        Update: { active?: boolean; created_at?: string; dre_group?: string; id?: string; kind?: string; name?: string; system_key?: string | null }
+        Relationships: []
+      }
+      fin_entries: {
+        Row: { account_id: string | null; amount_cents: number; attachment_path: string | null; category_id: string | null; competence_date: string; cost_center: string | null; counterpart: string | null; created_at: string; created_by: string | null; description: string; document: string | null; due_date: string; id: string; installment: string | null; kind: string; notes: string | null; paid_at: string | null; payment_method: string | null; recurrence_id: string | null; source: string; source_ref: string | null; status: string; updated_at: string }
+        Insert: { account_id?: string | null; amount_cents: number; attachment_path?: string | null; category_id?: string | null; competence_date?: string; cost_center?: string | null; counterpart?: string | null; created_at?: string; created_by?: string | null; description: string; document?: string | null; due_date?: string; id?: string; installment?: string | null; kind: string; notes?: string | null; paid_at?: string | null; payment_method?: string | null; recurrence_id?: string | null; source?: string; source_ref?: string | null; status?: string; updated_at?: string }
+        Update: { account_id?: string | null; amount_cents?: number; attachment_path?: string | null; category_id?: string | null; competence_date?: string; cost_center?: string | null; counterpart?: string | null; created_at?: string; created_by?: string | null; description?: string; document?: string | null; due_date?: string; id?: string; installment?: string | null; kind?: string; notes?: string | null; paid_at?: string | null; payment_method?: string | null; recurrence_id?: string | null; source?: string; source_ref?: string | null; status?: string; updated_at?: string }
+        Relationships: []
+      }
+      fin_recurrences: {
+        Row: { account_id: string | null; active: boolean; amount_cents: number; category_id: string | null; cost_center: string | null; counterpart: string | null; created_at: string; created_by: string | null; description: string; end_date: string | null; frequency: string; generated_until: string | null; id: string; kind: string; notes: string | null; payment_method: string | null; start_date: string }
+        Insert: { account_id?: string | null; active?: boolean; amount_cents: number; category_id?: string | null; cost_center?: string | null; counterpart?: string | null; created_at?: string; created_by?: string | null; description: string; end_date?: string | null; frequency?: string; generated_until?: string | null; id?: string; kind: string; notes?: string | null; payment_method?: string | null; start_date: string }
+        Update: { account_id?: string | null; active?: boolean; amount_cents?: number; category_id?: string | null; cost_center?: string | null; counterpart?: string | null; created_at?: string; created_by?: string | null; description?: string; end_date?: string | null; frequency?: string; generated_until?: string | null; id?: string; kind?: string; notes?: string | null; payment_method?: string | null; start_date?: string }
+        Relationships: []
       }
       lead_activities: {
         Row: { account_id: string | null; author_id: string | null; body: string; created_at: string; id: string; kind: string; lead_id: string | null }
@@ -394,6 +433,8 @@ export type Database = {
       }
       orders: {
         Row: {
+          coupon_code: string | null
+          discount_cents: number
           created_at: string
           email: string
           id: string
@@ -427,6 +468,8 @@ export type Database = {
           requires_shipping: boolean
         }
         Insert: {
+          coupon_code?: string | null
+          discount_cents?: number
           created_at?: string
           email: string
           id?: string
@@ -451,6 +494,8 @@ export type Database = {
           user_id?: string | null
         }
         Update: {
+          coupon_code?: string | null
+          discount_cents?: number
           created_at?: string
           email?: string
           id?: string
@@ -535,6 +580,7 @@ export type Database = {
       }
       stock_movements: {
         Row: {
+          note: string | null
           actor_user_id: string | null
           created_at: string
           delta: number
@@ -545,6 +591,7 @@ export type Database = {
           stock_after: number
         }
         Insert: {
+          note?: string | null
           actor_user_id?: string | null
           created_at?: string
           delta: number
@@ -555,6 +602,7 @@ export type Database = {
           stock_after: number
         }
         Update: {
+          note?: string | null
           reason?: string
         }
         Relationships: [
@@ -886,7 +934,10 @@ export type Database = {
         }
         Returns: string
       }
-      place_order: { Args: { _address: Json; _items: Json; _quote_id?: string | null }; Returns: Json }
+      place_order: { Args: { _address: Json; _items: Json; _quote_id?: string | null; _coupon?: string }; Returns: Json }
+      preview_coupon: { Args: { _code: string; _items: Json }; Returns: Json }
+      fin_generate_recurrences: { Args: { _months?: number }; Returns: number }
+      adjust_stock: { Args: { _product_id: string; _delta: number; _note: string }; Returns: number }
       normalize_cart: { Args: { _items: Json }; Returns: Json }
     }
     Enums: {

@@ -26,6 +26,9 @@ function Checkout() {
     recipient: "", document: "", postal_code: "", line1: "", number: "", line2: "", district: "", city: "", state: "", phone: "",
   });
   const [quoteId, setQuoteId] = useState<string | null>(null);
+  const [couponInput, setCouponInput] = useState("");
+  const [coupon, setCoupon] = useState<{ code: string; products_discount: number; free_shipping: boolean } | null>(null);
+  const [couponBusy, setCouponBusy] = useState(false);
 
   const cep = digits(form.postal_code);
   const cartItems = items.map((i) => ({ product_id: i.productId, quantity: i.quantity }));
@@ -65,7 +68,9 @@ function Checkout() {
 
   const shippingCents = needsShipping ? selected?.priceCents ?? 0 : 0;
   const ready = !types.isLoading && (!needsShipping || !!selected);
-  const totalCents = subtotalCents + shippingCents;
+  // Prévia; o valor final é recalculado no banco (place_order)
+  const discountCents = (coupon?.products_discount ?? 0) + (coupon?.free_shipping ? shippingCents : 0);
+  const totalCents = subtotalCents + shippingCents - discountCents;
 
   if (authLoading) return null;
 
@@ -106,6 +111,7 @@ function Checkout() {
         _items: cartItems,
         _address: form,
         _quote_id: needsShipping ? selected?.id ?? null : null,
+        _coupon: coupon?.code ?? undefined,
       });
       if (error) throw error;
       const order = data as { id: string; order_number: string };
@@ -115,9 +121,21 @@ function Checkout() {
     } catch (err) {
       toast.error((err as Error).message);
       if (/frete/i.test((err as Error).message)) shipping.refetch();
+      if (/cupom/i.test((err as Error).message)) setCoupon(null);
     } finally {
       setSubmitting(false);
     }
+  };
+
+  const applyCoupon = async () => {
+    const code = couponInput.trim().toUpperCase();
+    if (!code) return;
+    setCouponBusy(true);
+    const { data, error } = await supabase.rpc("preview_coupon", { _code: code, _items: cartItems });
+    setCouponBusy(false);
+    if (error) { setCoupon(null); return toast.error(error.message); }
+    setCoupon(data as { code: string; products_discount: number; free_shipping: boolean });
+    toast.success("Cupom aplicado");
   };
 
   const fld = (key: keyof typeof form, label: string, props: React.InputHTMLAttributes<HTMLInputElement> = {}) => (
@@ -205,7 +223,21 @@ function Checkout() {
             ))}
           </ul>
           <div className="flex justify-between text-sm"><span>Subtotal</span><span>{formatBRL(subtotalCents)}</span></div>
-          <div className="flex justify-between text-sm"><span>Frete</span><span>{!needsShipping ? "Digital" : !selected ? "—" : shippingCents === 0 ? "Grátis" : formatBRL(shippingCents)}</span></div>
+          <div className="flex justify-between text-sm"><span>Frete</span><span>{!needsShipping ? "Digital" : !selected ? "—" : shippingCents === 0 || coupon?.free_shipping ? "Grátis" : formatBRL(shippingCents)}</span></div>
+          {coupon && discountCents > 0 && (
+            <div className="flex justify-between text-sm text-[color:var(--gold)]">
+              <span>Cupom {coupon.code} <button type="button" onClick={() => { setCoupon(null); setCouponInput(""); }} className="underline text-muted-foreground ml-1">remover</button></span>
+              <span>− {formatBRL(discountCents)}</span>
+            </div>
+          )}
+          {!coupon && (
+            <div className="flex gap-2 pt-1">
+              <input value={couponInput} onChange={(e) => setCouponInput(e.target.value.toUpperCase())} maxLength={30} placeholder="Cupom de desconto"
+                onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); applyCoupon(); } }}
+                className="flex-1 min-w-0 border-b border-border bg-transparent py-1.5 text-sm uppercase focus:outline-none focus:border-foreground" />
+              <button type="button" onClick={applyCoupon} disabled={couponBusy || !couponInput.trim()} className="text-xs border border-border px-3 disabled:opacity-40">{couponBusy ? "…" : "Aplicar"}</button>
+            </div>
+          )}
           <div className="border-t border-border pt-3 flex justify-between font-display text-2xl">
             <span>Total</span><span>{formatBRL(totalCents)}</span>
           </div>

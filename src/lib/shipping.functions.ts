@@ -10,9 +10,6 @@ import { createStripeClient, currentStripeEnv, getStripeErrorMessage } from "@/l
 const UUID = /^[0-9a-f-]{36}$/i;
 const onlyDigits = (s: string | null | undefined) => (s ?? "").replace(/\D/g, "");
 
-// Regra provisória sem Melhor Envio (e frete grátis na opção mais barata acima do mínimo)
-const FLAT_SHIPPING_CENTS = 2500;
-const FREE_SHIPPING_MIN_CENTS = 35000;
 
 async function assertAdmin(supabase: Pick<typeof supabaseAdmin, "rpc">, userId: string) {
   const { data } = await supabase.rpc("has_role", { _user_id: userId, _role: "admin" });
@@ -61,16 +58,19 @@ export const quoteShipping = createServerFn({ method: "POST" })
     if (!parcels.length) throw new Error("Carrinho só com produtos digitais não precisa de frete");
 
     let options: { serviceId: number | null; name: string; priceCents: number; days: number | null }[];
+    // Frete padrão (sem Melhor Envio) e frete grátis: E-commerce › Configurações
+    const company = await loadCompany();
     if (melhorEnvio.melhorEnvioEnabled()) {
-      const from = onlyDigits((await loadCompany())?.address_postal_code);
+      const from = onlyDigits(company?.address_postal_code);
       if (!/^\d{8}$/.test(from)) throw new Error("CEP de origem não configurado (Administração › Empresa)");
       options = await melhorEnvio.calculate(from, data.postalCode, parcels);
       if (!options.length) throw new Error("Nenhuma transportadora atende este CEP");
     } else {
-      options = [{ serviceId: null, name: "Frete padrão", priceCents: FLAT_SHIPPING_CENTS, days: null }];
+      options = [{ serviceId: null, name: "Frete padrão", priceCents: company?.flat_shipping_cents ?? 2500, days: null }];
     }
     options.sort((a, b) => a.priceCents - b.priceCents);
-    if (subtotal >= FREE_SHIPPING_MIN_CENTS) options[0] = { ...options[0], priceCents: 0 };
+    const freeMin = company?.free_shipping_min_cents;
+    if (freeMin != null && subtotal >= freeMin) options[0] = { ...options[0], priceCents: 0 };
 
     const { data: rows, error: insErr } = await supabaseAdmin
       .from("shipping_quotes")

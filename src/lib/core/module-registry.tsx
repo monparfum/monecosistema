@@ -9,6 +9,7 @@ import {
   Megaphone,
   Settings,
   Globe,
+  Landmark,
 } from "lucide-react";
 
 export type ModuleId =
@@ -18,6 +19,7 @@ export type ModuleId =
   | "crm"
   | "membros"
   | "marketing"
+  | "financeiro"
   | "administracao"
   | "site";
 
@@ -41,10 +43,10 @@ export const MODULES: ModuleDef[] = [
     id: "ecommerce",
     label: "E-commerce",
     eyebrow: "Comércio",
-    description: "Catálogo, pedidos e clientes da boutique.",
+    description: "Vendas, pedidos, produtos, estoque, cupons e clientes da loja.",
     to: "/admin",
     icon: ShoppingBag,
-    items: ["Painel", "Produtos", "Categorias", "Pedidos", "Clientes"],
+    items: ["Pedidos", "Produtos", "Estoque", "Cupons", "Clientes"],
     requiredRoles: ["admin"],
   },
   {
@@ -99,6 +101,17 @@ export const MODULES: ModuleDef[] = [
     icon: Megaphone,
     items: ["Campanhas", "Calendário", "Social", "Automações", "IA"],
     requiredRoles: ["admin", "marketing"],
+    status: "novo",
+  },
+  {
+    id: "financeiro",
+    label: "Financeiro",
+    eyebrow: "Gestão",
+    description: "Entradas e saídas, contas a pagar e receber, fluxo de caixa e DRE. Vendas da loja e do CRM entram sozinhas.",
+    to: "/financeiro",
+    icon: Landmark,
+    items: ["Lançamentos", "A pagar", "A receber", "Fluxo", "DRE"],
+    requiredRoles: ["admin"],
     status: "novo",
   },
   {

@@ -51,7 +51,7 @@ export const submitLead = createServerFn({ method: "POST" })
         const site = env("SITE_URL").replace(/\/$/, "");
         const fields: [string, string][] = [["Nome", data.name ?? "—"], ["E-mail", data.email], ["WhatsApp", data.phone ?? "—"],
           ...Object.entries(data.payload).filter(([, v]) => typeof v === "string" || typeof v === "number").map(([k, v]) => [LABEL[k] ?? k, String(v)] as [string, string])];
-        const m = emails.newLead(ORIGIN[data.kind], fields, site ? (data.kind === "corporativo" ? `${site}/crm/leads/${lead.id}` : `${site}/admin/contatos`) : null);
+        const m = emails.newLead(ORIGIN[data.kind], fields, site ? (data.kind === "corporativo" ? `${site}/crm/leads/${lead.id}` : `${site}/marketing/contatos`) : null);
         await sendEmail(c.email, m.subject, m.html);
       }
     }

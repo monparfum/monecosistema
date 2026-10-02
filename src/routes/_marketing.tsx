@@ -15,6 +15,7 @@ export const Route = createFileRoute("/_marketing")({
       moduleLabel="Marketing"
       nav={[
         { to: "/marketing", label: "Painel", exact: true },
+        { to: "/marketing/contatos", label: "Contatos do site" },
         { to: "/marketing/campanhas", label: "Campanhas" },
         { to: "/marketing/calendario", label: "Calendário" },
         { to: "/marketing/social", label: "Social" },

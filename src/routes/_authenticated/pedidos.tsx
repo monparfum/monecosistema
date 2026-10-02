@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { supabase } from "@/integrations/supabase/client";
-import { formatBRL } from "@/lib/format";
+import { formatBRL, ORDER_STATUS } from "@/lib/format";
 import { useAuth } from "@/lib/auth-context";
 
 export const Route = createFileRoute("/_authenticated/pedidos")({
@@ -11,14 +11,7 @@ export const Route = createFileRoute("/_authenticated/pedidos")({
   component: Pedidos,
 });
 
-const STATUS: Record<string, string> = {
-  pending_payment: "Aguardando pagamento",
-  paid: "Pago",
-  processing: "Em preparação",
-  shipped: "Enviado",
-  delivered: "Entregue",
-  cancelled: "Cancelado",
-};
+const STATUS = ORDER_STATUS;
 
 function Pedidos() {
   const { user } = useAuth();

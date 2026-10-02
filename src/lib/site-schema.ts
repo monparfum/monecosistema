@@ -1,5 +1,5 @@
 // Mapa do conteúdo editável do site. Cada página lista seus campos com o texto padrão (cópia aprovada).
-// O painel (/admin/site) grava só o que foi alterado em public.site_content; o site junta com estes padrões.
+// O Estúdio (/studio/paginas) grava só o que foi alterado em public.site_content; o site junta com estes padrões.
 // Textos longos: linha em branco separa parágrafos; **assim** fica em negrito.
 
 export type SubField = { key: string; label: string; type: "text" | "textarea" };

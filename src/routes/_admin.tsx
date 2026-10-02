@@ -31,12 +31,13 @@ function AdminLayout() {
         {!isModules && (
           <nav className="space-y-1 text-sm border-t border-border pt-6">
             <SideLink to="/admin" exact>Painel</SideLink>
-            <SideLink to="/admin/produtos">Produtos</SideLink>
-            <SideLink to="/admin/categorias">Categorias</SideLink>
             <SideLink to="/admin/pedidos">Pedidos</SideLink>
+            <SideLink to="/admin/produtos">Produtos</SideLink>
+            <SideLink to="/admin/estoque">Estoque</SideLink>
+            <SideLink to="/admin/categorias">Categorias</SideLink>
+            <SideLink to="/admin/cupons">Cupons</SideLink>
             <SideLink to="/admin/clientes">Clientes</SideLink>
-            <SideLink to="/admin/site">Páginas do site</SideLink>
-            <SideLink to="/admin/contatos">Contatos do site</SideLink>
+            <SideLink to="/admin/configuracoes">Configurações</SideLink>
           </nav>
         )}
 
