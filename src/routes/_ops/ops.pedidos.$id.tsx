@@ -5,6 +5,7 @@ import { PageHeader } from "@/components/module-shell";
 import { EmptyState } from "@/components/empty-state";
 import { formatBRL } from "@/lib/format";
 import { toast } from "sonner";
+import { cancelOrder, markShipped, markPaidManually } from "@/lib/shipping.functions";
 
 const FLOW = ["pending_payment", "paid", "processing", "shipped", "delivered", "cancelled"] as const;
 type OrderStatus = typeof FLOW[number];
@@ -40,6 +41,21 @@ function OrderDetail() {
 
   const transition = useMutation({
     mutationFn: async (to: OrderStatus) => {
+      if (to === "cancelled") {
+        if (!confirm("Cancelar o pedido? Se pago, o valor será estornado ao cliente.")) return;
+        const r = await cancelOrder({ data: { orderId: id } });
+        if (r.refunded) toast.success("Estorno solicitado no Stripe");
+        return;
+      }
+      if (to === "paid") {
+        await markPaidManually({ data: { orderId: id } });
+        return;
+      }
+      if (to === "shipped") {
+        const code = data?.order?.tracking_code || prompt("Código de rastreio") || "";
+        await markShipped({ data: { orderId: id, trackingCode: code } });
+        return;
+      }
       const { error } = await supabase.from("orders").update({ status: to }).eq("id", id);
       if (error) throw error;
     },
@@ -55,7 +71,11 @@ function OrderDetail() {
   if (!data?.order) return <EmptyState title="Pedido não encontrado." />;
 
   const o = data.order;
-  const actions = NEXT_ACTIONS[o.status as OrderStatus] ?? [];
+  // Pedido só digital: sem produção/envio; pode ser cancelado mesmo "entregue" (acesso liberado)
+  const actions = o.requires_shipping
+    ? NEXT_ACTIONS[o.status as OrderStatus] ?? []
+    : o.status === "pending_payment" ? NEXT_ACTIONS.pending_payment
+    : o.status === "cancelled" ? [] : [{ to: "cancelled" as const, label: "Cancelar e revogar acesso" }];
 
   return (
     <div className="space-y-10 max-w-[1200px]">
@@ -84,7 +104,7 @@ function OrderDetail() {
 
       <div className="grid md:grid-cols-3 gap-px bg-border border border-border">
         <Info label="Total" value={formatBRL(o.total_cents)} />
-        <Info label="Frete" value={formatBRL(o.shipping_cents)} />
+        <Info label="Frete" value={o.requires_shipping ? formatBRL(o.shipping_cents) : "Digital — sem envio"} />
         <Info label="Pagamento" value={o.payment_method || "—"} />
       </div>
 
@@ -110,10 +130,15 @@ function OrderDetail() {
           <h2 className="font-display text-2xl mb-4">Entrega</h2>
           <div className="border border-border p-6 text-sm space-y-1">
             <div className="font-display text-lg">{o.shipping_recipient}</div>
-            <div>{o.shipping_line1}{o.shipping_line2 ? `, ${o.shipping_line2}` : ""}</div>
-            <div>{o.shipping_city} / {o.shipping_state} · {o.shipping_postal_code}</div>
-            <div>{o.shipping_country}</div>
+            {o.shipping_document && <div className="text-muted-foreground">CPF {o.shipping_document}</div>}
+            <div>{o.shipping_line1}{o.shipping_number ? `, ${o.shipping_number}` : ""}{o.shipping_line2 ? ` — ${o.shipping_line2}` : ""}</div>
+            <div>{o.shipping_district ? `${o.shipping_district} · ` : ""}{o.shipping_city} / {o.shipping_state} · {o.shipping_postal_code}</div>
             {o.shipping_phone && <div className="text-muted-foreground">{o.shipping_phone}</div>}
+            <div className="pt-3 border-t border-border mt-3">
+              <div>Frete: {o.shipping_service ?? "—"}</div>
+              {o.tracking_code && <div>Rastreio: <a className="underline" target="_blank" rel="noreferrer" href={`https://www.melhorrastreio.com.br/rastreio/${encodeURIComponent(o.tracking_code)}`}>{o.tracking_code}</a></div>}
+              {o.shipping_label_url && <a className="underline" target="_blank" rel="noreferrer" href={o.shipping_label_url}>Imprimir etiqueta</a>}
+            </div>
           </div>
         </div>
       </section>

@@ -1,4 +1,4 @@
-import { createFileRoute, Outlet, redirect, Link } from "@tanstack/react-router";
+import { createFileRoute, Outlet, redirect, Link, useLocation } from "@tanstack/react-router";
 import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/_admin")({
@@ -13,13 +13,14 @@ export const Route = createFileRoute("/_admin")({
 });
 
 function AdminLayout() {
-  const location = typeof window !== "undefined" ? window.location.pathname : "";
-  const isModules = location === "/admin/modulos";
+  // Reativo à navegação (window.location não re-renderiza o layout)
+  const pathname = useLocation({ select: (l) => l.pathname });
+  const isModules = pathname === "/admin/modulos";
   return (
     <div className="min-h-screen bg-background grid grid-cols-[240px_1fr]">
       <aside className="border-r border-border p-6 flex flex-col gap-6 sticky top-0 h-screen">
         <div>
-          <Link to="/" className="font-display text-2xl block leading-none">Mon Parfum</Link>
+          <Link to="/" className="block" aria-label="MON PARFUM — site"><img src="/logo-mon.png" alt="MON Parfum" style={{ height: 40, width: "auto" }} /></Link>
           <div className="eyebrow mt-1">{isModules ? "Admin" : "Módulo · E-commerce"}</div>
         </div>
 
@@ -34,6 +35,8 @@ function AdminLayout() {
             <SideLink to="/admin/categorias">Categorias</SideLink>
             <SideLink to="/admin/pedidos">Pedidos</SideLink>
             <SideLink to="/admin/clientes">Clientes</SideLink>
+            <SideLink to="/admin/site">Páginas do site</SideLink>
+            <SideLink to="/admin/contatos">Contatos do site</SideLink>
           </nav>
         )}
 

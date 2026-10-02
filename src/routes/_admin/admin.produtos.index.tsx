@@ -4,7 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { formatBRL } from "@/lib/format";
 import { toast } from "sonner";
 
-export const Route = createFileRoute("/_admin/admin/produtos")({ component: AdminProducts });
+export const Route = createFileRoute("/_admin/admin/produtos/")({ component: AdminProducts });
 
 function AdminProducts() {
   const qc = useQueryClient();
@@ -49,20 +49,29 @@ function AdminProducts() {
           {data?.map((p) => (
             <tr key={p.id}>
               <td className="py-3">
-                <div className="flex items-center gap-3">
+                <Link to="/admin/produtos/$id" params={{ id: p.id }} className="flex items-center gap-3 hover:underline">
                   {p.image_url && <img src={p.image_url} alt="" className="size-10 object-cover" />}
-                  {p.name}
-                </div>
+                  <span>{p.name}{p.sku && <span className="block text-xs text-muted-foreground">{p.sku}</span>}</span>
+                </Link>
               </td>
               <td>{p.brand}</td>
               <td>{formatBRL(p.price_cents)}</td>
-              <td>{p.stock}</td>
+              {p.delivery_type === "digital" ? (
+                <td className="text-muted-foreground">digital{!p.member_course_ids.length && <span className="text-destructive"> · sem acesso</span>}</td>
+              ) : (
+                <td className={p.stock <= p.low_stock_threshold ? "text-destructive font-medium" : ""}>
+                  {p.stock}{p.stock === 0 ? " · esgotado" : p.stock <= p.low_stock_threshold ? " · baixo" : ""}
+                  {p.delivery_type === "hybrid" && <span className="block text-xs text-muted-foreground font-normal">híbrido{!p.member_course_ids.length && " · sem acesso"}</span>}
+                </td>
+              )}
               <td>
                 <button onClick={() => toggleActive(p.id, p.active)} className="text-xs border border-border px-2 py-1">
                   {p.active ? "ativo" : "inativo"}
                 </button>
+                {p.coming_soon && <span className="ml-2 text-xs text-muted-foreground">em breve</span>}
               </td>
-              <td className="text-right">
+              <td className="text-right space-x-3">
+                <Link to="/admin/produtos/$id" params={{ id: p.id }} className="text-xs underline">Editar</Link>
                 <button onClick={() => remove(p.id)} className="text-xs text-destructive">Excluir</button>
               </td>
             </tr>

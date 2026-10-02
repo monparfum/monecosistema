@@ -1,41 +1,24 @@
 import Stripe from "stripe";
+import { env } from "@/lib/settings.server";
 
 const getEnv = (key: string): string => {
-  const value = process.env[key];
+  const value = env(key);
   if (!value) throw new Error(`${key} is not configured`);
   return value;
 };
 
 export type StripeEnv = "sandbox" | "live";
 
-const GATEWAY_STRIPE_BASE = "https://connector-gateway.lovable.dev/stripe";
+// Modo atual pela chave publicável configurada (pk_live_ = produção; qualquer outra = teste)
+export const stripePublishableKey = () => env("STRIPE_PUBLISHABLE_KEY") || env("VITE_PAYMENTS_CLIENT_TOKEN");
+export const currentStripeEnv = (): StripeEnv => (stripePublishableKey().startsWith("pk_live_") ? "live" : "sandbox");
 
-export function getConnectionApiKey(env: StripeEnv): string {
-  return env === "sandbox"
-    ? getEnv("STRIPE_SANDBOX_API_KEY")
-    : getEnv("STRIPE_LIVE_API_KEY");
-}
-
+// Chave secreta direta da conta Stripe (sk_test_… / sk_live_…)
 export function createStripeClient(env: StripeEnv): Stripe {
-  const connectionApiKey = getConnectionApiKey(env);
-  const lovableApiKey = getEnv("LOVABLE_API_KEY");
-
-  return new Stripe(connectionApiKey, {
+  const key = env === "sandbox" ? getEnv("STRIPE_SANDBOX_API_KEY") : getEnv("STRIPE_LIVE_API_KEY");
+  return new Stripe(key, {
     apiVersion: "2026-03-25.dahlia" as any,
-    httpClient: Stripe.createFetchHttpClient((input, init) => {
-      const stripeUrl = input instanceof Request ? input.url : input.toString();
-      const gatewayUrl = stripeUrl.replace("https://api.stripe.com", GATEWAY_STRIPE_BASE);
-      return fetch(gatewayUrl, {
-        ...init,
-        headers: {
-          ...Object.fromEntries(
-            new Headers(init?.headers ?? (input instanceof Request ? input.headers : undefined)).entries(),
-          ),
-          "X-Connection-Api-Key": connectionApiKey,
-          "Lovable-API-Key": lovableApiKey,
-        },
-      });
-    }),
+    httpClient: Stripe.createFetchHttpClient(),
   });
 }
 

@@ -28,7 +28,7 @@ function Pedidos() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("orders")
-        .select("id, order_number, status, total_cents, created_at, order_items(product_name, quantity)")
+        .select("id, order_number, status, total_cents, created_at, tracking_code, order_items(product_name, quantity)")
         .order("created_at", { ascending: false });
       if (error) throw error;
       return data;
@@ -44,7 +44,7 @@ function Pedidos() {
         {isLoading ? (
           <div className="text-muted-foreground">Carregando…</div>
         ) : data?.length === 0 ? (
-          <div className="text-muted-foreground">Nenhum pedido ainda. <Link to="/catalogo" className="border-b border-foreground">Explorar catálogo</Link></div>
+          <div className="text-muted-foreground">Nenhum pedido ainda. <Link to="/produtos" className="border-b border-foreground">Explorar catálogo</Link></div>
         ) : (
           <div className="border-y border-border divide-y divide-border">
             {data?.map((o) => (
@@ -55,6 +55,14 @@ function Pedidos() {
                   <div className="text-sm text-muted-foreground mt-1">
                     {o.order_items.map((i) => `${i.product_name} ×${i.quantity}`).join(" · ")}
                   </div>
+                  {o.tracking_code && (
+                    <a href={`https://www.melhorrastreio.com.br/rastreio/${encodeURIComponent(o.tracking_code)}`} target="_blank" rel="noreferrer" className="text-sm underline mt-1 inline-block">
+                      Rastrear: {o.tracking_code}
+                    </a>
+                  )}
+                  {o.status === "pending_payment" && (
+                    <Link to="/checkout/pagamento/$orderId" params={{ orderId: o.id }} className="text-sm underline mt-1 inline-block">Pagar agora</Link>
+                  )}
                 </div>
                 <div className="text-right">
                   <div className="text-sm">{STATUS[o.status] ?? o.status}</div>

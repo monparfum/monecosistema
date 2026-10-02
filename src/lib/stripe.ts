@@ -1,27 +1,9 @@
 import { loadStripe, type Stripe } from "@stripe/stripe-js";
 
-type StripeEnv = "sandbox" | "live";
+// Chave publicável vem do servidor (configurada em Administração › Integrações)
+const cache = new Map<string, Promise<Stripe | null>>();
 
-const clientToken = import.meta.env.VITE_PAYMENTS_CLIENT_TOKEN as string | undefined;
-
-function paymentsEnvironment(): StripeEnv {
-  if (clientToken?.startsWith("pk_test_")) return "sandbox";
-  if (clientToken?.startsWith("pk_live_")) return "live";
-  throw new Error(
-    "Pagamentos ainda não configurados para este build. Conclua o processo em Payments para aceitar pagamentos reais.",
-  );
-}
-
-let stripePromise: Promise<Stripe | null> | null = null;
-
-export function getStripe(): Promise<Stripe | null> {
-  if (!stripePromise) {
-    paymentsEnvironment();
-    stripePromise = loadStripe(clientToken as string);
-  }
-  return stripePromise;
-}
-
-export function getStripeEnvironment(): StripeEnv {
-  return paymentsEnvironment();
+export function getStripe(pk: string): Promise<Stripe | null> {
+  if (!cache.has(pk)) cache.set(pk, loadStripe(pk));
+  return cache.get(pk)!;
 }

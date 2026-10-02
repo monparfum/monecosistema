@@ -20,17 +20,18 @@ function OpsProducao() {
       .from("orders")
       .select("id, order_number, status, total_cents, email, shipping_recipient, created_at, order_items(product_name, quantity)")
       .in("status", ["paid", "processing"])
+      .eq("requires_shipping", true)
       .order("created_at", { ascending: true })
     ).data ?? [],
   });
 
   const advance = useMutation({
-    mutationFn: async ({ id, to }: { id: string; to: "processing" | "shipped" }) => {
+    mutationFn: async ({ id, to }: { id: string; to: "processing" }) => {
       const { error } = await supabase.from("orders").update({ status: to }).eq("id", id);
       if (error) throw error;
     },
-    onSuccess: (_d, v) => {
-      toast.success(v.to === "processing" ? "Produção iniciada" : "Marcado como enviado");
+    onSuccess: () => {
+      toast.success("Produção iniciada");
       qc.invalidateQueries({ queryKey: ["ops-producao"] });
     },
     onError: (e: Error) => toast.error(e.message),
@@ -62,7 +63,7 @@ function OpsProducao() {
                   <button onClick={() => advance.mutate({ id: o.id, to: "processing" })} disabled={advance.isPending} className="border border-foreground px-3 py-2 text-xs uppercase tracking-[0.15em] hover:bg-foreground hover:text-background transition-colors disabled:opacity-40">Iniciar</button>
                 )}
                 {o.status === "processing" && (
-                  <button onClick={() => advance.mutate({ id: o.id, to: "shipped" })} disabled={advance.isPending} className="border border-foreground px-3 py-2 text-xs uppercase tracking-[0.15em] hover:bg-foreground hover:text-background transition-colors disabled:opacity-40">Enviar</button>
+                  <Link to="/ops/expedicao" className="border border-foreground px-3 py-2 text-xs uppercase tracking-[0.15em] hover:bg-foreground hover:text-background transition-colors">Expedir</Link>
                 )}
               </div>
             </div>

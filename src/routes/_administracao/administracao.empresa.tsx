@@ -18,6 +18,9 @@ type Company = {
   email: string | null;
   phone: string | null;
   address_line1: string | null;
+  address_number: string | null;
+  address_complement: string | null;
+  address_district: string | null;
   address_city: string | null;
   address_state: string | null;
   address_postal_code: string | null;
@@ -91,11 +94,14 @@ function Empresa() {
         </fieldset>
 
         <fieldset className="grid md:grid-cols-2 gap-6 border-b border-border pb-8">
-          <div className="md:col-span-2 eyebrow">Endereço</div>
-          <Field label="Endereço" value={form.address_line1 ?? ""} onChange={(v) => set("address_line1", v)} />
-          <Field label="Cidade" value={form.address_city ?? ""} onChange={(v) => set("address_city", v)} />
-          <Field label="Estado" value={form.address_state ?? ""} onChange={(v) => set("address_state", v)} />
+          <div className="md:col-span-2 eyebrow">Endereço (remetente das etiquetas)</div>
           <Field label="CEP" value={form.address_postal_code ?? ""} onChange={(v) => set("address_postal_code", v)} />
+          <Field label="Endereço" value={form.address_line1 ?? ""} onChange={(v) => set("address_line1", v)} />
+          <Field label="Número" value={form.address_number ?? ""} onChange={(v) => set("address_number", v)} />
+          <Field label="Complemento" value={form.address_complement ?? ""} onChange={(v) => set("address_complement", v)} />
+          <Field label="Bairro" value={form.address_district ?? ""} onChange={(v) => set("address_district", v)} />
+          <Field label="Cidade" value={form.address_city ?? ""} onChange={(v) => set("address_city", v)} />
+          <Field label="UF" value={form.address_state ?? ""} onChange={(v) => set("address_state", v.toUpperCase().slice(0, 2))} />
         </fieldset>
       </form>
     </div>

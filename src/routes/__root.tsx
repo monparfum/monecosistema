@@ -66,24 +66,26 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Mon Parfum — Perfumaria de autor" },
-      { name: "description", content: "Boutique online de perfumes raros e composições autorais. Curadoria editorial." },
-      { property: "og:title", content: "Mon Parfum — Perfumaria de autor" },
-      { property: "og:description", content: "Boutique online de perfumes raros e composições autorais. Curadoria editorial." },
+      { title: "MON PARFUM — Experiência Olfativa" },
+      { name: "description", content: "Formação em perfumaria autoral: cursos com kit de matérias-primas em casa, experiências de criação e workshops corporativos." },
+      { property: "og:title", content: "MON PARFUM — Experiência Olfativa" },
+      { property: "og:description", content: "Formação em perfumaria autoral: cursos com kit de matérias-primas em casa, experiências de criação e workshops corporativos." },
       { property: "og:type", content: "website" },
-      { name: "twitter:title", content: "Mon Parfum — Perfumaria de autor" },
-      { name: "twitter:description", content: "Boutique online de perfumes raros e composições autorais. Curadoria editorial." },
+      { name: "twitter:title", content: "MON PARFUM — Experiência Olfativa" },
+      { name: "twitter:description", content: "Formação em perfumaria autoral: cursos com kit de matérias-primas em casa, experiências de criação e workshops corporativos." },
       { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/711ceb71-5070-4b0a-aedd-ca5070a0797a/id-preview-06aff9fd--6428e65e-d62c-4175-919a-418931db6464.lovable.app-1780695393306.png" },
       { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/711ceb71-5070-4b0a-aedd-ca5070a0797a/id-preview-06aff9fd--6428e65e-d62c-4175-919a-418931db6464.lovable.app-1780695393306.png" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
+      { rel: "icon", type: "image/png", href: "/favicon.png" },
+      { rel: "apple-touch-icon", href: "/apple-touch-icon.png" },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
         rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&display=swap",
+        href: "https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:wght@300;400;500;600&display=swap",
       },
     ],
   }),
@@ -110,7 +112,13 @@ function RootComponent() {
   const router = useRouter();
 
   useEffect(() => {
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(() => {
+    // Recarrega rotas/dados só quando muda QUEM está logado (não a cada renovação de token ou troca de aba)
+    let uid: string | null | undefined;
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      const next = session?.user?.id ?? null;
+      if (uid === undefined) { uid = next; return; }
+      if (next === uid) return;
+      uid = next;
       router.invalidate();
       queryClient.invalidateQueries();
     });

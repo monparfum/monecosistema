@@ -136,6 +136,9 @@ export type Database = {
           phone: string | null
           singleton: boolean
           updated_at: string
+          address_number: string | null
+          address_district: string | null
+          address_complement: string | null
         }
         Insert: {
           address_city?: string | null
@@ -170,6 +173,9 @@ export type Database = {
           phone?: string | null
           singleton?: boolean
           updated_at?: string
+          address_number?: string | null
+          address_district?: string | null
+          address_complement?: string | null
         }
         Relationships: []
       }
@@ -238,6 +244,32 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      leads: {
+        Row: {
+          created_at: string
+          email: string
+          id: string
+          kind: string
+          name: string | null
+          payload: Json
+          phone: string | null
+          status: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          id?: string
+          kind: string
+          name?: string | null
+          payload?: Json
+          phone?: string | null
+          status?: string
+        }
+        Update: {
+          status?: string
+        }
+        Relationships: []
       }
       media_assets: {
         Row: {
@@ -386,6 +418,15 @@ export type Database = {
           tracking_code: string | null
           updated_at: string
           user_id: string | null
+          shipping_number: string | null
+          shipping_district: string | null
+          shipping_document: string | null
+          shipping_service: string | null
+          shipping_service_id: number | null
+          shipping_label_id: string | null
+          shipping_label_url: string | null
+          stock_applied: boolean
+          requires_shipping: boolean
         }
         Insert: {
           created_at?: string
@@ -434,8 +475,106 @@ export type Database = {
           tracking_code?: string | null
           updated_at?: string
           user_id?: string | null
+          shipping_number?: string | null
+          shipping_district?: string | null
+          shipping_document?: string | null
+          shipping_service?: string | null
+          shipping_service_id?: number | null
+          shipping_label_id?: string | null
+          shipping_label_url?: string | null
+          stock_applied?: boolean
+          requires_shipping?: boolean
         }
         Relationships: []
+      }
+      shipping_quotes: {
+        Row: {
+          created_at: string
+          delivery_days: number | null
+          expires_at: string
+          id: string
+          items: Json
+          postal_code: string
+          price_cents: number
+          service_id: number | null
+          service_name: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          delivery_days?: number | null
+          expires_at?: string
+          id?: string
+          items: Json
+          postal_code: string
+          price_cents: number
+          service_id?: number | null
+          service_name: string
+          user_id: string
+        }
+        Update: {
+          delivery_days?: number | null
+          expires_at?: string
+          items?: Json
+          postal_code?: string
+          price_cents?: number
+          service_id?: number | null
+          service_name?: string
+        }
+        Relationships: []
+      }
+      integration_settings: {
+        Row: { key: string; value: string; updated_at: string; updated_by: string | null }
+        Insert: { key: string; value: string; updated_at?: string; updated_by?: string | null }
+        Update: { key?: string; value?: string; updated_at?: string; updated_by?: string | null }
+        Relationships: []
+      }
+      site_content: {
+        Row: { data: Json; page: string; updated_at: string; updated_by: string | null }
+        Insert: { data?: Json; page: string; updated_at?: string; updated_by?: string | null }
+        Update: { data?: Json; page?: string; updated_at?: string; updated_by?: string | null }
+        Relationships: []
+      }
+      stock_movements: {
+        Row: {
+          actor_user_id: string | null
+          created_at: string
+          delta: number
+          id: string
+          order_id: string | null
+          product_id: string
+          reason: string
+          stock_after: number
+        }
+        Insert: {
+          actor_user_id?: string | null
+          created_at?: string
+          delta: number
+          id?: string
+          order_id?: string | null
+          product_id: string
+          reason: string
+          stock_after: number
+        }
+        Update: {
+          reason?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "stock_movements_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "stock_movements_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       page_blocks: {
         Row: {
@@ -594,6 +733,17 @@ export type Database = {
           stock: number
           updated_at: string
           volume_ml: number | null
+          sku: string | null
+          weight_g: number
+          length_cm: number
+          width_cm: number
+          height_cm: number
+          low_stock_threshold: number
+          delivery_type: Database["public"]["Enums"]["product_delivery"]
+          member_course_ids: string[]
+          compare_at_cents: number | null
+          details: Json
+          coming_soon: boolean
         }
         Insert: {
           active?: boolean
@@ -612,6 +762,17 @@ export type Database = {
           stock?: number
           updated_at?: string
           volume_ml?: number | null
+          sku?: string | null
+          weight_g?: number
+          length_cm?: number
+          width_cm?: number
+          height_cm?: number
+          low_stock_threshold?: number
+          delivery_type?: Database["public"]["Enums"]["product_delivery"]
+          member_course_ids?: string[]
+          compare_at_cents?: number | null
+          details?: Json
+          coming_soon?: boolean
         }
         Update: {
           active?: boolean
@@ -630,6 +791,17 @@ export type Database = {
           stock?: number
           updated_at?: string
           volume_ml?: number | null
+          sku?: string | null
+          weight_g?: number
+          length_cm?: number
+          width_cm?: number
+          height_cm?: number
+          low_stock_threshold?: number
+          delivery_type?: Database["public"]["Enums"]["product_delivery"]
+          member_course_ids?: string[]
+          compare_at_cents?: number | null
+          details?: Json
+          coming_soon?: boolean
         }
         Relationships: [
           {
@@ -710,9 +882,12 @@ export type Database = {
         }
         Returns: string
       }
+      place_order: { Args: { _address: Json; _items: Json; _quote_id?: string | null }; Returns: Json }
+      normalize_cart: { Args: { _items: Json }; Returns: Json }
     }
     Enums: {
       app_role: "admin" | "customer" | "editor" | "reviewer"
+      product_delivery: "physical" | "digital" | "hybrid"
       order_status:
         | "pending_payment"
         | "paid"
@@ -856,6 +1031,7 @@ export const Constants = {
         "delivered",
         "cancelled",
       ],
+      product_delivery: ["physical", "digital", "hybrid"],
     },
   },
 } as const

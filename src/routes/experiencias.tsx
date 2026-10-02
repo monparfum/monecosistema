@@ -1,35 +1,79 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { useQuery } from "@tanstack/react-query";
-import { supabase } from "@/integrations/supabase/client";
-import { SiteHeader } from "@/components/site-header";
-import { SiteFooter } from "@/components/site-footer";
-import { PageRenderer, type Block } from "@/components/blocks";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { MonPage } from "@/components/mon/page";
+import { catalogQuery, FaqList, KitCard, kitName, useCatalog } from "@/components/mon/ui";
+import { Inline, loadSite, Rich, useSite } from "@/lib/site-content";
 
 export const Route = createFileRoute("/experiencias")({
-  head: () => ({
-    meta: [
-      { title: "Experiências — Mon Parfum" },
-      { name: "description", content: "Jornadas olfativas privadas, perfumagem à medida e imersões sensoriais." },
-    ],
-  }),
+  loader: ({ context }) => Promise.all([loadSite(context.queryClient, "experiencias"), context.queryClient.ensureQueryData(catalogQuery).catch(() => null)]),
+  head: () => ({ meta: [{ title: "Experiências de criação — MON PARFUM" }, { name: "description", content: "Escolha seu território, receba o kit em casa e componha seu próprio perfume." }] }),
   component: Experiencias,
 });
 
 function Experiencias() {
-  const { data: blocks } = useQuery({
-    queryKey: ["page-blocks", "experiencias"],
-    queryFn: async () => {
-      const { data: page } = await supabase.from("pages").select("id").eq("slug", "experiencias").eq("status", "published").single();
-      if (!page) return [];
-      const { data } = await supabase.from("page_blocks").select("*").eq("page_id", page.id).order("position");
-      return (data ?? []) as Block[];
-    },
-  });
+  const c = useSite("experiencias");
+  const { kits } = useCatalog();
+  const territorios = kits("criacao");
   return (
-    <div className="min-h-screen bg-background text-foreground">
-      <SiteHeader />
-      {blocks && <PageRenderer blocks={blocks} />}
-      <SiteFooter />
-    </div>
+    <MonPage>
+      <div className="m-wrap">
+        <section className="m-sec">
+          <h1>{c.text("titulo")}</h1>
+          <p className="m-lead" style={{ marginTop: "1.3rem" }}>{c.text("subtitulo")}</p>
+        </section>
+
+        <section className="m-sec">
+          <h2>{c.text("secao_titulo")}</h2>
+          <div style={{ marginTop: "1.2rem" }}><Rich text={c.text("secao_texto")} /></div>
+          {territorios.length > 0 && (
+            <>
+              <h3 style={{ marginTop: "1.6rem", fontSize: "1rem", fontFamily: "var(--m-sans)", fontWeight: 600 }}>Territórios disponíveis</h3>
+              <div className="m-grid m-g2" style={{ marginTop: "1rem" }}>
+                {territorios.map((p) => <KitCard key={p.id} p={p} cta={`Ver o Kit ${kitName(p)}`} />)}
+              </div>
+            </>
+          )}
+          <div className="m-note row" style={{ marginTop: "1.5rem" }}>
+            <div><b>Não sabe por onde começar?</b> Faça o quiz e descubra.</div>
+            <Link to="/quiz" className="m-btn sm">Fazer o quiz</Link>
+          </div>
+        </section>
+
+        <section className="m-sec">
+          <div className="m-grid m-g2" style={{ alignItems: "start" }}>
+            <div>
+              <h2>O que vem no kit</h2>
+              <ul className="m-clean">{c.list("kit_itens").map((i, k) => <li key={k}><Inline text={i.texto ?? ""} /></li>)}</ul>
+            </div>
+            <div>
+              <h2>Como funciona</h2>
+              <div className="m-steps c1">
+                {c.list("passos").map((s, i) => <div key={i} className="m-step"><div className="n">{i + 1}</div><p>{s.texto}</p></div>)}
+              </div>
+              <p style={{ marginTop: "1.2rem" }}><Inline text={c.text("passos_nota")} /></p>
+            </div>
+          </div>
+        </section>
+
+        <section className="m-sec">
+          <h2>Perguntas frequentes</h2>
+          <FaqList items={c.list("faq")} />
+        </section>
+
+        <section className="m-sec">
+          <h2>{c.text("jornada_titulo")}</h2>
+          <div style={{ marginTop: "1.1rem" }}><Rich text={c.text("jornada_texto")} /></div>
+          <div className="m-ctas"><Link to="/cursos" className="m-btn">Ver os cursos MON</Link></div>
+        </section>
+
+        <section className="m-sec">
+          <div className="m-privebox">
+            <h3>Atelier Privé</h3>
+            <div style={{ marginTop: ".8rem", fontSize: ".95rem" }}><Rich text={c.text("prive_texto")} /></div>
+            <p style={{ fontSize: ".95rem", color: "var(--m-ink-faint)" }}>Agenda restrita. Por solicitação.</p>
+            <Link to="/atelier-prive" className="m-btn sm ghost">Saber mais sobre o Atelier Privé</Link>
+          </div>
+        </section>
+      </div>
+    </MonPage>
   );
 }

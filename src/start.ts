@@ -18,7 +18,14 @@ const errorMiddleware = createMiddleware().server(async ({ next }) => {
   }
 });
 
+// Carrega as chaves de integração salvas no painel antes de qualquer função/rota do servidor (cache de 30 s)
+const settingsMiddleware = createMiddleware().server(async ({ next }) => {
+  const { ensureSettings } = await import("@/lib/settings.server");
+  await ensureSettings();
+  return next();
+});
+
 export const startInstance = createStart(() => ({
   functionMiddleware: [attachSupabaseAuth],
-  requestMiddleware: [errorMiddleware],
+  requestMiddleware: [errorMiddleware, settingsMiddleware],
 }));

@@ -50,7 +50,7 @@ function MeusCursos() {
           <div className="border-y border-border py-16 text-center">
             <div className="eyebrow mb-2">Nenhum curso ainda</div>
             <p className="font-display text-2xl italic mb-6">Sua estante está esperando o primeiro capítulo.</p>
-            <Link to="/catalogo" className="inline-block bg-foreground text-background px-6 py-3 text-sm">Explorar cursos</Link>
+            <Link to="/produtos" className="inline-block bg-foreground text-background px-6 py-3 text-sm">Explorar cursos</Link>
           </div>
         ) : (
           <div className="grid md:grid-cols-2 gap-px bg-border border border-border">

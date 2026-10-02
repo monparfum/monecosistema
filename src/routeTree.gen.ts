@@ -9,171 +9,88 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as WorkshopsRouteImport } from './routes/workshops'
-import { Route as SobreRouteImport } from './routes/sobre'
-import { Route as LoginRouteImport } from './routes/login'
-import { Route as ExperienciasRouteImport } from './routes/experiencias'
-import { Route as EbooksRouteImport } from './routes/ebooks'
-import { Route as CursosRouteImport } from './routes/cursos'
-import { Route as ComunidadeRouteImport } from './routes/comunidade'
-import { Route as CheckoutRouteImport } from './routes/checkout'
-import { Route as CatalogoRouteImport } from './routes/catalogo'
-import { Route as CarrinhoRouteImport } from './routes/carrinho'
-import { Route as CadastroRouteImport } from './routes/cadastro'
-import { Route as BusinessplanRouteImport } from './routes/businessplan'
-import { Route as BuscaRouteImport } from './routes/busca'
-import { Route as StudioRouteImport } from './routes/_studio'
-import { Route as OpsRouteImport } from './routes/_ops'
-import { Route as MarketingRouteImport } from './routes/_marketing'
-import { Route as CrmRouteImport } from './routes/_crm'
-import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
-import { Route as AdministracaoRouteImport } from './routes/_administracao'
-import { Route as AdminRouteImport } from './routes/_admin'
-import { Route as AcademyRouteImport } from './routes/_academy'
-import { Route as SlugRouteImport } from './routes/$slug'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as ProdutoSlugRouteImport } from './routes/produto.$slug'
-import { Route as CheckoutRetornoRouteImport } from './routes/checkout.retorno'
-import { Route as CategoriaSlugRouteImport } from './routes/categoria.$slug'
-import { Route as StudioStudioRouteImport } from './routes/_studio/studio'
-import { Route as AuthenticatedPedidosRouteImport } from './routes/_authenticated/pedidos'
-import { Route as AuthenticatedMeusCursosRouteImport } from './routes/_authenticated/meus-cursos'
+import { Route as SlugRouteImport } from './routes/$slug'
+import { Route as AcademyRouteImport } from './routes/_academy'
+import { Route as AdminRouteImport } from './routes/_admin'
+import { Route as AdministracaoRouteImport } from './routes/_administracao'
+import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
+import { Route as CrmRouteImport } from './routes/_crm'
+import { Route as MarketingRouteImport } from './routes/_marketing'
+import { Route as OpsRouteImport } from './routes/_ops'
+import { Route as StudioRouteImport } from './routes/_studio'
+import { Route as AtelierPriveRouteImport } from './routes/atelier-prive'
+import { Route as BuscaRouteImport } from './routes/busca'
+import { Route as BusinessplanRouteImport } from './routes/businessplan'
+import { Route as CadastroRouteImport } from './routes/cadastro'
+import { Route as CarrinhoRouteImport } from './routes/carrinho'
+import { Route as CheckoutRouteImport } from './routes/checkout'
+import { Route as ConteudosRouteImport } from './routes/conteudos'
+import { Route as CorporativoRouteImport } from './routes/corporativo'
+import { Route as ExperienciasRouteImport } from './routes/experiencias'
+import { Route as LoginRouteImport } from './routes/login'
+import { Route as MonClubRouteImport } from './routes/mon-club'
+import { Route as QuizRouteImport } from './routes/quiz'
+import { Route as SobreRouteImport } from './routes/sobre'
 import { Route as AuthenticatedContaRouteImport } from './routes/_authenticated/conta'
-import { Route as OpsOpsIndexRouteImport } from './routes/_ops/ops.index'
-import { Route as MarketingMarketingIndexRouteImport } from './routes/_marketing/marketing.index'
-import { Route as CrmCrmIndexRouteImport } from './routes/_crm/crm.index'
-import { Route as AdministracaoAdministracaoIndexRouteImport } from './routes/_administracao/administracao.index'
-import { Route as AdminAdminIndexRouteImport } from './routes/_admin/admin.index'
+import { Route as AuthenticatedMeusCursosRouteImport } from './routes/_authenticated/meus-cursos'
+import { Route as AuthenticatedPedidosRouteImport } from './routes/_authenticated/pedidos'
+import { Route as StudioStudioRouteImport } from './routes/_studio/studio'
+import { Route as CheckoutRetornoRouteImport } from './routes/checkout.retorno'
+import { Route as CursosIndexRouteImport } from './routes/cursos.index'
+import { Route as CursosSlugRouteImport } from './routes/cursos.$slug'
+import { Route as PoliticasDocRouteImport } from './routes/politicas.$doc'
+import { Route as ProdutoSlugRouteImport } from './routes/produto.$slug'
+import { Route as ProdutosIndexRouteImport } from './routes/produtos.index'
+import { Route as ProdutosSlugRouteImport } from './routes/produtos.$slug'
 import { Route as AcademyAcademyIndexRouteImport } from './routes/_academy/academy.index'
-import { Route as CheckoutPagamentoOrderIdRouteImport } from './routes/checkout.pagamento.$orderId'
-import { Route as StudioStudioPaginasRouteImport } from './routes/_studio/studio.paginas'
-import { Route as StudioStudioMidiaRouteImport } from './routes/_studio/studio.midia'
-import { Route as StudioStudioEquipeRouteImport } from './routes/_studio/studio.equipe'
-import { Route as OpsOpsProducaoRouteImport } from './routes/_ops/ops.producao'
-import { Route as OpsOpsPedidosRouteImport } from './routes/_ops/ops.pedidos'
-import { Route as OpsOpsExpedicaoRouteImport } from './routes/_ops/ops.expedicao'
-import { Route as MarketingMarketingSocialRouteImport } from './routes/_marketing/marketing.social'
-import { Route as MarketingMarketingIaRouteImport } from './routes/_marketing/marketing.ia'
-import { Route as MarketingMarketingCampanhasRouteImport } from './routes/_marketing/marketing.campanhas'
-import { Route as MarketingMarketingCalendarioRouteImport } from './routes/_marketing/marketing.calendario'
-import { Route as MarketingMarketingAutomacoesRouteImport } from './routes/_marketing/marketing.automacoes'
-import { Route as CrmCrmSegmentosRouteImport } from './routes/_crm/crm.segmentos'
-import { Route as CrmCrmClientesRouteImport } from './routes/_crm/crm.clientes'
-import { Route as AdministracaoAdministracaoUsuariosRouteImport } from './routes/_administracao/administracao.usuarios'
-import { Route as AdministracaoAdministracaoPapeisRouteImport } from './routes/_administracao/administracao.papeis'
-import { Route as AdministracaoAdministracaoLogsRouteImport } from './routes/_administracao/administracao.logs'
-import { Route as AdministracaoAdministracaoIntegracoesRouteImport } from './routes/_administracao/administracao.integracoes'
-import { Route as AdministracaoAdministracaoEmpresaRouteImport } from './routes/_administracao/administracao.empresa'
-import { Route as AdministracaoAdministracaoComunicacoesRouteImport } from './routes/_administracao/administracao.comunicacoes'
-import { Route as AdminAdminProdutosRouteImport } from './routes/_admin/admin.produtos'
-import { Route as AdminAdminPedidosRouteImport } from './routes/_admin/admin.pedidos'
-import { Route as AdminAdminModulosRouteImport } from './routes/_admin/admin.modulos'
-import { Route as AdminAdminClientesRouteImport } from './routes/_admin/admin.clientes'
-import { Route as AdminAdminCategoriasRouteImport } from './routes/_admin/admin.categorias'
-import { Route as AcademyAcademyCursosRouteImport } from './routes/_academy/academy.cursos'
-import { Route as AcademyAcademyCertificadosRouteImport } from './routes/_academy/academy.certificados'
 import { Route as AcademyAcademyAlunosRouteImport } from './routes/_academy/academy.alunos'
-import { Route as ApiPublicPaymentsWebhookRouteImport } from './routes/api/public/payments/webhook'
-import { Route as StudioStudioPaginasSlugRouteImport } from './routes/_studio/studio.paginas.$slug'
-import { Route as OpsOpsPedidosIdRouteImport } from './routes/_ops/ops.pedidos.$id'
-import { Route as CrmCrmClientesIdRouteImport } from './routes/_crm/crm.clientes.$id'
+import { Route as AcademyAcademyCertificadosRouteImport } from './routes/_academy/academy.certificados'
+import { Route as AcademyAcademyCursosRouteImport } from './routes/_academy/academy.cursos'
+import { Route as AdminAdminIndexRouteImport } from './routes/_admin/admin.index'
+import { Route as AdminAdminCategoriasRouteImport } from './routes/_admin/admin.categorias'
+import { Route as AdminAdminClientesRouteImport } from './routes/_admin/admin.clientes'
+import { Route as AdminAdminContatosRouteImport } from './routes/_admin/admin.contatos'
+import { Route as AdminAdminModulosRouteImport } from './routes/_admin/admin.modulos'
+import { Route as AdminAdminPedidosRouteImport } from './routes/_admin/admin.pedidos'
+import { Route as AdministracaoAdministracaoIndexRouteImport } from './routes/_administracao/administracao.index'
+import { Route as AdministracaoAdministracaoComunicacoesRouteImport } from './routes/_administracao/administracao.comunicacoes'
+import { Route as AdministracaoAdministracaoEmpresaRouteImport } from './routes/_administracao/administracao.empresa'
+import { Route as AdministracaoAdministracaoIntegracoesRouteImport } from './routes/_administracao/administracao.integracoes'
+import { Route as AdministracaoAdministracaoLogsRouteImport } from './routes/_administracao/administracao.logs'
+import { Route as AdministracaoAdministracaoPapeisRouteImport } from './routes/_administracao/administracao.papeis'
+import { Route as AdministracaoAdministracaoUsuariosRouteImport } from './routes/_administracao/administracao.usuarios'
+import { Route as CrmCrmIndexRouteImport } from './routes/_crm/crm.index'
+import { Route as CrmCrmClientesRouteImport } from './routes/_crm/crm.clientes'
+import { Route as CrmCrmSegmentosRouteImport } from './routes/_crm/crm.segmentos'
+import { Route as MarketingMarketingIndexRouteImport } from './routes/_marketing/marketing.index'
+import { Route as MarketingMarketingAutomacoesRouteImport } from './routes/_marketing/marketing.automacoes'
+import { Route as MarketingMarketingCalendarioRouteImport } from './routes/_marketing/marketing.calendario'
+import { Route as MarketingMarketingCampanhasRouteImport } from './routes/_marketing/marketing.campanhas'
+import { Route as MarketingMarketingIaRouteImport } from './routes/_marketing/marketing.ia'
+import { Route as MarketingMarketingSocialRouteImport } from './routes/_marketing/marketing.social'
+import { Route as OpsOpsIndexRouteImport } from './routes/_ops/ops.index'
+import { Route as OpsOpsExpedicaoRouteImport } from './routes/_ops/ops.expedicao'
+import { Route as OpsOpsPedidosRouteImport } from './routes/_ops/ops.pedidos'
+import { Route as OpsOpsProducaoRouteImport } from './routes/_ops/ops.producao'
+import { Route as StudioStudioEquipeRouteImport } from './routes/_studio/studio.equipe'
+import { Route as StudioStudioMidiaRouteImport } from './routes/_studio/studio.midia'
+import { Route as StudioStudioPaginasRouteImport } from './routes/_studio/studio.paginas'
+import { Route as CheckoutPagamentoOrderIdRouteImport } from './routes/checkout.pagamento.$orderId'
+import { Route as AdminAdminProdutosIndexRouteImport } from './routes/_admin/admin.produtos.index'
+import { Route as AdminAdminProdutosIdRouteImport } from './routes/_admin/admin.produtos.$id'
 import { Route as AdminAdminProdutosNovoRouteImport } from './routes/_admin/admin.produtos.novo'
+import { Route as AdminAdminSiteIndexRouteImport } from './routes/_admin/admin.site.index'
+import { Route as AdminAdminSitePageRouteImport } from './routes/_admin/admin.site.$page'
+import { Route as CrmCrmClientesIdRouteImport } from './routes/_crm/crm.clientes.$id'
+import { Route as OpsOpsPedidosIdRouteImport } from './routes/_ops/ops.pedidos.$id'
+import { Route as StudioStudioPaginasSlugRouteImport } from './routes/_studio/studio.paginas.$slug'
+import { Route as ApiPublicPaymentsMercadopagoRouteImport } from './routes/api/public/payments/mercadopago'
+import { Route as ApiPublicPaymentsWebhookRouteImport } from './routes/api/public/payments/webhook'
 
-const WorkshopsRoute = WorkshopsRouteImport.update({
-  id: '/workshops',
-  path: '/workshops',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const SobreRoute = SobreRouteImport.update({
-  id: '/sobre',
-  path: '/sobre',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const LoginRoute = LoginRouteImport.update({
-  id: '/login',
-  path: '/login',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ExperienciasRoute = ExperienciasRouteImport.update({
-  id: '/experiencias',
-  path: '/experiencias',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const EbooksRoute = EbooksRouteImport.update({
-  id: '/ebooks',
-  path: '/ebooks',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const CursosRoute = CursosRouteImport.update({
-  id: '/cursos',
-  path: '/cursos',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ComunidadeRoute = ComunidadeRouteImport.update({
-  id: '/comunidade',
-  path: '/comunidade',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const CheckoutRoute = CheckoutRouteImport.update({
-  id: '/checkout',
-  path: '/checkout',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const CatalogoRoute = CatalogoRouteImport.update({
-  id: '/catalogo',
-  path: '/catalogo',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const CarrinhoRoute = CarrinhoRouteImport.update({
-  id: '/carrinho',
-  path: '/carrinho',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const CadastroRoute = CadastroRouteImport.update({
-  id: '/cadastro',
-  path: '/cadastro',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const BusinessplanRoute = BusinessplanRouteImport.update({
-  id: '/businessplan',
-  path: '/businessplan',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const BuscaRoute = BuscaRouteImport.update({
-  id: '/busca',
-  path: '/busca',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const StudioRoute = StudioRouteImport.update({
-  id: '/_studio',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const OpsRoute = OpsRouteImport.update({
-  id: '/_ops',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const MarketingRoute = MarketingRouteImport.update({
-  id: '/_marketing',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const CrmRoute = CrmRouteImport.update({
-  id: '/_crm',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AuthenticatedRoute = AuthenticatedRouteImport.update({
-  id: '/_authenticated',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AdministracaoRoute = AdministracaoRouteImport.update({
-  id: '/_administracao',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AdminRoute = AdminRouteImport.update({
-  id: '/_admin',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AcademyRoute = AcademyRouteImport.update({
-  id: '/_academy',
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SlugRoute = SlugRouteImport.update({
@@ -181,34 +98,106 @@ const SlugRoute = SlugRouteImport.update({
   path: '/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
+const AcademyRoute = AcademyRouteImport.update({
+  id: '/_academy',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ProdutoSlugRoute = ProdutoSlugRouteImport.update({
-  id: '/produto/$slug',
-  path: '/produto/$slug',
+const AdminRoute = AdminRouteImport.update({
+  id: '/_admin',
   getParentRoute: () => rootRouteImport,
 } as any)
-const CheckoutRetornoRoute = CheckoutRetornoRouteImport.update({
-  id: '/retorno',
-  path: '/retorno',
-  getParentRoute: () => CheckoutRoute,
-} as any)
-const CategoriaSlugRoute = CategoriaSlugRouteImport.update({
-  id: '/categoria/$slug',
-  path: '/categoria/$slug',
+const AdministracaoRoute = AdministracaoRouteImport.update({
+  id: '/_administracao',
   getParentRoute: () => rootRouteImport,
 } as any)
-const StudioStudioRoute = StudioStudioRouteImport.update({
-  id: '/studio',
-  path: '/studio',
-  getParentRoute: () => StudioRoute,
+const AuthenticatedRoute = AuthenticatedRouteImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
 } as any)
-const AuthenticatedPedidosRoute = AuthenticatedPedidosRouteImport.update({
-  id: '/pedidos',
-  path: '/pedidos',
+const CrmRoute = CrmRouteImport.update({
+  id: '/_crm',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MarketingRoute = MarketingRouteImport.update({
+  id: '/_marketing',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OpsRoute = OpsRouteImport.update({
+  id: '/_ops',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const StudioRoute = StudioRouteImport.update({
+  id: '/_studio',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AtelierPriveRoute = AtelierPriveRouteImport.update({
+  id: '/atelier-prive',
+  path: '/atelier-prive',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BuscaRoute = BuscaRouteImport.update({
+  id: '/busca',
+  path: '/busca',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BusinessplanRoute = BusinessplanRouteImport.update({
+  id: '/businessplan',
+  path: '/businessplan',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CadastroRoute = CadastroRouteImport.update({
+  id: '/cadastro',
+  path: '/cadastro',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CarrinhoRoute = CarrinhoRouteImport.update({
+  id: '/carrinho',
+  path: '/carrinho',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CheckoutRoute = CheckoutRouteImport.update({
+  id: '/checkout',
+  path: '/checkout',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ConteudosRoute = ConteudosRouteImport.update({
+  id: '/conteudos',
+  path: '/conteudos',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CorporativoRoute = CorporativoRouteImport.update({
+  id: '/corporativo',
+  path: '/corporativo',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ExperienciasRoute = ExperienciasRouteImport.update({
+  id: '/experiencias',
+  path: '/experiencias',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MonClubRoute = MonClubRouteImport.update({
+  id: '/mon-club',
+  path: '/mon-club',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const QuizRoute = QuizRouteImport.update({
+  id: '/quiz',
+  path: '/quiz',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SobreRoute = SobreRouteImport.update({
+  id: '/sobre',
+  path: '/sobre',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedContaRoute = AuthenticatedContaRouteImport.update({
+  id: '/conta',
+  path: '/conta',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
 const AuthenticatedMeusCursosRoute = AuthenticatedMeusCursosRouteImport.update({
@@ -216,181 +205,59 @@ const AuthenticatedMeusCursosRoute = AuthenticatedMeusCursosRouteImport.update({
   path: '/meus-cursos',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
-const AuthenticatedContaRoute = AuthenticatedContaRouteImport.update({
-  id: '/conta',
-  path: '/conta',
+const AuthenticatedPedidosRoute = AuthenticatedPedidosRouteImport.update({
+  id: '/pedidos',
+  path: '/pedidos',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
-const OpsOpsIndexRoute = OpsOpsIndexRouteImport.update({
-  id: '/ops/',
-  path: '/ops/',
-  getParentRoute: () => OpsRoute,
+const StudioStudioRoute = StudioStudioRouteImport.update({
+  id: '/studio',
+  path: '/studio',
+  getParentRoute: () => StudioRoute,
 } as any)
-const MarketingMarketingIndexRoute = MarketingMarketingIndexRouteImport.update({
-  id: '/marketing/',
-  path: '/marketing/',
-  getParentRoute: () => MarketingRoute,
+const CheckoutRetornoRoute = CheckoutRetornoRouteImport.update({
+  id: '/retorno',
+  path: '/retorno',
+  getParentRoute: () => CheckoutRoute,
 } as any)
-const CrmCrmIndexRoute = CrmCrmIndexRouteImport.update({
-  id: '/crm/',
-  path: '/crm/',
-  getParentRoute: () => CrmRoute,
+const CursosIndexRoute = CursosIndexRouteImport.update({
+  id: '/cursos/',
+  path: '/cursos/',
+  getParentRoute: () => rootRouteImport,
 } as any)
-const AdministracaoAdministracaoIndexRoute =
-  AdministracaoAdministracaoIndexRouteImport.update({
-    id: '/administracao/',
-    path: '/administracao/',
-    getParentRoute: () => AdministracaoRoute,
-  } as any)
-const AdminAdminIndexRoute = AdminAdminIndexRouteImport.update({
-  id: '/admin/',
-  path: '/admin/',
-  getParentRoute: () => AdminRoute,
+const CursosSlugRoute = CursosSlugRouteImport.update({
+  id: '/cursos/$slug',
+  path: '/cursos/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PoliticasDocRoute = PoliticasDocRouteImport.update({
+  id: '/politicas/$doc',
+  path: '/politicas/$doc',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProdutoSlugRoute = ProdutoSlugRouteImport.update({
+  id: '/produto/$slug',
+  path: '/produto/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProdutosIndexRoute = ProdutosIndexRouteImport.update({
+  id: '/produtos/',
+  path: '/produtos/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProdutosSlugRoute = ProdutosSlugRouteImport.update({
+  id: '/produtos/$slug',
+  path: '/produtos/$slug',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const AcademyAcademyIndexRoute = AcademyAcademyIndexRouteImport.update({
   id: '/academy/',
   path: '/academy/',
   getParentRoute: () => AcademyRoute,
 } as any)
-const CheckoutPagamentoOrderIdRoute =
-  CheckoutPagamentoOrderIdRouteImport.update({
-    id: '/pagamento/$orderId',
-    path: '/pagamento/$orderId',
-    getParentRoute: () => CheckoutRoute,
-  } as any)
-const StudioStudioPaginasRoute = StudioStudioPaginasRouteImport.update({
-  id: '/paginas',
-  path: '/paginas',
-  getParentRoute: () => StudioStudioRoute,
-} as any)
-const StudioStudioMidiaRoute = StudioStudioMidiaRouteImport.update({
-  id: '/midia',
-  path: '/midia',
-  getParentRoute: () => StudioStudioRoute,
-} as any)
-const StudioStudioEquipeRoute = StudioStudioEquipeRouteImport.update({
-  id: '/equipe',
-  path: '/equipe',
-  getParentRoute: () => StudioStudioRoute,
-} as any)
-const OpsOpsProducaoRoute = OpsOpsProducaoRouteImport.update({
-  id: '/ops/producao',
-  path: '/ops/producao',
-  getParentRoute: () => OpsRoute,
-} as any)
-const OpsOpsPedidosRoute = OpsOpsPedidosRouteImport.update({
-  id: '/ops/pedidos',
-  path: '/ops/pedidos',
-  getParentRoute: () => OpsRoute,
-} as any)
-const OpsOpsExpedicaoRoute = OpsOpsExpedicaoRouteImport.update({
-  id: '/ops/expedicao',
-  path: '/ops/expedicao',
-  getParentRoute: () => OpsRoute,
-} as any)
-const MarketingMarketingSocialRoute =
-  MarketingMarketingSocialRouteImport.update({
-    id: '/marketing/social',
-    path: '/marketing/social',
-    getParentRoute: () => MarketingRoute,
-  } as any)
-const MarketingMarketingIaRoute = MarketingMarketingIaRouteImport.update({
-  id: '/marketing/ia',
-  path: '/marketing/ia',
-  getParentRoute: () => MarketingRoute,
-} as any)
-const MarketingMarketingCampanhasRoute =
-  MarketingMarketingCampanhasRouteImport.update({
-    id: '/marketing/campanhas',
-    path: '/marketing/campanhas',
-    getParentRoute: () => MarketingRoute,
-  } as any)
-const MarketingMarketingCalendarioRoute =
-  MarketingMarketingCalendarioRouteImport.update({
-    id: '/marketing/calendario',
-    path: '/marketing/calendario',
-    getParentRoute: () => MarketingRoute,
-  } as any)
-const MarketingMarketingAutomacoesRoute =
-  MarketingMarketingAutomacoesRouteImport.update({
-    id: '/marketing/automacoes',
-    path: '/marketing/automacoes',
-    getParentRoute: () => MarketingRoute,
-  } as any)
-const CrmCrmSegmentosRoute = CrmCrmSegmentosRouteImport.update({
-  id: '/crm/segmentos',
-  path: '/crm/segmentos',
-  getParentRoute: () => CrmRoute,
-} as any)
-const CrmCrmClientesRoute = CrmCrmClientesRouteImport.update({
-  id: '/crm/clientes',
-  path: '/crm/clientes',
-  getParentRoute: () => CrmRoute,
-} as any)
-const AdministracaoAdministracaoUsuariosRoute =
-  AdministracaoAdministracaoUsuariosRouteImport.update({
-    id: '/administracao/usuarios',
-    path: '/administracao/usuarios',
-    getParentRoute: () => AdministracaoRoute,
-  } as any)
-const AdministracaoAdministracaoPapeisRoute =
-  AdministracaoAdministracaoPapeisRouteImport.update({
-    id: '/administracao/papeis',
-    path: '/administracao/papeis',
-    getParentRoute: () => AdministracaoRoute,
-  } as any)
-const AdministracaoAdministracaoLogsRoute =
-  AdministracaoAdministracaoLogsRouteImport.update({
-    id: '/administracao/logs',
-    path: '/administracao/logs',
-    getParentRoute: () => AdministracaoRoute,
-  } as any)
-const AdministracaoAdministracaoIntegracoesRoute =
-  AdministracaoAdministracaoIntegracoesRouteImport.update({
-    id: '/administracao/integracoes',
-    path: '/administracao/integracoes',
-    getParentRoute: () => AdministracaoRoute,
-  } as any)
-const AdministracaoAdministracaoEmpresaRoute =
-  AdministracaoAdministracaoEmpresaRouteImport.update({
-    id: '/administracao/empresa',
-    path: '/administracao/empresa',
-    getParentRoute: () => AdministracaoRoute,
-  } as any)
-const AdministracaoAdministracaoComunicacoesRoute =
-  AdministracaoAdministracaoComunicacoesRouteImport.update({
-    id: '/administracao/comunicacoes',
-    path: '/administracao/comunicacoes',
-    getParentRoute: () => AdministracaoRoute,
-  } as any)
-const AdminAdminProdutosRoute = AdminAdminProdutosRouteImport.update({
-  id: '/admin/produtos',
-  path: '/admin/produtos',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AdminAdminPedidosRoute = AdminAdminPedidosRouteImport.update({
-  id: '/admin/pedidos',
-  path: '/admin/pedidos',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AdminAdminModulosRoute = AdminAdminModulosRouteImport.update({
-  id: '/admin/modulos',
-  path: '/admin/modulos',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AdminAdminClientesRoute = AdminAdminClientesRouteImport.update({
-  id: '/admin/clientes',
-  path: '/admin/clientes',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AdminAdminCategoriasRoute = AdminAdminCategoriasRouteImport.update({
-  id: '/admin/categorias',
-  path: '/admin/categorias',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AcademyAcademyCursosRoute = AcademyAcademyCursosRouteImport.update({
-  id: '/academy/cursos',
-  path: '/academy/cursos',
+const AcademyAcademyAlunosRoute = AcademyAcademyAlunosRouteImport.update({
+  id: '/academy/alunos',
+  path: '/academy/alunos',
   getParentRoute: () => AcademyRoute,
 } as any)
 const AcademyAcademyCertificadosRoute =
@@ -399,69 +266,261 @@ const AcademyAcademyCertificadosRoute =
     path: '/academy/certificados',
     getParentRoute: () => AcademyRoute,
   } as any)
-const AcademyAcademyAlunosRoute = AcademyAcademyAlunosRouteImport.update({
-  id: '/academy/alunos',
-  path: '/academy/alunos',
+const AcademyAcademyCursosRoute = AcademyAcademyCursosRouteImport.update({
+  id: '/academy/cursos',
+  path: '/academy/cursos',
   getParentRoute: () => AcademyRoute,
 } as any)
-const ApiPublicPaymentsWebhookRoute =
-  ApiPublicPaymentsWebhookRouteImport.update({
-    id: '/api/public/payments/webhook',
-    path: '/api/public/payments/webhook',
-    getParentRoute: () => rootRouteImport,
-  } as any)
-const StudioStudioPaginasSlugRoute = StudioStudioPaginasSlugRouteImport.update({
-  id: '/$slug',
-  path: '/$slug',
-  getParentRoute: () => StudioStudioPaginasRoute,
+const AdminAdminIndexRoute = AdminAdminIndexRouteImport.update({
+  id: '/admin/',
+  path: '/admin/',
+  getParentRoute: () => AdminRoute,
 } as any)
-const OpsOpsPedidosIdRoute = OpsOpsPedidosIdRouteImport.update({
-  id: '/$id',
-  path: '/$id',
-  getParentRoute: () => OpsOpsPedidosRoute,
+const AdminAdminCategoriasRoute = AdminAdminCategoriasRouteImport.update({
+  id: '/admin/categorias',
+  path: '/admin/categorias',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminAdminClientesRoute = AdminAdminClientesRouteImport.update({
+  id: '/admin/clientes',
+  path: '/admin/clientes',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminAdminContatosRoute = AdminAdminContatosRouteImport.update({
+  id: '/admin/contatos',
+  path: '/admin/contatos',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminAdminModulosRoute = AdminAdminModulosRouteImport.update({
+  id: '/admin/modulos',
+  path: '/admin/modulos',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminAdminPedidosRoute = AdminAdminPedidosRouteImport.update({
+  id: '/admin/pedidos',
+  path: '/admin/pedidos',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdministracaoAdministracaoIndexRoute =
+  AdministracaoAdministracaoIndexRouteImport.update({
+    id: '/administracao/',
+    path: '/administracao/',
+    getParentRoute: () => AdministracaoRoute,
+  } as any)
+const AdministracaoAdministracaoComunicacoesRoute =
+  AdministracaoAdministracaoComunicacoesRouteImport.update({
+    id: '/administracao/comunicacoes',
+    path: '/administracao/comunicacoes',
+    getParentRoute: () => AdministracaoRoute,
+  } as any)
+const AdministracaoAdministracaoEmpresaRoute =
+  AdministracaoAdministracaoEmpresaRouteImport.update({
+    id: '/administracao/empresa',
+    path: '/administracao/empresa',
+    getParentRoute: () => AdministracaoRoute,
+  } as any)
+const AdministracaoAdministracaoIntegracoesRoute =
+  AdministracaoAdministracaoIntegracoesRouteImport.update({
+    id: '/administracao/integracoes',
+    path: '/administracao/integracoes',
+    getParentRoute: () => AdministracaoRoute,
+  } as any)
+const AdministracaoAdministracaoLogsRoute =
+  AdministracaoAdministracaoLogsRouteImport.update({
+    id: '/administracao/logs',
+    path: '/administracao/logs',
+    getParentRoute: () => AdministracaoRoute,
+  } as any)
+const AdministracaoAdministracaoPapeisRoute =
+  AdministracaoAdministracaoPapeisRouteImport.update({
+    id: '/administracao/papeis',
+    path: '/administracao/papeis',
+    getParentRoute: () => AdministracaoRoute,
+  } as any)
+const AdministracaoAdministracaoUsuariosRoute =
+  AdministracaoAdministracaoUsuariosRouteImport.update({
+    id: '/administracao/usuarios',
+    path: '/administracao/usuarios',
+    getParentRoute: () => AdministracaoRoute,
+  } as any)
+const CrmCrmIndexRoute = CrmCrmIndexRouteImport.update({
+  id: '/crm/',
+  path: '/crm/',
+  getParentRoute: () => CrmRoute,
+} as any)
+const CrmCrmClientesRoute = CrmCrmClientesRouteImport.update({
+  id: '/crm/clientes',
+  path: '/crm/clientes',
+  getParentRoute: () => CrmRoute,
+} as any)
+const CrmCrmSegmentosRoute = CrmCrmSegmentosRouteImport.update({
+  id: '/crm/segmentos',
+  path: '/crm/segmentos',
+  getParentRoute: () => CrmRoute,
+} as any)
+const MarketingMarketingIndexRoute = MarketingMarketingIndexRouteImport.update({
+  id: '/marketing/',
+  path: '/marketing/',
+  getParentRoute: () => MarketingRoute,
+} as any)
+const MarketingMarketingAutomacoesRoute =
+  MarketingMarketingAutomacoesRouteImport.update({
+    id: '/marketing/automacoes',
+    path: '/marketing/automacoes',
+    getParentRoute: () => MarketingRoute,
+  } as any)
+const MarketingMarketingCalendarioRoute =
+  MarketingMarketingCalendarioRouteImport.update({
+    id: '/marketing/calendario',
+    path: '/marketing/calendario',
+    getParentRoute: () => MarketingRoute,
+  } as any)
+const MarketingMarketingCampanhasRoute =
+  MarketingMarketingCampanhasRouteImport.update({
+    id: '/marketing/campanhas',
+    path: '/marketing/campanhas',
+    getParentRoute: () => MarketingRoute,
+  } as any)
+const MarketingMarketingIaRoute = MarketingMarketingIaRouteImport.update({
+  id: '/marketing/ia',
+  path: '/marketing/ia',
+  getParentRoute: () => MarketingRoute,
+} as any)
+const MarketingMarketingSocialRoute =
+  MarketingMarketingSocialRouteImport.update({
+    id: '/marketing/social',
+    path: '/marketing/social',
+    getParentRoute: () => MarketingRoute,
+  } as any)
+const OpsOpsIndexRoute = OpsOpsIndexRouteImport.update({
+  id: '/ops/',
+  path: '/ops/',
+  getParentRoute: () => OpsRoute,
+} as any)
+const OpsOpsExpedicaoRoute = OpsOpsExpedicaoRouteImport.update({
+  id: '/ops/expedicao',
+  path: '/ops/expedicao',
+  getParentRoute: () => OpsRoute,
+} as any)
+const OpsOpsPedidosRoute = OpsOpsPedidosRouteImport.update({
+  id: '/ops/pedidos',
+  path: '/ops/pedidos',
+  getParentRoute: () => OpsRoute,
+} as any)
+const OpsOpsProducaoRoute = OpsOpsProducaoRouteImport.update({
+  id: '/ops/producao',
+  path: '/ops/producao',
+  getParentRoute: () => OpsRoute,
+} as any)
+const StudioStudioEquipeRoute = StudioStudioEquipeRouteImport.update({
+  id: '/equipe',
+  path: '/equipe',
+  getParentRoute: () => StudioStudioRoute,
+} as any)
+const StudioStudioMidiaRoute = StudioStudioMidiaRouteImport.update({
+  id: '/midia',
+  path: '/midia',
+  getParentRoute: () => StudioStudioRoute,
+} as any)
+const StudioStudioPaginasRoute = StudioStudioPaginasRouteImport.update({
+  id: '/paginas',
+  path: '/paginas',
+  getParentRoute: () => StudioStudioRoute,
+} as any)
+const CheckoutPagamentoOrderIdRoute =
+  CheckoutPagamentoOrderIdRouteImport.update({
+    id: '/pagamento/$orderId',
+    path: '/pagamento/$orderId',
+    getParentRoute: () => CheckoutRoute,
+  } as any)
+const AdminAdminProdutosIndexRoute = AdminAdminProdutosIndexRouteImport.update({
+  id: '/admin/produtos/',
+  path: '/admin/produtos/',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminAdminProdutosIdRoute = AdminAdminProdutosIdRouteImport.update({
+  id: '/admin/produtos/$id',
+  path: '/admin/produtos/$id',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminAdminProdutosNovoRoute = AdminAdminProdutosNovoRouteImport.update({
+  id: '/admin/produtos/novo',
+  path: '/admin/produtos/novo',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminAdminSiteIndexRoute = AdminAdminSiteIndexRouteImport.update({
+  id: '/admin/site/',
+  path: '/admin/site/',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminAdminSitePageRoute = AdminAdminSitePageRouteImport.update({
+  id: '/admin/site/$page',
+  path: '/admin/site/$page',
+  getParentRoute: () => AdminRoute,
 } as any)
 const CrmCrmClientesIdRoute = CrmCrmClientesIdRouteImport.update({
   id: '/$id',
   path: '/$id',
   getParentRoute: () => CrmCrmClientesRoute,
 } as any)
-const AdminAdminProdutosNovoRoute = AdminAdminProdutosNovoRouteImport.update({
-  id: '/novo',
-  path: '/novo',
-  getParentRoute: () => AdminAdminProdutosRoute,
+const OpsOpsPedidosIdRoute = OpsOpsPedidosIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => OpsOpsPedidosRoute,
 } as any)
+const StudioStudioPaginasSlugRoute = StudioStudioPaginasSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => StudioStudioPaginasRoute,
+} as any)
+const ApiPublicPaymentsMercadopagoRoute =
+  ApiPublicPaymentsMercadopagoRouteImport.update({
+    id: '/api/public/payments/mercadopago',
+    path: '/api/public/payments/mercadopago',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const ApiPublicPaymentsWebhookRoute =
+  ApiPublicPaymentsWebhookRouteImport.update({
+    id: '/api/public/payments/webhook',
+    path: '/api/public/payments/webhook',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/$slug': typeof SlugRoute
+  '/atelier-prive': typeof AtelierPriveRoute
   '/busca': typeof BuscaRoute
   '/businessplan': typeof BusinessplanRoute
   '/cadastro': typeof CadastroRoute
   '/carrinho': typeof CarrinhoRoute
-  '/catalogo': typeof CatalogoRoute
   '/checkout': typeof CheckoutRouteWithChildren
-  '/comunidade': typeof ComunidadeRoute
-  '/cursos': typeof CursosRoute
-  '/ebooks': typeof EbooksRoute
+  '/conteudos': typeof ConteudosRoute
+  '/corporativo': typeof CorporativoRoute
   '/experiencias': typeof ExperienciasRoute
   '/login': typeof LoginRoute
+  '/mon-club': typeof MonClubRoute
+  '/quiz': typeof QuizRoute
   '/sobre': typeof SobreRoute
-  '/workshops': typeof WorkshopsRoute
   '/conta': typeof AuthenticatedContaRoute
   '/meus-cursos': typeof AuthenticatedMeusCursosRoute
   '/pedidos': typeof AuthenticatedPedidosRoute
   '/studio': typeof StudioStudioRouteWithChildren
-  '/categoria/$slug': typeof CategoriaSlugRoute
   '/checkout/retorno': typeof CheckoutRetornoRoute
+  '/cursos/$slug': typeof CursosSlugRoute
+  '/politicas/$doc': typeof PoliticasDocRoute
   '/produto/$slug': typeof ProdutoSlugRoute
+  '/produtos/$slug': typeof ProdutosSlugRoute
+  '/cursos/': typeof CursosIndexRoute
+  '/produtos/': typeof ProdutosIndexRoute
   '/academy/alunos': typeof AcademyAcademyAlunosRoute
   '/academy/certificados': typeof AcademyAcademyCertificadosRoute
   '/academy/cursos': typeof AcademyAcademyCursosRoute
   '/admin/categorias': typeof AdminAdminCategoriasRoute
   '/admin/clientes': typeof AdminAdminClientesRoute
+  '/admin/contatos': typeof AdminAdminContatosRoute
   '/admin/modulos': typeof AdminAdminModulosRoute
   '/admin/pedidos': typeof AdminAdminPedidosRoute
-  '/admin/produtos': typeof AdminAdminProdutosRouteWithChildren
   '/administracao/comunicacoes': typeof AdministracaoAdministracaoComunicacoesRoute
   '/administracao/empresa': typeof AdministracaoAdministracaoEmpresaRoute
   '/administracao/integracoes': typeof AdministracaoAdministracaoIntegracoesRoute
@@ -488,43 +547,52 @@ export interface FileRoutesByFullPath {
   '/crm/': typeof CrmCrmIndexRoute
   '/marketing/': typeof MarketingMarketingIndexRoute
   '/ops/': typeof OpsOpsIndexRoute
+  '/admin/produtos/$id': typeof AdminAdminProdutosIdRoute
   '/admin/produtos/novo': typeof AdminAdminProdutosNovoRoute
+  '/admin/site/$page': typeof AdminAdminSitePageRoute
   '/crm/clientes/$id': typeof CrmCrmClientesIdRoute
   '/ops/pedidos/$id': typeof OpsOpsPedidosIdRoute
   '/studio/paginas/$slug': typeof StudioStudioPaginasSlugRoute
+  '/api/public/payments/mercadopago': typeof ApiPublicPaymentsMercadopagoRoute
   '/api/public/payments/webhook': typeof ApiPublicPaymentsWebhookRoute
+  '/admin/produtos/': typeof AdminAdminProdutosIndexRoute
+  '/admin/site/': typeof AdminAdminSiteIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/$slug': typeof SlugRoute
+  '/atelier-prive': typeof AtelierPriveRoute
   '/busca': typeof BuscaRoute
   '/businessplan': typeof BusinessplanRoute
   '/cadastro': typeof CadastroRoute
   '/carrinho': typeof CarrinhoRoute
-  '/catalogo': typeof CatalogoRoute
   '/checkout': typeof CheckoutRouteWithChildren
-  '/comunidade': typeof ComunidadeRoute
-  '/cursos': typeof CursosRoute
-  '/ebooks': typeof EbooksRoute
+  '/conteudos': typeof ConteudosRoute
+  '/corporativo': typeof CorporativoRoute
   '/experiencias': typeof ExperienciasRoute
   '/login': typeof LoginRoute
+  '/mon-club': typeof MonClubRoute
+  '/quiz': typeof QuizRoute
   '/sobre': typeof SobreRoute
-  '/workshops': typeof WorkshopsRoute
   '/conta': typeof AuthenticatedContaRoute
   '/meus-cursos': typeof AuthenticatedMeusCursosRoute
   '/pedidos': typeof AuthenticatedPedidosRoute
   '/studio': typeof StudioStudioRouteWithChildren
-  '/categoria/$slug': typeof CategoriaSlugRoute
   '/checkout/retorno': typeof CheckoutRetornoRoute
+  '/cursos/$slug': typeof CursosSlugRoute
+  '/politicas/$doc': typeof PoliticasDocRoute
   '/produto/$slug': typeof ProdutoSlugRoute
+  '/produtos/$slug': typeof ProdutosSlugRoute
+  '/cursos': typeof CursosIndexRoute
+  '/produtos': typeof ProdutosIndexRoute
   '/academy/alunos': typeof AcademyAcademyAlunosRoute
   '/academy/certificados': typeof AcademyAcademyCertificadosRoute
   '/academy/cursos': typeof AcademyAcademyCursosRoute
   '/admin/categorias': typeof AdminAdminCategoriasRoute
   '/admin/clientes': typeof AdminAdminClientesRoute
+  '/admin/contatos': typeof AdminAdminContatosRoute
   '/admin/modulos': typeof AdminAdminModulosRoute
   '/admin/pedidos': typeof AdminAdminPedidosRoute
-  '/admin/produtos': typeof AdminAdminProdutosRouteWithChildren
   '/administracao/comunicacoes': typeof AdministracaoAdministracaoComunicacoesRoute
   '/administracao/empresa': typeof AdministracaoAdministracaoEmpresaRoute
   '/administracao/integracoes': typeof AdministracaoAdministracaoIntegracoesRoute
@@ -551,11 +619,16 @@ export interface FileRoutesByTo {
   '/crm': typeof CrmCrmIndexRoute
   '/marketing': typeof MarketingMarketingIndexRoute
   '/ops': typeof OpsOpsIndexRoute
+  '/admin/produtos/$id': typeof AdminAdminProdutosIdRoute
   '/admin/produtos/novo': typeof AdminAdminProdutosNovoRoute
+  '/admin/site/$page': typeof AdminAdminSitePageRoute
   '/crm/clientes/$id': typeof CrmCrmClientesIdRoute
   '/ops/pedidos/$id': typeof OpsOpsPedidosIdRoute
   '/studio/paginas/$slug': typeof StudioStudioPaginasSlugRoute
+  '/api/public/payments/mercadopago': typeof ApiPublicPaymentsMercadopagoRoute
   '/api/public/payments/webhook': typeof ApiPublicPaymentsWebhookRoute
+  '/admin/produtos': typeof AdminAdminProdutosIndexRoute
+  '/admin/site': typeof AdminAdminSiteIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -569,34 +642,38 @@ export interface FileRoutesById {
   '/_marketing': typeof MarketingRouteWithChildren
   '/_ops': typeof OpsRouteWithChildren
   '/_studio': typeof StudioRouteWithChildren
+  '/atelier-prive': typeof AtelierPriveRoute
   '/busca': typeof BuscaRoute
   '/businessplan': typeof BusinessplanRoute
   '/cadastro': typeof CadastroRoute
   '/carrinho': typeof CarrinhoRoute
-  '/catalogo': typeof CatalogoRoute
   '/checkout': typeof CheckoutRouteWithChildren
-  '/comunidade': typeof ComunidadeRoute
-  '/cursos': typeof CursosRoute
-  '/ebooks': typeof EbooksRoute
+  '/conteudos': typeof ConteudosRoute
+  '/corporativo': typeof CorporativoRoute
   '/experiencias': typeof ExperienciasRoute
   '/login': typeof LoginRoute
+  '/mon-club': typeof MonClubRoute
+  '/quiz': typeof QuizRoute
   '/sobre': typeof SobreRoute
-  '/workshops': typeof WorkshopsRoute
   '/_authenticated/conta': typeof AuthenticatedContaRoute
   '/_authenticated/meus-cursos': typeof AuthenticatedMeusCursosRoute
   '/_authenticated/pedidos': typeof AuthenticatedPedidosRoute
   '/_studio/studio': typeof StudioStudioRouteWithChildren
-  '/categoria/$slug': typeof CategoriaSlugRoute
   '/checkout/retorno': typeof CheckoutRetornoRoute
+  '/cursos/$slug': typeof CursosSlugRoute
+  '/politicas/$doc': typeof PoliticasDocRoute
   '/produto/$slug': typeof ProdutoSlugRoute
+  '/produtos/$slug': typeof ProdutosSlugRoute
+  '/cursos/': typeof CursosIndexRoute
+  '/produtos/': typeof ProdutosIndexRoute
   '/_academy/academy/alunos': typeof AcademyAcademyAlunosRoute
   '/_academy/academy/certificados': typeof AcademyAcademyCertificadosRoute
   '/_academy/academy/cursos': typeof AcademyAcademyCursosRoute
   '/_admin/admin/categorias': typeof AdminAdminCategoriasRoute
   '/_admin/admin/clientes': typeof AdminAdminClientesRoute
+  '/_admin/admin/contatos': typeof AdminAdminContatosRoute
   '/_admin/admin/modulos': typeof AdminAdminModulosRoute
   '/_admin/admin/pedidos': typeof AdminAdminPedidosRoute
-  '/_admin/admin/produtos': typeof AdminAdminProdutosRouteWithChildren
   '/_administracao/administracao/comunicacoes': typeof AdministracaoAdministracaoComunicacoesRoute
   '/_administracao/administracao/empresa': typeof AdministracaoAdministracaoEmpresaRoute
   '/_administracao/administracao/integracoes': typeof AdministracaoAdministracaoIntegracoesRoute
@@ -623,45 +700,54 @@ export interface FileRoutesById {
   '/_crm/crm/': typeof CrmCrmIndexRoute
   '/_marketing/marketing/': typeof MarketingMarketingIndexRoute
   '/_ops/ops/': typeof OpsOpsIndexRoute
+  '/_admin/admin/produtos/$id': typeof AdminAdminProdutosIdRoute
   '/_admin/admin/produtos/novo': typeof AdminAdminProdutosNovoRoute
+  '/_admin/admin/site/$page': typeof AdminAdminSitePageRoute
   '/_crm/crm/clientes/$id': typeof CrmCrmClientesIdRoute
   '/_ops/ops/pedidos/$id': typeof OpsOpsPedidosIdRoute
   '/_studio/studio/paginas/$slug': typeof StudioStudioPaginasSlugRoute
+  '/api/public/payments/mercadopago': typeof ApiPublicPaymentsMercadopagoRoute
   '/api/public/payments/webhook': typeof ApiPublicPaymentsWebhookRoute
+  '/_admin/admin/produtos/': typeof AdminAdminProdutosIndexRoute
+  '/_admin/admin/site/': typeof AdminAdminSiteIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
     | '/$slug'
+    | '/atelier-prive'
     | '/busca'
     | '/businessplan'
     | '/cadastro'
     | '/carrinho'
-    | '/catalogo'
     | '/checkout'
-    | '/comunidade'
-    | '/cursos'
-    | '/ebooks'
+    | '/conteudos'
+    | '/corporativo'
     | '/experiencias'
     | '/login'
+    | '/mon-club'
+    | '/quiz'
     | '/sobre'
-    | '/workshops'
     | '/conta'
     | '/meus-cursos'
     | '/pedidos'
     | '/studio'
-    | '/categoria/$slug'
     | '/checkout/retorno'
+    | '/cursos/$slug'
+    | '/politicas/$doc'
     | '/produto/$slug'
+    | '/produtos/$slug'
+    | '/cursos/'
+    | '/produtos/'
     | '/academy/alunos'
     | '/academy/certificados'
     | '/academy/cursos'
     | '/admin/categorias'
     | '/admin/clientes'
+    | '/admin/contatos'
     | '/admin/modulos'
     | '/admin/pedidos'
-    | '/admin/produtos'
     | '/administracao/comunicacoes'
     | '/administracao/empresa'
     | '/administracao/integracoes'
@@ -688,43 +774,52 @@ export interface FileRouteTypes {
     | '/crm/'
     | '/marketing/'
     | '/ops/'
+    | '/admin/produtos/$id'
     | '/admin/produtos/novo'
+    | '/admin/site/$page'
     | '/crm/clientes/$id'
     | '/ops/pedidos/$id'
     | '/studio/paginas/$slug'
+    | '/api/public/payments/mercadopago'
     | '/api/public/payments/webhook'
+    | '/admin/produtos/'
+    | '/admin/site/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/$slug'
+    | '/atelier-prive'
     | '/busca'
     | '/businessplan'
     | '/cadastro'
     | '/carrinho'
-    | '/catalogo'
     | '/checkout'
-    | '/comunidade'
-    | '/cursos'
-    | '/ebooks'
+    | '/conteudos'
+    | '/corporativo'
     | '/experiencias'
     | '/login'
+    | '/mon-club'
+    | '/quiz'
     | '/sobre'
-    | '/workshops'
     | '/conta'
     | '/meus-cursos'
     | '/pedidos'
     | '/studio'
-    | '/categoria/$slug'
     | '/checkout/retorno'
+    | '/cursos/$slug'
+    | '/politicas/$doc'
     | '/produto/$slug'
+    | '/produtos/$slug'
+    | '/cursos'
+    | '/produtos'
     | '/academy/alunos'
     | '/academy/certificados'
     | '/academy/cursos'
     | '/admin/categorias'
     | '/admin/clientes'
+    | '/admin/contatos'
     | '/admin/modulos'
     | '/admin/pedidos'
-    | '/admin/produtos'
     | '/administracao/comunicacoes'
     | '/administracao/empresa'
     | '/administracao/integracoes'
@@ -751,11 +846,16 @@ export interface FileRouteTypes {
     | '/crm'
     | '/marketing'
     | '/ops'
+    | '/admin/produtos/$id'
     | '/admin/produtos/novo'
+    | '/admin/site/$page'
     | '/crm/clientes/$id'
     | '/ops/pedidos/$id'
     | '/studio/paginas/$slug'
+    | '/api/public/payments/mercadopago'
     | '/api/public/payments/webhook'
+    | '/admin/produtos'
+    | '/admin/site'
   id:
     | '__root__'
     | '/'
@@ -768,34 +868,38 @@ export interface FileRouteTypes {
     | '/_marketing'
     | '/_ops'
     | '/_studio'
+    | '/atelier-prive'
     | '/busca'
     | '/businessplan'
     | '/cadastro'
     | '/carrinho'
-    | '/catalogo'
     | '/checkout'
-    | '/comunidade'
-    | '/cursos'
-    | '/ebooks'
+    | '/conteudos'
+    | '/corporativo'
     | '/experiencias'
     | '/login'
+    | '/mon-club'
+    | '/quiz'
     | '/sobre'
-    | '/workshops'
     | '/_authenticated/conta'
     | '/_authenticated/meus-cursos'
     | '/_authenticated/pedidos'
     | '/_studio/studio'
-    | '/categoria/$slug'
     | '/checkout/retorno'
+    | '/cursos/$slug'
+    | '/politicas/$doc'
     | '/produto/$slug'
+    | '/produtos/$slug'
+    | '/cursos/'
+    | '/produtos/'
     | '/_academy/academy/alunos'
     | '/_academy/academy/certificados'
     | '/_academy/academy/cursos'
     | '/_admin/admin/categorias'
     | '/_admin/admin/clientes'
+    | '/_admin/admin/contatos'
     | '/_admin/admin/modulos'
     | '/_admin/admin/pedidos'
-    | '/_admin/admin/produtos'
     | '/_administracao/administracao/comunicacoes'
     | '/_administracao/administracao/empresa'
     | '/_administracao/administracao/integracoes'
@@ -822,11 +926,16 @@ export interface FileRouteTypes {
     | '/_crm/crm/'
     | '/_marketing/marketing/'
     | '/_ops/ops/'
+    | '/_admin/admin/produtos/$id'
     | '/_admin/admin/produtos/novo'
+    | '/_admin/admin/site/$page'
     | '/_crm/crm/clientes/$id'
     | '/_ops/ops/pedidos/$id'
     | '/_studio/studio/paginas/$slug'
+    | '/api/public/payments/mercadopago'
     | '/api/public/payments/webhook'
+    | '/_admin/admin/produtos/'
+    | '/_admin/admin/site/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -840,171 +949,36 @@ export interface RootRouteChildren {
   MarketingRoute: typeof MarketingRouteWithChildren
   OpsRoute: typeof OpsRouteWithChildren
   StudioRoute: typeof StudioRouteWithChildren
+  AtelierPriveRoute: typeof AtelierPriveRoute
   BuscaRoute: typeof BuscaRoute
   BusinessplanRoute: typeof BusinessplanRoute
   CadastroRoute: typeof CadastroRoute
   CarrinhoRoute: typeof CarrinhoRoute
-  CatalogoRoute: typeof CatalogoRoute
   CheckoutRoute: typeof CheckoutRouteWithChildren
-  ComunidadeRoute: typeof ComunidadeRoute
-  CursosRoute: typeof CursosRoute
-  EbooksRoute: typeof EbooksRoute
+  ConteudosRoute: typeof ConteudosRoute
+  CorporativoRoute: typeof CorporativoRoute
   ExperienciasRoute: typeof ExperienciasRoute
   LoginRoute: typeof LoginRoute
+  MonClubRoute: typeof MonClubRoute
+  QuizRoute: typeof QuizRoute
   SobreRoute: typeof SobreRoute
-  WorkshopsRoute: typeof WorkshopsRoute
-  CategoriaSlugRoute: typeof CategoriaSlugRoute
+  CursosSlugRoute: typeof CursosSlugRoute
+  PoliticasDocRoute: typeof PoliticasDocRoute
   ProdutoSlugRoute: typeof ProdutoSlugRoute
+  ProdutosSlugRoute: typeof ProdutosSlugRoute
+  CursosIndexRoute: typeof CursosIndexRoute
+  ProdutosIndexRoute: typeof ProdutosIndexRoute
+  ApiPublicPaymentsMercadopagoRoute: typeof ApiPublicPaymentsMercadopagoRoute
   ApiPublicPaymentsWebhookRoute: typeof ApiPublicPaymentsWebhookRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/workshops': {
-      id: '/workshops'
-      path: '/workshops'
-      fullPath: '/workshops'
-      preLoaderRoute: typeof WorkshopsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/sobre': {
-      id: '/sobre'
-      path: '/sobre'
-      fullPath: '/sobre'
-      preLoaderRoute: typeof SobreRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/login': {
-      id: '/login'
-      path: '/login'
-      fullPath: '/login'
-      preLoaderRoute: typeof LoginRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/experiencias': {
-      id: '/experiencias'
-      path: '/experiencias'
-      fullPath: '/experiencias'
-      preLoaderRoute: typeof ExperienciasRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/ebooks': {
-      id: '/ebooks'
-      path: '/ebooks'
-      fullPath: '/ebooks'
-      preLoaderRoute: typeof EbooksRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/cursos': {
-      id: '/cursos'
-      path: '/cursos'
-      fullPath: '/cursos'
-      preLoaderRoute: typeof CursosRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/comunidade': {
-      id: '/comunidade'
-      path: '/comunidade'
-      fullPath: '/comunidade'
-      preLoaderRoute: typeof ComunidadeRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/checkout': {
-      id: '/checkout'
-      path: '/checkout'
-      fullPath: '/checkout'
-      preLoaderRoute: typeof CheckoutRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/catalogo': {
-      id: '/catalogo'
-      path: '/catalogo'
-      fullPath: '/catalogo'
-      preLoaderRoute: typeof CatalogoRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/carrinho': {
-      id: '/carrinho'
-      path: '/carrinho'
-      fullPath: '/carrinho'
-      preLoaderRoute: typeof CarrinhoRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/cadastro': {
-      id: '/cadastro'
-      path: '/cadastro'
-      fullPath: '/cadastro'
-      preLoaderRoute: typeof CadastroRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/businessplan': {
-      id: '/businessplan'
-      path: '/businessplan'
-      fullPath: '/businessplan'
-      preLoaderRoute: typeof BusinessplanRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/busca': {
-      id: '/busca'
-      path: '/busca'
-      fullPath: '/busca'
-      preLoaderRoute: typeof BuscaRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/_studio': {
-      id: '/_studio'
-      path: ''
+    '/': {
+      id: '/'
+      path: '/'
       fullPath: '/'
-      preLoaderRoute: typeof StudioRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/_ops': {
-      id: '/_ops'
-      path: ''
-      fullPath: '/'
-      preLoaderRoute: typeof OpsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/_marketing': {
-      id: '/_marketing'
-      path: ''
-      fullPath: '/'
-      preLoaderRoute: typeof MarketingRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/_crm': {
-      id: '/_crm'
-      path: ''
-      fullPath: '/'
-      preLoaderRoute: typeof CrmRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/_authenticated': {
-      id: '/_authenticated'
-      path: ''
-      fullPath: '/'
-      preLoaderRoute: typeof AuthenticatedRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/_administracao': {
-      id: '/_administracao'
-      path: ''
-      fullPath: '/'
-      preLoaderRoute: typeof AdministracaoRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/_admin': {
-      id: '/_admin'
-      path: ''
-      fullPath: '/'
-      preLoaderRoute: typeof AdminRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/_academy': {
-      id: '/_academy'
-      path: ''
-      fullPath: '/'
-      preLoaderRoute: typeof AcademyRouteImport
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/$slug': {
@@ -1014,46 +988,158 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SlugRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/': {
-      id: '/'
-      path: '/'
+    '/_academy': {
+      id: '/_academy'
+      path: ''
       fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
+      preLoaderRoute: typeof AcademyRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/produto/$slug': {
-      id: '/produto/$slug'
-      path: '/produto/$slug'
-      fullPath: '/produto/$slug'
-      preLoaderRoute: typeof ProdutoSlugRouteImport
+    '/_admin': {
+      id: '/_admin'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AdminRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/checkout/retorno': {
-      id: '/checkout/retorno'
-      path: '/retorno'
-      fullPath: '/checkout/retorno'
-      preLoaderRoute: typeof CheckoutRetornoRouteImport
-      parentRoute: typeof CheckoutRoute
-    }
-    '/categoria/$slug': {
-      id: '/categoria/$slug'
-      path: '/categoria/$slug'
-      fullPath: '/categoria/$slug'
-      preLoaderRoute: typeof CategoriaSlugRouteImport
+    '/_administracao': {
+      id: '/_administracao'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AdministracaoRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_studio/studio': {
-      id: '/_studio/studio'
-      path: '/studio'
-      fullPath: '/studio'
-      preLoaderRoute: typeof StudioStudioRouteImport
-      parentRoute: typeof StudioRoute
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/_authenticated/pedidos': {
-      id: '/_authenticated/pedidos'
-      path: '/pedidos'
-      fullPath: '/pedidos'
-      preLoaderRoute: typeof AuthenticatedPedidosRouteImport
+    '/_crm': {
+      id: '/_crm'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof CrmRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_marketing': {
+      id: '/_marketing'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof MarketingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_ops': {
+      id: '/_ops'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof OpsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_studio': {
+      id: '/_studio'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof StudioRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/atelier-prive': {
+      id: '/atelier-prive'
+      path: '/atelier-prive'
+      fullPath: '/atelier-prive'
+      preLoaderRoute: typeof AtelierPriveRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/busca': {
+      id: '/busca'
+      path: '/busca'
+      fullPath: '/busca'
+      preLoaderRoute: typeof BuscaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/businessplan': {
+      id: '/businessplan'
+      path: '/businessplan'
+      fullPath: '/businessplan'
+      preLoaderRoute: typeof BusinessplanRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/cadastro': {
+      id: '/cadastro'
+      path: '/cadastro'
+      fullPath: '/cadastro'
+      preLoaderRoute: typeof CadastroRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/carrinho': {
+      id: '/carrinho'
+      path: '/carrinho'
+      fullPath: '/carrinho'
+      preLoaderRoute: typeof CarrinhoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/checkout': {
+      id: '/checkout'
+      path: '/checkout'
+      fullPath: '/checkout'
+      preLoaderRoute: typeof CheckoutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/conteudos': {
+      id: '/conteudos'
+      path: '/conteudos'
+      fullPath: '/conteudos'
+      preLoaderRoute: typeof ConteudosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/corporativo': {
+      id: '/corporativo'
+      path: '/corporativo'
+      fullPath: '/corporativo'
+      preLoaderRoute: typeof CorporativoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/experiencias': {
+      id: '/experiencias'
+      path: '/experiencias'
+      fullPath: '/experiencias'
+      preLoaderRoute: typeof ExperienciasRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/mon-club': {
+      id: '/mon-club'
+      path: '/mon-club'
+      fullPath: '/mon-club'
+      preLoaderRoute: typeof MonClubRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/quiz': {
+      id: '/quiz'
+      path: '/quiz'
+      fullPath: '/quiz'
+      preLoaderRoute: typeof QuizRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sobre': {
+      id: '/sobre'
+      path: '/sobre'
+      fullPath: '/sobre'
+      preLoaderRoute: typeof SobreRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/conta': {
+      id: '/_authenticated/conta'
+      path: '/conta'
+      fullPath: '/conta'
+      preLoaderRoute: typeof AuthenticatedContaRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
     '/_authenticated/meus-cursos': {
@@ -1063,242 +1149,74 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedMeusCursosRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
-    '/_authenticated/conta': {
-      id: '/_authenticated/conta'
-      path: '/conta'
-      fullPath: '/conta'
-      preLoaderRoute: typeof AuthenticatedContaRouteImport
+    '/_authenticated/pedidos': {
+      id: '/_authenticated/pedidos'
+      path: '/pedidos'
+      fullPath: '/pedidos'
+      preLoaderRoute: typeof AuthenticatedPedidosRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
-    '/_ops/ops/': {
-      id: '/_ops/ops/'
-      path: '/ops'
-      fullPath: '/ops/'
-      preLoaderRoute: typeof OpsOpsIndexRouteImport
-      parentRoute: typeof OpsRoute
+    '/_studio/studio': {
+      id: '/_studio/studio'
+      path: '/studio'
+      fullPath: '/studio'
+      preLoaderRoute: typeof StudioStudioRouteImport
+      parentRoute: typeof StudioRoute
     }
-    '/_marketing/marketing/': {
-      id: '/_marketing/marketing/'
-      path: '/marketing'
-      fullPath: '/marketing/'
-      preLoaderRoute: typeof MarketingMarketingIndexRouteImport
-      parentRoute: typeof MarketingRoute
+    '/checkout/retorno': {
+      id: '/checkout/retorno'
+      path: '/retorno'
+      fullPath: '/checkout/retorno'
+      preLoaderRoute: typeof CheckoutRetornoRouteImport
+      parentRoute: typeof CheckoutRoute
     }
-    '/_crm/crm/': {
-      id: '/_crm/crm/'
-      path: '/crm'
-      fullPath: '/crm/'
-      preLoaderRoute: typeof CrmCrmIndexRouteImport
-      parentRoute: typeof CrmRoute
+    '/cursos/': {
+      id: '/cursos/'
+      path: '/cursos'
+      fullPath: '/cursos/'
+      preLoaderRoute: typeof CursosIndexRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/_administracao/administracao/': {
-      id: '/_administracao/administracao/'
-      path: '/administracao'
-      fullPath: '/administracao/'
-      preLoaderRoute: typeof AdministracaoAdministracaoIndexRouteImport
-      parentRoute: typeof AdministracaoRoute
+    '/cursos/$slug': {
+      id: '/cursos/$slug'
+      path: '/cursos/$slug'
+      fullPath: '/cursos/$slug'
+      preLoaderRoute: typeof CursosSlugRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/_admin/admin/': {
-      id: '/_admin/admin/'
-      path: '/admin'
-      fullPath: '/admin/'
-      preLoaderRoute: typeof AdminAdminIndexRouteImport
-      parentRoute: typeof AdminRoute
+    '/politicas/$doc': {
+      id: '/politicas/$doc'
+      path: '/politicas/$doc'
+      fullPath: '/politicas/$doc'
+      preLoaderRoute: typeof PoliticasDocRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/produto/$slug': {
+      id: '/produto/$slug'
+      path: '/produto/$slug'
+      fullPath: '/produto/$slug'
+      preLoaderRoute: typeof ProdutoSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/produtos/': {
+      id: '/produtos/'
+      path: '/produtos'
+      fullPath: '/produtos/'
+      preLoaderRoute: typeof ProdutosIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/produtos/$slug': {
+      id: '/produtos/$slug'
+      path: '/produtos/$slug'
+      fullPath: '/produtos/$slug'
+      preLoaderRoute: typeof ProdutosSlugRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/_academy/academy/': {
       id: '/_academy/academy/'
       path: '/academy'
       fullPath: '/academy/'
       preLoaderRoute: typeof AcademyAcademyIndexRouteImport
-      parentRoute: typeof AcademyRoute
-    }
-    '/checkout/pagamento/$orderId': {
-      id: '/checkout/pagamento/$orderId'
-      path: '/pagamento/$orderId'
-      fullPath: '/checkout/pagamento/$orderId'
-      preLoaderRoute: typeof CheckoutPagamentoOrderIdRouteImport
-      parentRoute: typeof CheckoutRoute
-    }
-    '/_studio/studio/paginas': {
-      id: '/_studio/studio/paginas'
-      path: '/paginas'
-      fullPath: '/studio/paginas'
-      preLoaderRoute: typeof StudioStudioPaginasRouteImport
-      parentRoute: typeof StudioStudioRoute
-    }
-    '/_studio/studio/midia': {
-      id: '/_studio/studio/midia'
-      path: '/midia'
-      fullPath: '/studio/midia'
-      preLoaderRoute: typeof StudioStudioMidiaRouteImport
-      parentRoute: typeof StudioStudioRoute
-    }
-    '/_studio/studio/equipe': {
-      id: '/_studio/studio/equipe'
-      path: '/equipe'
-      fullPath: '/studio/equipe'
-      preLoaderRoute: typeof StudioStudioEquipeRouteImport
-      parentRoute: typeof StudioStudioRoute
-    }
-    '/_ops/ops/producao': {
-      id: '/_ops/ops/producao'
-      path: '/ops/producao'
-      fullPath: '/ops/producao'
-      preLoaderRoute: typeof OpsOpsProducaoRouteImport
-      parentRoute: typeof OpsRoute
-    }
-    '/_ops/ops/pedidos': {
-      id: '/_ops/ops/pedidos'
-      path: '/ops/pedidos'
-      fullPath: '/ops/pedidos'
-      preLoaderRoute: typeof OpsOpsPedidosRouteImport
-      parentRoute: typeof OpsRoute
-    }
-    '/_ops/ops/expedicao': {
-      id: '/_ops/ops/expedicao'
-      path: '/ops/expedicao'
-      fullPath: '/ops/expedicao'
-      preLoaderRoute: typeof OpsOpsExpedicaoRouteImport
-      parentRoute: typeof OpsRoute
-    }
-    '/_marketing/marketing/social': {
-      id: '/_marketing/marketing/social'
-      path: '/marketing/social'
-      fullPath: '/marketing/social'
-      preLoaderRoute: typeof MarketingMarketingSocialRouteImport
-      parentRoute: typeof MarketingRoute
-    }
-    '/_marketing/marketing/ia': {
-      id: '/_marketing/marketing/ia'
-      path: '/marketing/ia'
-      fullPath: '/marketing/ia'
-      preLoaderRoute: typeof MarketingMarketingIaRouteImport
-      parentRoute: typeof MarketingRoute
-    }
-    '/_marketing/marketing/campanhas': {
-      id: '/_marketing/marketing/campanhas'
-      path: '/marketing/campanhas'
-      fullPath: '/marketing/campanhas'
-      preLoaderRoute: typeof MarketingMarketingCampanhasRouteImport
-      parentRoute: typeof MarketingRoute
-    }
-    '/_marketing/marketing/calendario': {
-      id: '/_marketing/marketing/calendario'
-      path: '/marketing/calendario'
-      fullPath: '/marketing/calendario'
-      preLoaderRoute: typeof MarketingMarketingCalendarioRouteImport
-      parentRoute: typeof MarketingRoute
-    }
-    '/_marketing/marketing/automacoes': {
-      id: '/_marketing/marketing/automacoes'
-      path: '/marketing/automacoes'
-      fullPath: '/marketing/automacoes'
-      preLoaderRoute: typeof MarketingMarketingAutomacoesRouteImport
-      parentRoute: typeof MarketingRoute
-    }
-    '/_crm/crm/segmentos': {
-      id: '/_crm/crm/segmentos'
-      path: '/crm/segmentos'
-      fullPath: '/crm/segmentos'
-      preLoaderRoute: typeof CrmCrmSegmentosRouteImport
-      parentRoute: typeof CrmRoute
-    }
-    '/_crm/crm/clientes': {
-      id: '/_crm/crm/clientes'
-      path: '/crm/clientes'
-      fullPath: '/crm/clientes'
-      preLoaderRoute: typeof CrmCrmClientesRouteImport
-      parentRoute: typeof CrmRoute
-    }
-    '/_administracao/administracao/usuarios': {
-      id: '/_administracao/administracao/usuarios'
-      path: '/administracao/usuarios'
-      fullPath: '/administracao/usuarios'
-      preLoaderRoute: typeof AdministracaoAdministracaoUsuariosRouteImport
-      parentRoute: typeof AdministracaoRoute
-    }
-    '/_administracao/administracao/papeis': {
-      id: '/_administracao/administracao/papeis'
-      path: '/administracao/papeis'
-      fullPath: '/administracao/papeis'
-      preLoaderRoute: typeof AdministracaoAdministracaoPapeisRouteImport
-      parentRoute: typeof AdministracaoRoute
-    }
-    '/_administracao/administracao/logs': {
-      id: '/_administracao/administracao/logs'
-      path: '/administracao/logs'
-      fullPath: '/administracao/logs'
-      preLoaderRoute: typeof AdministracaoAdministracaoLogsRouteImport
-      parentRoute: typeof AdministracaoRoute
-    }
-    '/_administracao/administracao/integracoes': {
-      id: '/_administracao/administracao/integracoes'
-      path: '/administracao/integracoes'
-      fullPath: '/administracao/integracoes'
-      preLoaderRoute: typeof AdministracaoAdministracaoIntegracoesRouteImport
-      parentRoute: typeof AdministracaoRoute
-    }
-    '/_administracao/administracao/empresa': {
-      id: '/_administracao/administracao/empresa'
-      path: '/administracao/empresa'
-      fullPath: '/administracao/empresa'
-      preLoaderRoute: typeof AdministracaoAdministracaoEmpresaRouteImport
-      parentRoute: typeof AdministracaoRoute
-    }
-    '/_administracao/administracao/comunicacoes': {
-      id: '/_administracao/administracao/comunicacoes'
-      path: '/administracao/comunicacoes'
-      fullPath: '/administracao/comunicacoes'
-      preLoaderRoute: typeof AdministracaoAdministracaoComunicacoesRouteImport
-      parentRoute: typeof AdministracaoRoute
-    }
-    '/_admin/admin/produtos': {
-      id: '/_admin/admin/produtos'
-      path: '/admin/produtos'
-      fullPath: '/admin/produtos'
-      preLoaderRoute: typeof AdminAdminProdutosRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/_admin/admin/pedidos': {
-      id: '/_admin/admin/pedidos'
-      path: '/admin/pedidos'
-      fullPath: '/admin/pedidos'
-      preLoaderRoute: typeof AdminAdminPedidosRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/_admin/admin/modulos': {
-      id: '/_admin/admin/modulos'
-      path: '/admin/modulos'
-      fullPath: '/admin/modulos'
-      preLoaderRoute: typeof AdminAdminModulosRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/_admin/admin/clientes': {
-      id: '/_admin/admin/clientes'
-      path: '/admin/clientes'
-      fullPath: '/admin/clientes'
-      preLoaderRoute: typeof AdminAdminClientesRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/_admin/admin/categorias': {
-      id: '/_admin/admin/categorias'
-      path: '/admin/categorias'
-      fullPath: '/admin/categorias'
-      preLoaderRoute: typeof AdminAdminCategoriasRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/_academy/academy/cursos': {
-      id: '/_academy/academy/cursos'
-      path: '/academy/cursos'
-      fullPath: '/academy/cursos'
-      preLoaderRoute: typeof AcademyAcademyCursosRouteImport
-      parentRoute: typeof AcademyRoute
-    }
-    '/_academy/academy/certificados': {
-      id: '/_academy/academy/certificados'
-      path: '/academy/certificados'
-      fullPath: '/academy/certificados'
-      preLoaderRoute: typeof AcademyAcademyCertificadosRouteImport
       parentRoute: typeof AcademyRoute
     }
     '/_academy/academy/alunos': {
@@ -1308,26 +1226,264 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AcademyAcademyAlunosRouteImport
       parentRoute: typeof AcademyRoute
     }
-    '/api/public/payments/webhook': {
-      id: '/api/public/payments/webhook'
-      path: '/api/public/payments/webhook'
-      fullPath: '/api/public/payments/webhook'
-      preLoaderRoute: typeof ApiPublicPaymentsWebhookRouteImport
-      parentRoute: typeof rootRouteImport
+    '/_academy/academy/certificados': {
+      id: '/_academy/academy/certificados'
+      path: '/academy/certificados'
+      fullPath: '/academy/certificados'
+      preLoaderRoute: typeof AcademyAcademyCertificadosRouteImport
+      parentRoute: typeof AcademyRoute
     }
-    '/_studio/studio/paginas/$slug': {
-      id: '/_studio/studio/paginas/$slug'
-      path: '/$slug'
-      fullPath: '/studio/paginas/$slug'
-      preLoaderRoute: typeof StudioStudioPaginasSlugRouteImport
-      parentRoute: typeof StudioStudioPaginasRoute
+    '/_academy/academy/cursos': {
+      id: '/_academy/academy/cursos'
+      path: '/academy/cursos'
+      fullPath: '/academy/cursos'
+      preLoaderRoute: typeof AcademyAcademyCursosRouteImport
+      parentRoute: typeof AcademyRoute
     }
-    '/_ops/ops/pedidos/$id': {
-      id: '/_ops/ops/pedidos/$id'
-      path: '/$id'
-      fullPath: '/ops/pedidos/$id'
-      preLoaderRoute: typeof OpsOpsPedidosIdRouteImport
-      parentRoute: typeof OpsOpsPedidosRoute
+    '/_admin/admin/': {
+      id: '/_admin/admin/'
+      path: '/admin'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AdminAdminIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/_admin/admin/categorias': {
+      id: '/_admin/admin/categorias'
+      path: '/admin/categorias'
+      fullPath: '/admin/categorias'
+      preLoaderRoute: typeof AdminAdminCategoriasRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/_admin/admin/clientes': {
+      id: '/_admin/admin/clientes'
+      path: '/admin/clientes'
+      fullPath: '/admin/clientes'
+      preLoaderRoute: typeof AdminAdminClientesRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/_admin/admin/contatos': {
+      id: '/_admin/admin/contatos'
+      path: '/admin/contatos'
+      fullPath: '/admin/contatos'
+      preLoaderRoute: typeof AdminAdminContatosRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/_admin/admin/modulos': {
+      id: '/_admin/admin/modulos'
+      path: '/admin/modulos'
+      fullPath: '/admin/modulos'
+      preLoaderRoute: typeof AdminAdminModulosRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/_admin/admin/pedidos': {
+      id: '/_admin/admin/pedidos'
+      path: '/admin/pedidos'
+      fullPath: '/admin/pedidos'
+      preLoaderRoute: typeof AdminAdminPedidosRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/_administracao/administracao/': {
+      id: '/_administracao/administracao/'
+      path: '/administracao'
+      fullPath: '/administracao/'
+      preLoaderRoute: typeof AdministracaoAdministracaoIndexRouteImport
+      parentRoute: typeof AdministracaoRoute
+    }
+    '/_administracao/administracao/comunicacoes': {
+      id: '/_administracao/administracao/comunicacoes'
+      path: '/administracao/comunicacoes'
+      fullPath: '/administracao/comunicacoes'
+      preLoaderRoute: typeof AdministracaoAdministracaoComunicacoesRouteImport
+      parentRoute: typeof AdministracaoRoute
+    }
+    '/_administracao/administracao/empresa': {
+      id: '/_administracao/administracao/empresa'
+      path: '/administracao/empresa'
+      fullPath: '/administracao/empresa'
+      preLoaderRoute: typeof AdministracaoAdministracaoEmpresaRouteImport
+      parentRoute: typeof AdministracaoRoute
+    }
+    '/_administracao/administracao/integracoes': {
+      id: '/_administracao/administracao/integracoes'
+      path: '/administracao/integracoes'
+      fullPath: '/administracao/integracoes'
+      preLoaderRoute: typeof AdministracaoAdministracaoIntegracoesRouteImport
+      parentRoute: typeof AdministracaoRoute
+    }
+    '/_administracao/administracao/logs': {
+      id: '/_administracao/administracao/logs'
+      path: '/administracao/logs'
+      fullPath: '/administracao/logs'
+      preLoaderRoute: typeof AdministracaoAdministracaoLogsRouteImport
+      parentRoute: typeof AdministracaoRoute
+    }
+    '/_administracao/administracao/papeis': {
+      id: '/_administracao/administracao/papeis'
+      path: '/administracao/papeis'
+      fullPath: '/administracao/papeis'
+      preLoaderRoute: typeof AdministracaoAdministracaoPapeisRouteImport
+      parentRoute: typeof AdministracaoRoute
+    }
+    '/_administracao/administracao/usuarios': {
+      id: '/_administracao/administracao/usuarios'
+      path: '/administracao/usuarios'
+      fullPath: '/administracao/usuarios'
+      preLoaderRoute: typeof AdministracaoAdministracaoUsuariosRouteImport
+      parentRoute: typeof AdministracaoRoute
+    }
+    '/_crm/crm/': {
+      id: '/_crm/crm/'
+      path: '/crm'
+      fullPath: '/crm/'
+      preLoaderRoute: typeof CrmCrmIndexRouteImport
+      parentRoute: typeof CrmRoute
+    }
+    '/_crm/crm/clientes': {
+      id: '/_crm/crm/clientes'
+      path: '/crm/clientes'
+      fullPath: '/crm/clientes'
+      preLoaderRoute: typeof CrmCrmClientesRouteImport
+      parentRoute: typeof CrmRoute
+    }
+    '/_crm/crm/segmentos': {
+      id: '/_crm/crm/segmentos'
+      path: '/crm/segmentos'
+      fullPath: '/crm/segmentos'
+      preLoaderRoute: typeof CrmCrmSegmentosRouteImport
+      parentRoute: typeof CrmRoute
+    }
+    '/_marketing/marketing/': {
+      id: '/_marketing/marketing/'
+      path: '/marketing'
+      fullPath: '/marketing/'
+      preLoaderRoute: typeof MarketingMarketingIndexRouteImport
+      parentRoute: typeof MarketingRoute
+    }
+    '/_marketing/marketing/automacoes': {
+      id: '/_marketing/marketing/automacoes'
+      path: '/marketing/automacoes'
+      fullPath: '/marketing/automacoes'
+      preLoaderRoute: typeof MarketingMarketingAutomacoesRouteImport
+      parentRoute: typeof MarketingRoute
+    }
+    '/_marketing/marketing/calendario': {
+      id: '/_marketing/marketing/calendario'
+      path: '/marketing/calendario'
+      fullPath: '/marketing/calendario'
+      preLoaderRoute: typeof MarketingMarketingCalendarioRouteImport
+      parentRoute: typeof MarketingRoute
+    }
+    '/_marketing/marketing/campanhas': {
+      id: '/_marketing/marketing/campanhas'
+      path: '/marketing/campanhas'
+      fullPath: '/marketing/campanhas'
+      preLoaderRoute: typeof MarketingMarketingCampanhasRouteImport
+      parentRoute: typeof MarketingRoute
+    }
+    '/_marketing/marketing/ia': {
+      id: '/_marketing/marketing/ia'
+      path: '/marketing/ia'
+      fullPath: '/marketing/ia'
+      preLoaderRoute: typeof MarketingMarketingIaRouteImport
+      parentRoute: typeof MarketingRoute
+    }
+    '/_marketing/marketing/social': {
+      id: '/_marketing/marketing/social'
+      path: '/marketing/social'
+      fullPath: '/marketing/social'
+      preLoaderRoute: typeof MarketingMarketingSocialRouteImport
+      parentRoute: typeof MarketingRoute
+    }
+    '/_ops/ops/': {
+      id: '/_ops/ops/'
+      path: '/ops'
+      fullPath: '/ops/'
+      preLoaderRoute: typeof OpsOpsIndexRouteImport
+      parentRoute: typeof OpsRoute
+    }
+    '/_ops/ops/expedicao': {
+      id: '/_ops/ops/expedicao'
+      path: '/ops/expedicao'
+      fullPath: '/ops/expedicao'
+      preLoaderRoute: typeof OpsOpsExpedicaoRouteImport
+      parentRoute: typeof OpsRoute
+    }
+    '/_ops/ops/pedidos': {
+      id: '/_ops/ops/pedidos'
+      path: '/ops/pedidos'
+      fullPath: '/ops/pedidos'
+      preLoaderRoute: typeof OpsOpsPedidosRouteImport
+      parentRoute: typeof OpsRoute
+    }
+    '/_ops/ops/producao': {
+      id: '/_ops/ops/producao'
+      path: '/ops/producao'
+      fullPath: '/ops/producao'
+      preLoaderRoute: typeof OpsOpsProducaoRouteImport
+      parentRoute: typeof OpsRoute
+    }
+    '/_studio/studio/equipe': {
+      id: '/_studio/studio/equipe'
+      path: '/equipe'
+      fullPath: '/studio/equipe'
+      preLoaderRoute: typeof StudioStudioEquipeRouteImport
+      parentRoute: typeof StudioStudioRoute
+    }
+    '/_studio/studio/midia': {
+      id: '/_studio/studio/midia'
+      path: '/midia'
+      fullPath: '/studio/midia'
+      preLoaderRoute: typeof StudioStudioMidiaRouteImport
+      parentRoute: typeof StudioStudioRoute
+    }
+    '/_studio/studio/paginas': {
+      id: '/_studio/studio/paginas'
+      path: '/paginas'
+      fullPath: '/studio/paginas'
+      preLoaderRoute: typeof StudioStudioPaginasRouteImport
+      parentRoute: typeof StudioStudioRoute
+    }
+    '/checkout/pagamento/$orderId': {
+      id: '/checkout/pagamento/$orderId'
+      path: '/pagamento/$orderId'
+      fullPath: '/checkout/pagamento/$orderId'
+      preLoaderRoute: typeof CheckoutPagamentoOrderIdRouteImport
+      parentRoute: typeof CheckoutRoute
+    }
+    '/_admin/admin/produtos/': {
+      id: '/_admin/admin/produtos/'
+      path: '/admin/produtos'
+      fullPath: '/admin/produtos/'
+      preLoaderRoute: typeof AdminAdminProdutosIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/_admin/admin/produtos/$id': {
+      id: '/_admin/admin/produtos/$id'
+      path: '/admin/produtos/$id'
+      fullPath: '/admin/produtos/$id'
+      preLoaderRoute: typeof AdminAdminProdutosIdRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/_admin/admin/produtos/novo': {
+      id: '/_admin/admin/produtos/novo'
+      path: '/admin/produtos/novo'
+      fullPath: '/admin/produtos/novo'
+      preLoaderRoute: typeof AdminAdminProdutosNovoRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/_admin/admin/site/': {
+      id: '/_admin/admin/site/'
+      path: '/admin/site'
+      fullPath: '/admin/site/'
+      preLoaderRoute: typeof AdminAdminSiteIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/_admin/admin/site/$page': {
+      id: '/_admin/admin/site/$page'
+      path: '/admin/site/$page'
+      fullPath: '/admin/site/$page'
+      preLoaderRoute: typeof AdminAdminSitePageRouteImport
+      parentRoute: typeof AdminRoute
     }
     '/_crm/crm/clientes/$id': {
       id: '/_crm/crm/clientes/$id'
@@ -1336,12 +1492,33 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CrmCrmClientesIdRouteImport
       parentRoute: typeof CrmCrmClientesRoute
     }
-    '/_admin/admin/produtos/novo': {
-      id: '/_admin/admin/produtos/novo'
-      path: '/novo'
-      fullPath: '/admin/produtos/novo'
-      preLoaderRoute: typeof AdminAdminProdutosNovoRouteImport
-      parentRoute: typeof AdminAdminProdutosRoute
+    '/_ops/ops/pedidos/$id': {
+      id: '/_ops/ops/pedidos/$id'
+      path: '/$id'
+      fullPath: '/ops/pedidos/$id'
+      preLoaderRoute: typeof OpsOpsPedidosIdRouteImport
+      parentRoute: typeof OpsOpsPedidosRoute
+    }
+    '/_studio/studio/paginas/$slug': {
+      id: '/_studio/studio/paginas/$slug'
+      path: '/$slug'
+      fullPath: '/studio/paginas/$slug'
+      preLoaderRoute: typeof StudioStudioPaginasSlugRouteImport
+      parentRoute: typeof StudioStudioPaginasRoute
+    }
+    '/api/public/payments/mercadopago': {
+      id: '/api/public/payments/mercadopago'
+      path: '/api/public/payments/mercadopago'
+      fullPath: '/api/public/payments/mercadopago'
+      preLoaderRoute: typeof ApiPublicPaymentsMercadopagoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/payments/webhook': {
+      id: '/api/public/payments/webhook'
+      path: '/api/public/payments/webhook'
+      fullPath: '/api/public/payments/webhook'
+      preLoaderRoute: typeof ApiPublicPaymentsWebhookRouteImport
+      parentRoute: typeof rootRouteImport
     }
   }
 }
@@ -1363,33 +1540,32 @@ const AcademyRouteChildren: AcademyRouteChildren = {
 const AcademyRouteWithChildren =
   AcademyRoute._addFileChildren(AcademyRouteChildren)
 
-interface AdminAdminProdutosRouteChildren {
-  AdminAdminProdutosNovoRoute: typeof AdminAdminProdutosNovoRoute
-}
-
-const AdminAdminProdutosRouteChildren: AdminAdminProdutosRouteChildren = {
-  AdminAdminProdutosNovoRoute: AdminAdminProdutosNovoRoute,
-}
-
-const AdminAdminProdutosRouteWithChildren =
-  AdminAdminProdutosRoute._addFileChildren(AdminAdminProdutosRouteChildren)
-
 interface AdminRouteChildren {
   AdminAdminCategoriasRoute: typeof AdminAdminCategoriasRoute
   AdminAdminClientesRoute: typeof AdminAdminClientesRoute
+  AdminAdminContatosRoute: typeof AdminAdminContatosRoute
   AdminAdminModulosRoute: typeof AdminAdminModulosRoute
   AdminAdminPedidosRoute: typeof AdminAdminPedidosRoute
-  AdminAdminProdutosRoute: typeof AdminAdminProdutosRouteWithChildren
   AdminAdminIndexRoute: typeof AdminAdminIndexRoute
+  AdminAdminProdutosIdRoute: typeof AdminAdminProdutosIdRoute
+  AdminAdminProdutosNovoRoute: typeof AdminAdminProdutosNovoRoute
+  AdminAdminSitePageRoute: typeof AdminAdminSitePageRoute
+  AdminAdminProdutosIndexRoute: typeof AdminAdminProdutosIndexRoute
+  AdminAdminSiteIndexRoute: typeof AdminAdminSiteIndexRoute
 }
 
 const AdminRouteChildren: AdminRouteChildren = {
   AdminAdminCategoriasRoute: AdminAdminCategoriasRoute,
   AdminAdminClientesRoute: AdminAdminClientesRoute,
+  AdminAdminContatosRoute: AdminAdminContatosRoute,
   AdminAdminModulosRoute: AdminAdminModulosRoute,
   AdminAdminPedidosRoute: AdminAdminPedidosRoute,
-  AdminAdminProdutosRoute: AdminAdminProdutosRouteWithChildren,
   AdminAdminIndexRoute: AdminAdminIndexRoute,
+  AdminAdminProdutosIdRoute: AdminAdminProdutosIdRoute,
+  AdminAdminProdutosNovoRoute: AdminAdminProdutosNovoRoute,
+  AdminAdminSitePageRoute: AdminAdminSitePageRoute,
+  AdminAdminProdutosIndexRoute: AdminAdminProdutosIndexRoute,
+  AdminAdminSiteIndexRoute: AdminAdminSiteIndexRoute,
 }
 
 const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
@@ -1577,21 +1753,26 @@ const rootRouteChildren: RootRouteChildren = {
   MarketingRoute: MarketingRouteWithChildren,
   OpsRoute: OpsRouteWithChildren,
   StudioRoute: StudioRouteWithChildren,
+  AtelierPriveRoute: AtelierPriveRoute,
   BuscaRoute: BuscaRoute,
   BusinessplanRoute: BusinessplanRoute,
   CadastroRoute: CadastroRoute,
   CarrinhoRoute: CarrinhoRoute,
-  CatalogoRoute: CatalogoRoute,
   CheckoutRoute: CheckoutRouteWithChildren,
-  ComunidadeRoute: ComunidadeRoute,
-  CursosRoute: CursosRoute,
-  EbooksRoute: EbooksRoute,
+  ConteudosRoute: ConteudosRoute,
+  CorporativoRoute: CorporativoRoute,
   ExperienciasRoute: ExperienciasRoute,
   LoginRoute: LoginRoute,
+  MonClubRoute: MonClubRoute,
+  QuizRoute: QuizRoute,
   SobreRoute: SobreRoute,
-  WorkshopsRoute: WorkshopsRoute,
-  CategoriaSlugRoute: CategoriaSlugRoute,
+  CursosSlugRoute: CursosSlugRoute,
+  PoliticasDocRoute: PoliticasDocRoute,
   ProdutoSlugRoute: ProdutoSlugRoute,
+  ProdutosSlugRoute: ProdutosSlugRoute,
+  CursosIndexRoute: CursosIndexRoute,
+  ProdutosIndexRoute: ProdutosIndexRoute,
+  ApiPublicPaymentsMercadopagoRoute: ApiPublicPaymentsMercadopagoRoute,
   ApiPublicPaymentsWebhookRoute: ApiPublicPaymentsWebhookRoute,
 }
 export const routeTree = rootRouteImport

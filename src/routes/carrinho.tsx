@@ -22,7 +22,7 @@ function Carrinho() {
         <h1 className="font-display text-5xl mb-12">{empty ? "Sua sacola está vazia" : "Sua seleção"}</h1>
 
         {empty ? (
-          <Link to="/catalogo" className="border-b-2 border-foreground pb-1 text-sm">Explorar catálogo</Link>
+          <Link to="/produtos" className="border-b-2 border-foreground pb-1 text-sm">Explorar catálogo</Link>
         ) : (
           <div className="grid lg:grid-cols-3 gap-12">
             <div className="lg:col-span-2 divide-y divide-border border-y border-border">

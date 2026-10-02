@@ -227,7 +227,7 @@ function FeaturedProductsBlock({ c }: { c: Record<string, unknown> }) {
           {data?.map((p) => <ProductCard key={p.slug} p={p} />)}
         </div>
         <div className="mt-16 text-center">
-          <Link to="/catalogo" className="editorial-link">Découvrir la collection</Link>
+          <Link to="/produtos" className="editorial-link">Découvrir la collection</Link>
         </div>
       </div>
     </section>

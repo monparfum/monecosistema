@@ -1,10 +1,7 @@
 import { createFileRoute, Link, Outlet, useLocation } from "@tanstack/react-router";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { useState } from "react";
-import { toast } from "sonner";
-import { publishPage, unpublishPage } from "@/lib/studio-versions";
-import { PAGE_TEMPLATES } from "@/lib/page-templates";
+import { SITE_PAGES } from "@/lib/site-schema";
 
 export const Route = createFileRoute("/_studio/studio/paginas")({ component: StudioPagesRoute });
 
@@ -14,165 +11,30 @@ function StudioPagesRoute() {
   return <PagesList />;
 }
 
-function slugify(s: string): string {
-  return s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "")
-    .replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0, 60);
-}
-
 function PagesList() {
-  const qc = useQueryClient();
-  const [creating, setCreating] = useState(false);
-  const [newTitle, setNewTitle] = useState("");
-  const [newSlug, setNewSlug] = useState("");
-  const [templateId, setTemplateId] = useState<string>("blank");
-
-  const { data: pages } = useQuery({
-    queryKey: ["studio-pages"],
-    queryFn: async () => {
-      const { data, error } = await supabase.from("pages").select("*").order("created_at");
-      if (error) throw error;
-      return data;
-    },
+  const { data } = useQuery({
+    queryKey: ["admin-site-updated"],
+    queryFn: async () => new Map(((await supabase.from("site_content").select("page, updated_at")).data ?? []).map((r) => [r.page, r.updated_at])),
   });
-
-  const togglePublish = async (id: string, status: string) => {
-    try {
-      if (status === "published") { await unpublishPage(id); toast.success("Página em rascunho"); }
-      else { await publishPage(id); toast.success("Página publicada — versão salva"); }
-      qc.invalidateQueries({ queryKey: ["studio-pages"] });
-    } catch (e) { toast.error((e as Error).message); }
-  };
-
-  const createPage = async () => {
-    const slug = (newSlug || slugify(newTitle)).trim();
-    if (!newTitle.trim() || !slug) { toast.error("Informe título e slug"); return; }
-    const { data: page, error } = await supabase.from("pages")
-      .insert({ title: newTitle.trim(), slug, status: "draft" }).select().single();
-    if (error || !page) { toast.error(error?.message ?? "Erro ao criar página"); return; }
-
-    const template = PAGE_TEMPLATES.find((t) => t.id === templateId);
-    if (template && template.blocks.length) {
-      const rows = template.blocks.map((b, i) => ({
-        page_id: page.id, type: b.type, position: i, content: b.content as never,
-      }));
-      const { error: blocksError } = await supabase.from("page_blocks").insert(rows);
-      if (blocksError) toast.error(`Página criada, mas blocos falharam: ${blocksError.message}`);
-    }
-
-    toast.success(template && template.id !== "blank" ? `Página criada com template ${template.label}` : "Página criada");
-    setCreating(false); setNewTitle(""); setNewSlug(""); setTemplateId("blank");
-    qc.invalidateQueries({ queryKey: ["studio-pages"] });
-  };
-
-  const duplicatePage = async (id: string, title: string, slug: string) => {
-    const newSlugVal = `${slug}-copia`;
-    const { data: created, error } = await supabase.from("pages")
-      .insert({ title: `${title} (cópia)`, slug: newSlugVal, status: "draft" }).select().single();
-    if (error) { toast.error(error.message); return; }
-    const { data: src } = await supabase.from("page_blocks").select("type,position,content").eq("page_id", id).order("position");
-    if (src?.length) {
-      await supabase.from("page_blocks").insert(src.map((b) => ({ ...b, page_id: created.id, content: b.content as never })));
-    }
-    toast.success("Página duplicada");
-    qc.invalidateQueries({ queryKey: ["studio-pages"] });
-  };
-
-  const deletePage = async (id: string, slug: string) => {
-    if (["home", "sobre"].includes(slug)) { toast.error("Páginas principais não podem ser excluídas"); return; }
-    if (!confirm("Excluir esta página e todos os seus blocos?")) return;
-    await supabase.from("page_blocks").delete().eq("page_id", id);
-    const { error } = await supabase.from("pages").delete().eq("id", id);
-    if (error) { toast.error(error.message); return; }
-    toast.success("Página excluída");
-    qc.invalidateQueries({ queryKey: ["studio-pages"] });
-  };
-
   return (
-    <div className="space-y-12">
-      <div className="flex items-end justify-between gap-6">
-        <div>
-          <div className="eyebrow mb-3">Studio · Páginas</div>
-          <h1 className="font-display text-5xl">Todas as páginas</h1>
-          <p className="mt-4 text-muted-foreground max-w-xl">As páginas editoriais do site. Selecione uma para editar seus blocos, ou crie uma nova landing.</p>
-        </div>
-        <button onClick={() => setCreating(true)} className="editorial-link text-xs">+ Nova página</button>
+    <div className="space-y-10">
+      <div>
+        <div className="eyebrow mb-3">Studio</div>
+        <h1 className="font-display text-5xl">Páginas do site</h1>
+        <p className="mt-4 max-w-2xl text-sm text-muted-foreground">Textos, fotos, listas e perguntas de cada página, com prévia ao vivo. Preço, foto e conteúdo de cada curso ou kit ficam em <Link to="/admin/produtos" className="underline">Comércio › Produtos</Link>.</p>
       </div>
-
-      <div className="divide-y divide-border border-t border-b border-border">
-        {pages?.map((p) => (
-          <div key={p.id} className="grid grid-cols-[1fr_auto_auto_auto_auto_auto] items-center gap-6 py-6">
-            <div>
-              <Link to="/studio/paginas/$slug" params={{ slug: p.slug }} className="font-display text-2xl hover:italic">{p.title}</Link>
-              <div className="text-xs text-muted-foreground mt-1">/{p.slug === "home" ? "" : p.slug}</div>
+      <div className="grid md:grid-cols-2 gap-px bg-border border border-border">
+        {SITE_PAGES.map((p) => (
+          <Link key={p.slug} to="/studio/paginas/$slug" params={{ slug: p.slug }} className="bg-background p-6 hover:bg-[color:var(--muted)]/30 transition-colors">
+            <div className="flex justify-between items-start gap-4">
+              <div className="font-display text-2xl">{p.title}</div>
+              <span className="eyebrow text-muted-foreground shrink-0">{data?.get(p.slug) ? `editado ${new Date(data.get(p.slug)!).toLocaleDateString("pt-BR")}` : "padrão"}</span>
             </div>
-            <span className={`eyebrow ${p.status === "published" ? "text-foreground" : "text-muted-foreground"}`}>
-              {p.status === "published" ? "Publicada" : "Rascunho"}
-            </span>
-            <button onClick={() => togglePublish(p.id, p.status)} className="text-xs eyebrow text-muted-foreground hover:text-foreground">
-              {p.status === "published" ? "Despublicar" : "Publicar"}
-            </button>
-            <button onClick={() => duplicatePage(p.id, p.title, p.slug)} className="text-xs eyebrow text-muted-foreground hover:text-foreground">Duplicar</button>
-            <button onClick={() => deletePage(p.id, p.slug)} className="text-xs eyebrow text-muted-foreground hover:text-foreground">Excluir</button>
-            <Link to="/studio/paginas/$slug" params={{ slug: p.slug }} className="eyebrow text-xs border-b border-foreground">Editar →</Link>
-          </div>
+            <div className="text-xs text-muted-foreground mt-2">{p.sections.map((s) => s.title).join(" · ")}</div>
+            <div className="editorial-link text-xs mt-4">Editar →</div>
+          </Link>
         ))}
       </div>
-
-      {creating && (
-        <div className="fixed inset-0 z-50 bg-background/80 backdrop-blur grid place-items-center p-8 overflow-y-auto" onClick={() => setCreating(false)}>
-          <div className="bg-background border border-border max-w-3xl w-full p-10 my-auto" onClick={(e) => e.stopPropagation()}>
-            <div className="eyebrow mb-3">Studio</div>
-            <h2 className="font-display text-3xl mb-8">Nova página</h2>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <div className="space-y-5">
-                <div>
-                  <label className="eyebrow block mb-2">Título</label>
-                  <input value={newTitle} onChange={(e) => { setNewTitle(e.target.value); if (!newSlug) setNewSlug(slugify(e.target.value)); }}
-                    className="w-full border border-border bg-transparent px-3 py-2 text-sm focus:outline-none focus:border-foreground" autoFocus />
-                </div>
-                <div>
-                  <label className="eyebrow block mb-2">Slug</label>
-                  <div className="flex items-center gap-2 border border-border px-3 py-2">
-                    <span className="text-xs text-muted-foreground">/</span>
-                    <input value={newSlug} onChange={(e) => setNewSlug(slugify(e.target.value))}
-                      placeholder="campanha-edition-02" className="flex-1 bg-transparent text-sm focus:outline-none" />
-                  </div>
-                </div>
-              </div>
-
-              <div>
-                <label className="eyebrow block mb-2">Template</label>
-                <div className="space-y-2 max-h-[340px] overflow-y-auto pr-1">
-                  {PAGE_TEMPLATES.map((t) => {
-                    const active = templateId === t.id;
-                    return (
-                      <button
-                        key={t.id}
-                        type="button"
-                        onClick={() => setTemplateId(t.id)}
-                        className={`w-full text-left border p-4 transition-colors ${active ? "border-foreground bg-[color:var(--muted)]" : "border-border hover:border-foreground/60"}`}
-                      >
-                        <div className="flex items-center justify-between gap-3">
-                          <div className="eyebrow text-[10px] text-muted-foreground">{t.eyebrow}</div>
-                          <div className="text-[10px] text-muted-foreground">{t.blocks.length} {t.blocks.length === 1 ? "bloco" : "blocos"}</div>
-                        </div>
-                        <div className="font-display text-lg mt-1">{t.label}</div>
-                        <div className="text-xs text-muted-foreground mt-1 leading-relaxed">{t.description}</div>
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
-            </div>
-
-            <div className="mt-10 flex items-center justify-end gap-6">
-              <button onClick={() => setCreating(false)} className="eyebrow text-muted-foreground">Cancelar</button>
-              <button onClick={createPage} className="editorial-link text-xs">Criar página →</button>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 }

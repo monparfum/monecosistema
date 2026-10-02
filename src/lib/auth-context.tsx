@@ -47,20 +47,25 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     let alive = true;
     let run = 0;
+    // Usuário cujos papéis já estão carregados: renovação de token/troca de aba não volta para "carregando"
+    let loadedUid: string | null = null;
 
     const applySession = async (nextSession: Session | null) => {
       const current = ++run;
       setSession(nextSession);
 
       if (!nextSession?.user) {
+        loadedUid = null;
         setRoles([]);
         setLoading(false);
         return;
       }
 
-      setLoading(true);
+      const sameUser = loadedUid === nextSession.user.id;
+      if (!sameUser) setLoading(true);
       const nextRoles = await loadRoles(nextSession.user.id);
       if (!alive || current !== run) return;
+      loadedUid = nextSession.user.id;
       setRoles(nextRoles);
       setLoading(false);
     };
@@ -75,11 +80,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const { data: sub } = supabase.auth.onAuthStateChange((_e, s) => {
       setSession(s);
       if (!s?.user) {
+        loadedUid = null;
         setRoles([]);
         setLoading(false);
         return;
       }
-      setLoading(true);
+      if (loadedUid !== s.user.id) setLoading(true);
       setTimeout(() => { void applySession(s); }, 0);
     });
     supabase.auth.getSession()

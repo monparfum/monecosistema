@@ -57,7 +57,7 @@ function StudioLayout() {
   return (
     <div className="min-h-screen bg-background text-foreground grid grid-cols-[240px_1fr]">
       <aside className="border-r border-border px-6 py-8 sticky top-0 h-screen flex flex-col">
-        <Link to="/" className="font-display text-2xl leading-none">Mon Parfum</Link>
+        <Link to="/" className="block" aria-label="MON PARFUM — site"><img src="/logo-mon.png" alt="MON Parfum" style={{ height: 40, width: "auto" }} /></Link>
         <div className="eyebrow mt-1 mb-6">Módulo · Estúdio</div>
         {isAdmin && (
           <Link to="/admin/modulos" className="eyebrow text-muted-foreground hover:text-foreground mb-6">
