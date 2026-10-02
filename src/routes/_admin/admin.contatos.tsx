@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Fragment, useState } from "react";
 import { toast } from "sonner";
@@ -6,8 +6,8 @@ import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/_admin/admin/contatos")({ component: Contatos });
 
-const KINDS: Record<string, string> = { quiz: "Quiz", atelier: "Atelier Privé", corporativo: "Corporativo", contato: "Contato", newsletter: "Newsletter" };
-const STATUS: Record<string, string> = { novo: "Novo", em_contato: "Em contato", concluido: "Concluído" };
+const KINDS: Record<string, string> = { quiz: "Quiz", atelier: "Atelier Privé", contato: "Contato", newsletter: "Newsletter" };
+const STATUS: Record<string, string> = { novo: "Novo", em_contato: "Em contato", ganho: "Concluído" };
 
 function Contatos() {
   const qc = useQueryClient();
@@ -15,7 +15,7 @@ function Contatos() {
   const { data, isLoading } = useQuery({
     queryKey: ["admin-leads", kind],
     queryFn: async () => {
-      let q = supabase.from("leads").select("*").order("created_at", { ascending: false }).limit(300);
+      let q = supabase.from("leads").select("*").in("kind", Object.keys(KINDS)).order("created_at", { ascending: false }).limit(300);
       if (kind) q = q.eq("kind", kind);
       const { data, error } = await q;
       if (error) throw error;
@@ -45,7 +45,7 @@ function Contatos() {
         <div>
           <div className="eyebrow mb-2">Site</div>
           <h1 className="font-display text-4xl">Contatos</h1>
-          <p className="text-sm text-muted-foreground mt-1">Quiz, Atelier Privé, propostas corporativas, contato e newsletter.</p>
+          <p className="text-sm text-muted-foreground mt-1">Quiz, Atelier Privé, contato e newsletter. Propostas corporativas ficam no <Link to="/crm/leads" className="underline">CRM</Link>.</p>
         </div>
         <div className="flex gap-2">
           <select value={kind} onChange={(e) => setKind(e.target.value)} className="border border-border bg-transparent px-3 py-2 text-sm">

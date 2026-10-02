@@ -15,8 +15,9 @@ export const Route = createFileRoute("/_crm")({
       moduleLabel="CRM"
       nav={[
         { to: "/crm", label: "Painel", exact: true },
-        { to: "/crm/clientes", label: "Clientes" },
-        { to: "/crm/segmentos", label: "Segmentos" },
+        { to: "/crm/leads", label: "Oportunidades" },
+        { to: "/crm/empresas", label: "Empresas" },
+        { to: "/crm/prospeccao", label: "Prospecção" },
       ]}
     />
   ),

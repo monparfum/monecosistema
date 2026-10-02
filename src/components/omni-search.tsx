@@ -3,6 +3,7 @@ import { Link } from "@tanstack/react-router";
 import { Search, X } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { STAGE_LABEL } from "@/lib/crm";
 
 type Hit = { kind: string; label: string; hint: string; to: string };
 
@@ -35,14 +36,30 @@ export function OmniSearch() {
     queryKey: ["omni", term],
     enabled: term.length >= 2,
     queryFn: async (): Promise<Hit[]> => {
-      const like = `%${term}%`;
-      const [orders, profiles, products, campaigns] = await Promise.all([
+      // Vírgula/parênteses quebrariam o filtro .or() do PostgREST
+      const like = `%${term.replace(/[,()*%]/g, " ")}%`;
+      const [orders, profiles, products, campaigns, accounts, opps] = await Promise.all([
         supabase.from("orders").select("id, order_number, email, status, total_cents").or(`order_number.ilike.${like},email.ilike.${like}`).limit(5),
         supabase.from("profiles").select("id, full_name, phone").or(`full_name.ilike.${like},phone.ilike.${like}`).limit(5),
         supabase.from("products").select("id, name, brand, slug").ilike("name", like).limit(5),
         supabase.from("campaigns").select("id, name, channel, status").ilike("name", like).limit(5),
+        supabase.from("corporate_accounts").select("id, name, city").or(`name.ilike.${like},cnpj.ilike.${like}`).limit(5),
+        supabase.from("leads").select("id, company, name, email, status").in("kind", ["corporativo", "manual"])
+          .or(`company.ilike.${like},name.ilike.${like},email.ilike.${like}`).limit(5),
       ]);
       const out: Hit[] = [];
+      (accounts.data ?? []).forEach((a) => out.push({
+        kind: "Empresa",
+        label: a.name,
+        hint: a.city ?? "CRM",
+        to: `/crm/empresas/${a.id}`,
+      }));
+      (opps.data ?? []).forEach((l) => out.push({
+        kind: "Oportunidade",
+        label: l.company || l.name || l.email,
+        hint: `${l.name ?? l.email} · ${STAGE_LABEL[l.status] ?? l.status}`,
+        to: `/crm/leads/${l.id}`,
+      }));
       (orders.data ?? []).forEach((o) => out.push({
         kind: "Pedido",
         label: `#${o.order_number}`,
@@ -50,16 +67,16 @@ export function OmniSearch() {
         to: `/ops/pedidos/${o.id}`,
       }));
       (profiles.data ?? []).forEach((p) => out.push({
-        kind: "Cliente",
+        kind: "Cliente da loja",
         label: p.full_name || "Sem nome",
         hint: p.phone ?? "—",
-        to: `/crm/clientes/${p.id}`,
+        to: `/admin/clientes`,
       }));
       (products.data ?? []).forEach((p) => out.push({
         kind: "Produto",
         label: p.name,
         hint: p.brand ?? "Mon Parfum",
-        to: `/loja/${p.slug}`,
+        to: `/produtos/${p.slug}`,
       }));
       (campaigns.data ?? []).forEach((c) => out.push({
         kind: "Campanha",

@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { PageHeader } from "@/components/module-shell";
@@ -38,7 +38,7 @@ function AcademyAlunos() {
       ) : (
         <div className="border-y border-border divide-y divide-border">
           {data.map((e) => (
-            <Link key={e.id} to="/crm/clientes/$id" params={{ id: e.user_id }} className="py-5 grid grid-cols-[1.4fr_1fr_auto] gap-6 items-center hover:bg-[color:var(--muted)] px-2 -mx-2 transition-colors">
+            <div key={e.id} className="py-5 grid grid-cols-[1.4fr_1fr_auto] gap-6 items-center">
               <div>
                 <div className="eyebrow">{new Date(e.created_at).toLocaleDateString("pt-BR")}</div>
                 <div className="font-display text-xl">{e.student_name}</div>
@@ -48,7 +48,7 @@ function AcademyAlunos() {
                 <div className="italic font-display">{e.products?.name}</div>
               </div>
               <div className="eyebrow">{e.status}</div>
-            </Link>
+            </div>
           ))}
         </div>
       )}

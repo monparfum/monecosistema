@@ -58,4 +58,11 @@ ${button(`https://www.melhorrastreio.com.br/rastreio/${encodeURIComponent(tracki
     subject: `Pedido ${orderNumber} cancelado — MON PARFUM`,
     html: `<p>Seu pedido <strong>${esc(orderNumber)}</strong> foi cancelado.</p><p>Se houve pagamento, o estorno já foi solicitado e aparece na sua fatura ou conta em alguns dias.</p>`,
   }),
+  // Aviso interno: lead novo no site
+  newLead: (origin: string, fields: [string, string][], link: string | null) => ({
+    subject: `Novo lead (${origin}) — ${fields[0]?.[1] ?? ""}`,
+    html: `<p style="font-size:20px;font-family:Georgia,serif;color:#1A1A1A;margin:0 0 16px">Novo lead pelo site · ${esc(origin)}</p>
+<table role="presentation" cellpadding="0" cellspacing="0" style="font-size:14px">${fields.map(([k, v]) => `<tr><td style="padding:4px 16px 4px 0;color:#8A8A8A;vertical-align:top">${esc(k)}</td><td style="padding:4px 0;color:#1A1A1A">${esc(v)}</td></tr>`).join("")}</table>
+${link ? button(link, link.includes("/crm/") ? "Abrir no CRM" : "Ver contatos") : ""}`,
+  }),
 };

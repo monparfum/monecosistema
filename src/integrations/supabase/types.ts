@@ -179,6 +179,18 @@ export type Database = {
         }
         Relationships: []
       }
+      corporate_accounts: {
+        Row: { cnpj: string | null; city: string | null; created_at: string; domain: string | null; id: string; name: string; notes: string | null; owner_id: string | null; segment: string | null; size: string | null; tags: string[]; updated_at: string; website: string | null }
+        Insert: { cnpj?: string | null; city?: string | null; created_at?: string; domain?: string | null; id?: string; name: string; notes?: string | null; owner_id?: string | null; segment?: string | null; size?: string | null; tags?: string[]; updated_at?: string; website?: string | null }
+        Update: { cnpj?: string | null; city?: string | null; created_at?: string; domain?: string | null; id?: string; name?: string; notes?: string | null; owner_id?: string | null; segment?: string | null; size?: string | null; tags?: string[]; updated_at?: string; website?: string | null }
+        Relationships: []
+      }
+      corporate_contacts: {
+        Row: { account_id: string; created_at: string; email: string | null; id: string; is_primary: boolean; name: string; notes: string | null; phone: string | null; role: string | null }
+        Insert: { account_id: string; created_at?: string; email?: string | null; id?: string; is_primary?: boolean; name: string; notes?: string | null; phone?: string | null; role?: string | null }
+        Update: { account_id?: string; created_at?: string; email?: string | null; id?: string; is_primary?: boolean; name?: string; notes?: string | null; phone?: string | null; role?: string | null }
+        Relationships: []
+      }
       customer_notes: {
         Row: {
           author_user_id: string | null
@@ -245,30 +257,16 @@ export type Database = {
           },
         ]
       }
+      lead_activities: {
+        Row: { account_id: string | null; author_id: string | null; body: string; created_at: string; id: string; kind: string; lead_id: string | null }
+        Insert: { account_id?: string | null; author_id?: string | null; body: string; created_at?: string; id?: string; kind: string; lead_id?: string | null }
+        Update: { account_id?: string | null; author_id?: string | null; body?: string; created_at?: string; id?: string; kind?: string; lead_id?: string | null }
+        Relationships: []
+      }
       leads: {
-        Row: {
-          created_at: string
-          email: string
-          id: string
-          kind: string
-          name: string | null
-          payload: Json
-          phone: string | null
-          status: string
-        }
-        Insert: {
-          created_at?: string
-          email: string
-          id?: string
-          kind: string
-          name?: string | null
-          payload?: Json
-          phone?: string | null
-          status?: string
-        }
-        Update: {
-          status?: string
-        }
+        Row: { account_id: string | null; closed_at: string | null; company: string | null; created_at: string; email: string; event_city: string | null; event_date: string | null; event_type: string | null; id: string; kind: string; lost_reason: string | null; name: string | null; next_action: string | null; next_action_at: string | null; owner_id: string | null; participants: number | null; payload: Json; phone: string | null; status: string; tags: string[]; updated_at: string; value_cents: number | null }
+        Insert: { account_id?: string | null; closed_at?: string | null; company?: string | null; created_at?: string; email: string; event_city?: string | null; event_date?: string | null; event_type?: string | null; id?: string; kind: string; lost_reason?: string | null; name?: string | null; next_action?: string | null; next_action_at?: string | null; owner_id?: string | null; participants?: number | null; payload?: Json; phone?: string | null; status?: string; tags?: string[]; updated_at?: string; value_cents?: number | null }
+        Update: { account_id?: string | null; closed_at?: string | null; company?: string | null; created_at?: string; email?: string; event_city?: string | null; event_date?: string | null; event_type?: string | null; id?: string; kind?: string; lost_reason?: string | null; name?: string | null; next_action?: string | null; next_action_at?: string | null; owner_id?: string | null; participants?: number | null; payload?: Json; phone?: string | null; status?: string; tags?: string[]; updated_at?: string; value_cents?: number | null }
         Relationships: []
       }
       media_assets: {
@@ -714,6 +712,12 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      prospects: {
+        Row: { address: string | null; category: string | null; city: string | null; cnpj: string | null; created_at: string; created_by: string | null; email: string | null; external_id: string | null; extra: Json; id: string; lead_id: string | null; legal_name: string | null; name: string; notes: string | null; phone: string | null; rating: number | null; reviews: number | null; search: string | null; size: string | null; source: string; state: string | null; status: string; updated_at: string; website: string | null }
+        Insert: { address?: string | null; category?: string | null; city?: string | null; cnpj?: string | null; created_at?: string; created_by?: string | null; email?: string | null; external_id?: string | null; extra?: Json; id?: string; lead_id?: string | null; legal_name?: string | null; name: string; notes?: string | null; phone?: string | null; rating?: number | null; reviews?: number | null; search?: string | null; size?: string | null; source: string; state?: string | null; status?: string; updated_at?: string; website?: string | null }
+        Update: { address?: string | null; category?: string | null; city?: string | null; cnpj?: string | null; created_at?: string; created_by?: string | null; email?: string | null; external_id?: string | null; extra?: Json; id?: string; lead_id?: string | null; legal_name?: string | null; name?: string; notes?: string | null; phone?: string | null; rating?: number | null; reviews?: number | null; search?: string | null; size?: string | null; source?: string; state?: string | null; status?: string; updated_at?: string; website?: string | null }
+        Relationships: []
       }
       products: {
         Row: {

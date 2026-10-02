@@ -3,7 +3,7 @@ import { queryOptions, useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
-import type { Json } from "@/integrations/supabase/types";
+import { submitLead } from "@/lib/leads.functions";
 import { useCart } from "@/lib/cart-context";
 import { formatBRL } from "@/lib/format";
 import { lines, useSite, waLink } from "@/lib/site-content";
@@ -145,7 +145,7 @@ export function KitCard({ p, cta = "Conhecer o kit", showPrice = false }: { p: S
   );
 }
 
-// ---------- Formulários (gravam em public.leads; RLS permite só INSERT público) ----------
+// ---------- Formulários (vão para o CRM via servidor: valida, limita e avisa a equipe) ----------
 
 export function useLeadForm(kind: "quiz" | "atelier" | "corporativo" | "contato" | "newsletter") {
   const [sending, setSending] = useState(false);
@@ -158,13 +158,11 @@ export function useLeadForm(kind: "quiz" | "atelier" | "corporativo" | "contato"
     const payload: Record<string, string> = {};
     fd.forEach((v, k) => { if (!["name", "email", "phone", "website"].includes(k) && typeof v === "string" && v.trim()) payload[k] = v.trim().slice(0, 2000); });
     setSending(true);
-    const { error } = await supabase.from("leads").insert({
-      kind, name: take("name").slice(0, 120) || null, email: take("email").slice(0, 200), phone: take("phone").slice(0, 40) || null,
-      payload: { ...payload, ...extra } as Json,
-    });
+    const error = await submitLead({ data: { kind, name: take("name"), email: take("email"), phone: take("phone"), payload: { ...payload, ...extra } } })
+      .then(() => null, (e: Error) => e);
     setSending(false);
     if (error) {
-      toast.error("Não foi possível enviar. Confira o e-mail ou fale pelo WhatsApp.");
+      toast.error(/Muitos envios|E-mail inválido/.test(error.message) ? error.message : "Não foi possível enviar. Confira o e-mail ou fale pelo WhatsApp.");
       return false;
     }
     setSent(true);

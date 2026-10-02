@@ -24,7 +24,6 @@ import { Route as BuscaRouteImport } from './routes/busca'
 import { Route as BusinessplanRouteImport } from './routes/businessplan'
 import { Route as CadastroRouteImport } from './routes/cadastro'
 import { Route as CarrinhoRouteImport } from './routes/carrinho'
-import { Route as CheckoutRouteImport } from './routes/checkout'
 import { Route as ConteudosRouteImport } from './routes/conteudos'
 import { Route as CorporativoRouteImport } from './routes/corporativo'
 import { Route as ExperienciasRouteImport } from './routes/experiencias'
@@ -36,6 +35,7 @@ import { Route as AuthenticatedContaRouteImport } from './routes/_authenticated/
 import { Route as AuthenticatedMeusCursosRouteImport } from './routes/_authenticated/meus-cursos'
 import { Route as AuthenticatedPedidosRouteImport } from './routes/_authenticated/pedidos'
 import { Route as StudioStudioRouteImport } from './routes/_studio/studio'
+import { Route as CheckoutIndexRouteImport } from './routes/checkout.index'
 import { Route as CheckoutRetornoRouteImport } from './routes/checkout.retorno'
 import { Route as CursosIndexRouteImport } from './routes/cursos.index'
 import { Route as CursosSlugRouteImport } from './routes/cursos.$slug'
@@ -61,8 +61,7 @@ import { Route as AdministracaoAdministracaoLogsRouteImport } from './routes/_ad
 import { Route as AdministracaoAdministracaoPapeisRouteImport } from './routes/_administracao/administracao.papeis'
 import { Route as AdministracaoAdministracaoUsuariosRouteImport } from './routes/_administracao/administracao.usuarios'
 import { Route as CrmCrmIndexRouteImport } from './routes/_crm/crm.index'
-import { Route as CrmCrmClientesRouteImport } from './routes/_crm/crm.clientes'
-import { Route as CrmCrmSegmentosRouteImport } from './routes/_crm/crm.segmentos'
+import { Route as CrmCrmProspeccaoRouteImport } from './routes/_crm/crm.prospeccao'
 import { Route as MarketingMarketingIndexRouteImport } from './routes/_marketing/marketing.index'
 import { Route as MarketingMarketingAutomacoesRouteImport } from './routes/_marketing/marketing.automacoes'
 import { Route as MarketingMarketingCalendarioRouteImport } from './routes/_marketing/marketing.calendario'
@@ -71,7 +70,6 @@ import { Route as MarketingMarketingIaRouteImport } from './routes/_marketing/ma
 import { Route as MarketingMarketingSocialRouteImport } from './routes/_marketing/marketing.social'
 import { Route as OpsOpsIndexRouteImport } from './routes/_ops/ops.index'
 import { Route as OpsOpsExpedicaoRouteImport } from './routes/_ops/ops.expedicao'
-import { Route as OpsOpsPedidosRouteImport } from './routes/_ops/ops.pedidos'
 import { Route as OpsOpsProducaoRouteImport } from './routes/_ops/ops.producao'
 import { Route as StudioStudioEquipeRouteImport } from './routes/_studio/studio.equipe'
 import { Route as StudioStudioMidiaRouteImport } from './routes/_studio/studio.midia'
@@ -82,7 +80,11 @@ import { Route as AdminAdminProdutosIdRouteImport } from './routes/_admin/admin.
 import { Route as AdminAdminProdutosNovoRouteImport } from './routes/_admin/admin.produtos.novo'
 import { Route as AdminAdminSiteIndexRouteImport } from './routes/_admin/admin.site.index'
 import { Route as AdminAdminSitePageRouteImport } from './routes/_admin/admin.site.$page'
-import { Route as CrmCrmClientesIdRouteImport } from './routes/_crm/crm.clientes.$id'
+import { Route as CrmCrmEmpresasIndexRouteImport } from './routes/_crm/crm.empresas.index'
+import { Route as CrmCrmEmpresasIdRouteImport } from './routes/_crm/crm.empresas.$id'
+import { Route as CrmCrmLeadsIndexRouteImport } from './routes/_crm/crm.leads.index'
+import { Route as CrmCrmLeadsIdRouteImport } from './routes/_crm/crm.leads.$id'
+import { Route as OpsOpsPedidosIndexRouteImport } from './routes/_ops/ops.pedidos.index'
 import { Route as OpsOpsPedidosIdRouteImport } from './routes/_ops/ops.pedidos.$id'
 import { Route as StudioStudioPaginasSlugRouteImport } from './routes/_studio/studio.paginas.$slug'
 import { Route as ApiPublicPaymentsMercadopagoRouteImport } from './routes/api/public/payments/mercadopago'
@@ -155,11 +157,6 @@ const CarrinhoRoute = CarrinhoRouteImport.update({
   path: '/carrinho',
   getParentRoute: () => rootRouteImport,
 } as any)
-const CheckoutRoute = CheckoutRouteImport.update({
-  id: '/checkout',
-  path: '/checkout',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const ConteudosRoute = ConteudosRouteImport.update({
   id: '/conteudos',
   path: '/conteudos',
@@ -215,10 +212,15 @@ const StudioStudioRoute = StudioStudioRouteImport.update({
   path: '/studio',
   getParentRoute: () => StudioRoute,
 } as any)
+const CheckoutIndexRoute = CheckoutIndexRouteImport.update({
+  id: '/checkout/',
+  path: '/checkout/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CheckoutRetornoRoute = CheckoutRetornoRouteImport.update({
-  id: '/retorno',
-  path: '/retorno',
-  getParentRoute: () => CheckoutRoute,
+  id: '/checkout/retorno',
+  path: '/checkout/retorno',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const CursosIndexRoute = CursosIndexRouteImport.update({
   id: '/cursos/',
@@ -348,14 +350,9 @@ const CrmCrmIndexRoute = CrmCrmIndexRouteImport.update({
   path: '/crm/',
   getParentRoute: () => CrmRoute,
 } as any)
-const CrmCrmClientesRoute = CrmCrmClientesRouteImport.update({
-  id: '/crm/clientes',
-  path: '/crm/clientes',
-  getParentRoute: () => CrmRoute,
-} as any)
-const CrmCrmSegmentosRoute = CrmCrmSegmentosRouteImport.update({
-  id: '/crm/segmentos',
-  path: '/crm/segmentos',
+const CrmCrmProspeccaoRoute = CrmCrmProspeccaoRouteImport.update({
+  id: '/crm/prospeccao',
+  path: '/crm/prospeccao',
   getParentRoute: () => CrmRoute,
 } as any)
 const MarketingMarketingIndexRoute = MarketingMarketingIndexRouteImport.update({
@@ -402,11 +399,6 @@ const OpsOpsExpedicaoRoute = OpsOpsExpedicaoRouteImport.update({
   path: '/ops/expedicao',
   getParentRoute: () => OpsRoute,
 } as any)
-const OpsOpsPedidosRoute = OpsOpsPedidosRouteImport.update({
-  id: '/ops/pedidos',
-  path: '/ops/pedidos',
-  getParentRoute: () => OpsRoute,
-} as any)
 const OpsOpsProducaoRoute = OpsOpsProducaoRouteImport.update({
   id: '/ops/producao',
   path: '/ops/producao',
@@ -429,9 +421,9 @@ const StudioStudioPaginasRoute = StudioStudioPaginasRouteImport.update({
 } as any)
 const CheckoutPagamentoOrderIdRoute =
   CheckoutPagamentoOrderIdRouteImport.update({
-    id: '/pagamento/$orderId',
-    path: '/pagamento/$orderId',
-    getParentRoute: () => CheckoutRoute,
+    id: '/checkout/pagamento/$orderId',
+    path: '/checkout/pagamento/$orderId',
+    getParentRoute: () => rootRouteImport,
   } as any)
 const AdminAdminProdutosIndexRoute = AdminAdminProdutosIndexRouteImport.update({
   id: '/admin/produtos/',
@@ -458,15 +450,35 @@ const AdminAdminSitePageRoute = AdminAdminSitePageRouteImport.update({
   path: '/admin/site/$page',
   getParentRoute: () => AdminRoute,
 } as any)
-const CrmCrmClientesIdRoute = CrmCrmClientesIdRouteImport.update({
-  id: '/$id',
-  path: '/$id',
-  getParentRoute: () => CrmCrmClientesRoute,
+const CrmCrmEmpresasIndexRoute = CrmCrmEmpresasIndexRouteImport.update({
+  id: '/crm/empresas/',
+  path: '/crm/empresas/',
+  getParentRoute: () => CrmRoute,
+} as any)
+const CrmCrmEmpresasIdRoute = CrmCrmEmpresasIdRouteImport.update({
+  id: '/crm/empresas/$id',
+  path: '/crm/empresas/$id',
+  getParentRoute: () => CrmRoute,
+} as any)
+const CrmCrmLeadsIndexRoute = CrmCrmLeadsIndexRouteImport.update({
+  id: '/crm/leads/',
+  path: '/crm/leads/',
+  getParentRoute: () => CrmRoute,
+} as any)
+const CrmCrmLeadsIdRoute = CrmCrmLeadsIdRouteImport.update({
+  id: '/crm/leads/$id',
+  path: '/crm/leads/$id',
+  getParentRoute: () => CrmRoute,
+} as any)
+const OpsOpsPedidosIndexRoute = OpsOpsPedidosIndexRouteImport.update({
+  id: '/ops/pedidos/',
+  path: '/ops/pedidos/',
+  getParentRoute: () => OpsRoute,
 } as any)
 const OpsOpsPedidosIdRoute = OpsOpsPedidosIdRouteImport.update({
-  id: '/$id',
-  path: '/$id',
-  getParentRoute: () => OpsOpsPedidosRoute,
+  id: '/ops/pedidos/$id',
+  path: '/ops/pedidos/$id',
+  getParentRoute: () => OpsRoute,
 } as any)
 const StudioStudioPaginasSlugRoute = StudioStudioPaginasSlugRouteImport.update({
   id: '/$slug',
@@ -494,7 +506,6 @@ export interface FileRoutesByFullPath {
   '/businessplan': typeof BusinessplanRoute
   '/cadastro': typeof CadastroRoute
   '/carrinho': typeof CarrinhoRoute
-  '/checkout': typeof CheckoutRouteWithChildren
   '/conteudos': typeof ConteudosRoute
   '/corporativo': typeof CorporativoRoute
   '/experiencias': typeof ExperienciasRoute
@@ -511,6 +522,7 @@ export interface FileRoutesByFullPath {
   '/politicas/$doc': typeof PoliticasDocRoute
   '/produto/$slug': typeof ProdutoSlugRoute
   '/produtos/$slug': typeof ProdutosSlugRoute
+  '/checkout/': typeof CheckoutIndexRoute
   '/cursos/': typeof CursosIndexRoute
   '/produtos/': typeof ProdutosIndexRoute
   '/academy/alunos': typeof AcademyAcademyAlunosRoute
@@ -527,15 +539,13 @@ export interface FileRoutesByFullPath {
   '/administracao/logs': typeof AdministracaoAdministracaoLogsRoute
   '/administracao/papeis': typeof AdministracaoAdministracaoPapeisRoute
   '/administracao/usuarios': typeof AdministracaoAdministracaoUsuariosRoute
-  '/crm/clientes': typeof CrmCrmClientesRouteWithChildren
-  '/crm/segmentos': typeof CrmCrmSegmentosRoute
+  '/crm/prospeccao': typeof CrmCrmProspeccaoRoute
   '/marketing/automacoes': typeof MarketingMarketingAutomacoesRoute
   '/marketing/calendario': typeof MarketingMarketingCalendarioRoute
   '/marketing/campanhas': typeof MarketingMarketingCampanhasRoute
   '/marketing/ia': typeof MarketingMarketingIaRoute
   '/marketing/social': typeof MarketingMarketingSocialRoute
   '/ops/expedicao': typeof OpsOpsExpedicaoRoute
-  '/ops/pedidos': typeof OpsOpsPedidosRouteWithChildren
   '/ops/producao': typeof OpsOpsProducaoRoute
   '/studio/equipe': typeof StudioStudioEquipeRoute
   '/studio/midia': typeof StudioStudioMidiaRoute
@@ -550,13 +560,17 @@ export interface FileRoutesByFullPath {
   '/admin/produtos/$id': typeof AdminAdminProdutosIdRoute
   '/admin/produtos/novo': typeof AdminAdminProdutosNovoRoute
   '/admin/site/$page': typeof AdminAdminSitePageRoute
-  '/crm/clientes/$id': typeof CrmCrmClientesIdRoute
+  '/crm/empresas/$id': typeof CrmCrmEmpresasIdRoute
+  '/crm/leads/$id': typeof CrmCrmLeadsIdRoute
   '/ops/pedidos/$id': typeof OpsOpsPedidosIdRoute
   '/studio/paginas/$slug': typeof StudioStudioPaginasSlugRoute
   '/api/public/payments/mercadopago': typeof ApiPublicPaymentsMercadopagoRoute
   '/api/public/payments/webhook': typeof ApiPublicPaymentsWebhookRoute
   '/admin/produtos/': typeof AdminAdminProdutosIndexRoute
   '/admin/site/': typeof AdminAdminSiteIndexRoute
+  '/crm/empresas/': typeof CrmCrmEmpresasIndexRoute
+  '/crm/leads/': typeof CrmCrmLeadsIndexRoute
+  '/ops/pedidos/': typeof OpsOpsPedidosIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -566,7 +580,6 @@ export interface FileRoutesByTo {
   '/businessplan': typeof BusinessplanRoute
   '/cadastro': typeof CadastroRoute
   '/carrinho': typeof CarrinhoRoute
-  '/checkout': typeof CheckoutRouteWithChildren
   '/conteudos': typeof ConteudosRoute
   '/corporativo': typeof CorporativoRoute
   '/experiencias': typeof ExperienciasRoute
@@ -583,6 +596,7 @@ export interface FileRoutesByTo {
   '/politicas/$doc': typeof PoliticasDocRoute
   '/produto/$slug': typeof ProdutoSlugRoute
   '/produtos/$slug': typeof ProdutosSlugRoute
+  '/checkout': typeof CheckoutIndexRoute
   '/cursos': typeof CursosIndexRoute
   '/produtos': typeof ProdutosIndexRoute
   '/academy/alunos': typeof AcademyAcademyAlunosRoute
@@ -599,15 +613,13 @@ export interface FileRoutesByTo {
   '/administracao/logs': typeof AdministracaoAdministracaoLogsRoute
   '/administracao/papeis': typeof AdministracaoAdministracaoPapeisRoute
   '/administracao/usuarios': typeof AdministracaoAdministracaoUsuariosRoute
-  '/crm/clientes': typeof CrmCrmClientesRouteWithChildren
-  '/crm/segmentos': typeof CrmCrmSegmentosRoute
+  '/crm/prospeccao': typeof CrmCrmProspeccaoRoute
   '/marketing/automacoes': typeof MarketingMarketingAutomacoesRoute
   '/marketing/calendario': typeof MarketingMarketingCalendarioRoute
   '/marketing/campanhas': typeof MarketingMarketingCampanhasRoute
   '/marketing/ia': typeof MarketingMarketingIaRoute
   '/marketing/social': typeof MarketingMarketingSocialRoute
   '/ops/expedicao': typeof OpsOpsExpedicaoRoute
-  '/ops/pedidos': typeof OpsOpsPedidosRouteWithChildren
   '/ops/producao': typeof OpsOpsProducaoRoute
   '/studio/equipe': typeof StudioStudioEquipeRoute
   '/studio/midia': typeof StudioStudioMidiaRoute
@@ -622,13 +634,17 @@ export interface FileRoutesByTo {
   '/admin/produtos/$id': typeof AdminAdminProdutosIdRoute
   '/admin/produtos/novo': typeof AdminAdminProdutosNovoRoute
   '/admin/site/$page': typeof AdminAdminSitePageRoute
-  '/crm/clientes/$id': typeof CrmCrmClientesIdRoute
+  '/crm/empresas/$id': typeof CrmCrmEmpresasIdRoute
+  '/crm/leads/$id': typeof CrmCrmLeadsIdRoute
   '/ops/pedidos/$id': typeof OpsOpsPedidosIdRoute
   '/studio/paginas/$slug': typeof StudioStudioPaginasSlugRoute
   '/api/public/payments/mercadopago': typeof ApiPublicPaymentsMercadopagoRoute
   '/api/public/payments/webhook': typeof ApiPublicPaymentsWebhookRoute
   '/admin/produtos': typeof AdminAdminProdutosIndexRoute
   '/admin/site': typeof AdminAdminSiteIndexRoute
+  '/crm/empresas': typeof CrmCrmEmpresasIndexRoute
+  '/crm/leads': typeof CrmCrmLeadsIndexRoute
+  '/ops/pedidos': typeof OpsOpsPedidosIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -647,7 +663,6 @@ export interface FileRoutesById {
   '/businessplan': typeof BusinessplanRoute
   '/cadastro': typeof CadastroRoute
   '/carrinho': typeof CarrinhoRoute
-  '/checkout': typeof CheckoutRouteWithChildren
   '/conteudos': typeof ConteudosRoute
   '/corporativo': typeof CorporativoRoute
   '/experiencias': typeof ExperienciasRoute
@@ -664,6 +679,7 @@ export interface FileRoutesById {
   '/politicas/$doc': typeof PoliticasDocRoute
   '/produto/$slug': typeof ProdutoSlugRoute
   '/produtos/$slug': typeof ProdutosSlugRoute
+  '/checkout/': typeof CheckoutIndexRoute
   '/cursos/': typeof CursosIndexRoute
   '/produtos/': typeof ProdutosIndexRoute
   '/_academy/academy/alunos': typeof AcademyAcademyAlunosRoute
@@ -680,15 +696,13 @@ export interface FileRoutesById {
   '/_administracao/administracao/logs': typeof AdministracaoAdministracaoLogsRoute
   '/_administracao/administracao/papeis': typeof AdministracaoAdministracaoPapeisRoute
   '/_administracao/administracao/usuarios': typeof AdministracaoAdministracaoUsuariosRoute
-  '/_crm/crm/clientes': typeof CrmCrmClientesRouteWithChildren
-  '/_crm/crm/segmentos': typeof CrmCrmSegmentosRoute
+  '/_crm/crm/prospeccao': typeof CrmCrmProspeccaoRoute
   '/_marketing/marketing/automacoes': typeof MarketingMarketingAutomacoesRoute
   '/_marketing/marketing/calendario': typeof MarketingMarketingCalendarioRoute
   '/_marketing/marketing/campanhas': typeof MarketingMarketingCampanhasRoute
   '/_marketing/marketing/ia': typeof MarketingMarketingIaRoute
   '/_marketing/marketing/social': typeof MarketingMarketingSocialRoute
   '/_ops/ops/expedicao': typeof OpsOpsExpedicaoRoute
-  '/_ops/ops/pedidos': typeof OpsOpsPedidosRouteWithChildren
   '/_ops/ops/producao': typeof OpsOpsProducaoRoute
   '/_studio/studio/equipe': typeof StudioStudioEquipeRoute
   '/_studio/studio/midia': typeof StudioStudioMidiaRoute
@@ -703,13 +717,17 @@ export interface FileRoutesById {
   '/_admin/admin/produtos/$id': typeof AdminAdminProdutosIdRoute
   '/_admin/admin/produtos/novo': typeof AdminAdminProdutosNovoRoute
   '/_admin/admin/site/$page': typeof AdminAdminSitePageRoute
-  '/_crm/crm/clientes/$id': typeof CrmCrmClientesIdRoute
+  '/_crm/crm/empresas/$id': typeof CrmCrmEmpresasIdRoute
+  '/_crm/crm/leads/$id': typeof CrmCrmLeadsIdRoute
   '/_ops/ops/pedidos/$id': typeof OpsOpsPedidosIdRoute
   '/_studio/studio/paginas/$slug': typeof StudioStudioPaginasSlugRoute
   '/api/public/payments/mercadopago': typeof ApiPublicPaymentsMercadopagoRoute
   '/api/public/payments/webhook': typeof ApiPublicPaymentsWebhookRoute
   '/_admin/admin/produtos/': typeof AdminAdminProdutosIndexRoute
   '/_admin/admin/site/': typeof AdminAdminSiteIndexRoute
+  '/_crm/crm/empresas/': typeof CrmCrmEmpresasIndexRoute
+  '/_crm/crm/leads/': typeof CrmCrmLeadsIndexRoute
+  '/_ops/ops/pedidos/': typeof OpsOpsPedidosIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -721,7 +739,6 @@ export interface FileRouteTypes {
     | '/businessplan'
     | '/cadastro'
     | '/carrinho'
-    | '/checkout'
     | '/conteudos'
     | '/corporativo'
     | '/experiencias'
@@ -738,6 +755,7 @@ export interface FileRouteTypes {
     | '/politicas/$doc'
     | '/produto/$slug'
     | '/produtos/$slug'
+    | '/checkout/'
     | '/cursos/'
     | '/produtos/'
     | '/academy/alunos'
@@ -754,15 +772,13 @@ export interface FileRouteTypes {
     | '/administracao/logs'
     | '/administracao/papeis'
     | '/administracao/usuarios'
-    | '/crm/clientes'
-    | '/crm/segmentos'
+    | '/crm/prospeccao'
     | '/marketing/automacoes'
     | '/marketing/calendario'
     | '/marketing/campanhas'
     | '/marketing/ia'
     | '/marketing/social'
     | '/ops/expedicao'
-    | '/ops/pedidos'
     | '/ops/producao'
     | '/studio/equipe'
     | '/studio/midia'
@@ -777,13 +793,17 @@ export interface FileRouteTypes {
     | '/admin/produtos/$id'
     | '/admin/produtos/novo'
     | '/admin/site/$page'
-    | '/crm/clientes/$id'
+    | '/crm/empresas/$id'
+    | '/crm/leads/$id'
     | '/ops/pedidos/$id'
     | '/studio/paginas/$slug'
     | '/api/public/payments/mercadopago'
     | '/api/public/payments/webhook'
     | '/admin/produtos/'
     | '/admin/site/'
+    | '/crm/empresas/'
+    | '/crm/leads/'
+    | '/ops/pedidos/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -793,7 +813,6 @@ export interface FileRouteTypes {
     | '/businessplan'
     | '/cadastro'
     | '/carrinho'
-    | '/checkout'
     | '/conteudos'
     | '/corporativo'
     | '/experiencias'
@@ -810,6 +829,7 @@ export interface FileRouteTypes {
     | '/politicas/$doc'
     | '/produto/$slug'
     | '/produtos/$slug'
+    | '/checkout'
     | '/cursos'
     | '/produtos'
     | '/academy/alunos'
@@ -826,15 +846,13 @@ export interface FileRouteTypes {
     | '/administracao/logs'
     | '/administracao/papeis'
     | '/administracao/usuarios'
-    | '/crm/clientes'
-    | '/crm/segmentos'
+    | '/crm/prospeccao'
     | '/marketing/automacoes'
     | '/marketing/calendario'
     | '/marketing/campanhas'
     | '/marketing/ia'
     | '/marketing/social'
     | '/ops/expedicao'
-    | '/ops/pedidos'
     | '/ops/producao'
     | '/studio/equipe'
     | '/studio/midia'
@@ -849,13 +867,17 @@ export interface FileRouteTypes {
     | '/admin/produtos/$id'
     | '/admin/produtos/novo'
     | '/admin/site/$page'
-    | '/crm/clientes/$id'
+    | '/crm/empresas/$id'
+    | '/crm/leads/$id'
     | '/ops/pedidos/$id'
     | '/studio/paginas/$slug'
     | '/api/public/payments/mercadopago'
     | '/api/public/payments/webhook'
     | '/admin/produtos'
     | '/admin/site'
+    | '/crm/empresas'
+    | '/crm/leads'
+    | '/ops/pedidos'
   id:
     | '__root__'
     | '/'
@@ -873,7 +895,6 @@ export interface FileRouteTypes {
     | '/businessplan'
     | '/cadastro'
     | '/carrinho'
-    | '/checkout'
     | '/conteudos'
     | '/corporativo'
     | '/experiencias'
@@ -890,6 +911,7 @@ export interface FileRouteTypes {
     | '/politicas/$doc'
     | '/produto/$slug'
     | '/produtos/$slug'
+    | '/checkout/'
     | '/cursos/'
     | '/produtos/'
     | '/_academy/academy/alunos'
@@ -906,15 +928,13 @@ export interface FileRouteTypes {
     | '/_administracao/administracao/logs'
     | '/_administracao/administracao/papeis'
     | '/_administracao/administracao/usuarios'
-    | '/_crm/crm/clientes'
-    | '/_crm/crm/segmentos'
+    | '/_crm/crm/prospeccao'
     | '/_marketing/marketing/automacoes'
     | '/_marketing/marketing/calendario'
     | '/_marketing/marketing/campanhas'
     | '/_marketing/marketing/ia'
     | '/_marketing/marketing/social'
     | '/_ops/ops/expedicao'
-    | '/_ops/ops/pedidos'
     | '/_ops/ops/producao'
     | '/_studio/studio/equipe'
     | '/_studio/studio/midia'
@@ -929,13 +949,17 @@ export interface FileRouteTypes {
     | '/_admin/admin/produtos/$id'
     | '/_admin/admin/produtos/novo'
     | '/_admin/admin/site/$page'
-    | '/_crm/crm/clientes/$id'
+    | '/_crm/crm/empresas/$id'
+    | '/_crm/crm/leads/$id'
     | '/_ops/ops/pedidos/$id'
     | '/_studio/studio/paginas/$slug'
     | '/api/public/payments/mercadopago'
     | '/api/public/payments/webhook'
     | '/_admin/admin/produtos/'
     | '/_admin/admin/site/'
+    | '/_crm/crm/empresas/'
+    | '/_crm/crm/leads/'
+    | '/_ops/ops/pedidos/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -954,7 +978,6 @@ export interface RootRouteChildren {
   BusinessplanRoute: typeof BusinessplanRoute
   CadastroRoute: typeof CadastroRoute
   CarrinhoRoute: typeof CarrinhoRoute
-  CheckoutRoute: typeof CheckoutRouteWithChildren
   ConteudosRoute: typeof ConteudosRoute
   CorporativoRoute: typeof CorporativoRoute
   ExperienciasRoute: typeof ExperienciasRoute
@@ -962,12 +985,15 @@ export interface RootRouteChildren {
   MonClubRoute: typeof MonClubRoute
   QuizRoute: typeof QuizRoute
   SobreRoute: typeof SobreRoute
+  CheckoutRetornoRoute: typeof CheckoutRetornoRoute
   CursosSlugRoute: typeof CursosSlugRoute
   PoliticasDocRoute: typeof PoliticasDocRoute
   ProdutoSlugRoute: typeof ProdutoSlugRoute
   ProdutosSlugRoute: typeof ProdutosSlugRoute
+  CheckoutIndexRoute: typeof CheckoutIndexRoute
   CursosIndexRoute: typeof CursosIndexRoute
   ProdutosIndexRoute: typeof ProdutosIndexRoute
+  CheckoutPagamentoOrderIdRoute: typeof CheckoutPagamentoOrderIdRoute
   ApiPublicPaymentsMercadopagoRoute: typeof ApiPublicPaymentsMercadopagoRoute
   ApiPublicPaymentsWebhookRoute: typeof ApiPublicPaymentsWebhookRoute
 }
@@ -1079,13 +1105,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CarrinhoRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/checkout': {
-      id: '/checkout'
-      path: '/checkout'
-      fullPath: '/checkout'
-      preLoaderRoute: typeof CheckoutRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/conteudos': {
       id: '/conteudos'
       path: '/conteudos'
@@ -1163,12 +1182,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof StudioStudioRouteImport
       parentRoute: typeof StudioRoute
     }
+    '/checkout/': {
+      id: '/checkout/'
+      path: '/checkout'
+      fullPath: '/checkout/'
+      preLoaderRoute: typeof CheckoutIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/checkout/retorno': {
       id: '/checkout/retorno'
-      path: '/retorno'
+      path: '/checkout/retorno'
       fullPath: '/checkout/retorno'
       preLoaderRoute: typeof CheckoutRetornoRouteImport
-      parentRoute: typeof CheckoutRoute
+      parentRoute: typeof rootRouteImport
     }
     '/cursos/': {
       id: '/cursos/'
@@ -1338,18 +1364,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CrmCrmIndexRouteImport
       parentRoute: typeof CrmRoute
     }
-    '/_crm/crm/clientes': {
-      id: '/_crm/crm/clientes'
-      path: '/crm/clientes'
-      fullPath: '/crm/clientes'
-      preLoaderRoute: typeof CrmCrmClientesRouteImport
-      parentRoute: typeof CrmRoute
-    }
-    '/_crm/crm/segmentos': {
-      id: '/_crm/crm/segmentos'
-      path: '/crm/segmentos'
-      fullPath: '/crm/segmentos'
-      preLoaderRoute: typeof CrmCrmSegmentosRouteImport
+    '/_crm/crm/prospeccao': {
+      id: '/_crm/crm/prospeccao'
+      path: '/crm/prospeccao'
+      fullPath: '/crm/prospeccao'
+      preLoaderRoute: typeof CrmCrmProspeccaoRouteImport
       parentRoute: typeof CrmRoute
     }
     '/_marketing/marketing/': {
@@ -1408,13 +1427,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof OpsOpsExpedicaoRouteImport
       parentRoute: typeof OpsRoute
     }
-    '/_ops/ops/pedidos': {
-      id: '/_ops/ops/pedidos'
-      path: '/ops/pedidos'
-      fullPath: '/ops/pedidos'
-      preLoaderRoute: typeof OpsOpsPedidosRouteImport
-      parentRoute: typeof OpsRoute
-    }
     '/_ops/ops/producao': {
       id: '/_ops/ops/producao'
       path: '/ops/producao'
@@ -1445,10 +1457,10 @@ declare module '@tanstack/react-router' {
     }
     '/checkout/pagamento/$orderId': {
       id: '/checkout/pagamento/$orderId'
-      path: '/pagamento/$orderId'
+      path: '/checkout/pagamento/$orderId'
       fullPath: '/checkout/pagamento/$orderId'
       preLoaderRoute: typeof CheckoutPagamentoOrderIdRouteImport
-      parentRoute: typeof CheckoutRoute
+      parentRoute: typeof rootRouteImport
     }
     '/_admin/admin/produtos/': {
       id: '/_admin/admin/produtos/'
@@ -1485,19 +1497,47 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminAdminSitePageRouteImport
       parentRoute: typeof AdminRoute
     }
-    '/_crm/crm/clientes/$id': {
-      id: '/_crm/crm/clientes/$id'
-      path: '/$id'
-      fullPath: '/crm/clientes/$id'
-      preLoaderRoute: typeof CrmCrmClientesIdRouteImport
-      parentRoute: typeof CrmCrmClientesRoute
+    '/_crm/crm/empresas/': {
+      id: '/_crm/crm/empresas/'
+      path: '/crm/empresas'
+      fullPath: '/crm/empresas/'
+      preLoaderRoute: typeof CrmCrmEmpresasIndexRouteImport
+      parentRoute: typeof CrmRoute
+    }
+    '/_crm/crm/empresas/$id': {
+      id: '/_crm/crm/empresas/$id'
+      path: '/crm/empresas/$id'
+      fullPath: '/crm/empresas/$id'
+      preLoaderRoute: typeof CrmCrmEmpresasIdRouteImport
+      parentRoute: typeof CrmRoute
+    }
+    '/_crm/crm/leads/': {
+      id: '/_crm/crm/leads/'
+      path: '/crm/leads'
+      fullPath: '/crm/leads/'
+      preLoaderRoute: typeof CrmCrmLeadsIndexRouteImport
+      parentRoute: typeof CrmRoute
+    }
+    '/_crm/crm/leads/$id': {
+      id: '/_crm/crm/leads/$id'
+      path: '/crm/leads/$id'
+      fullPath: '/crm/leads/$id'
+      preLoaderRoute: typeof CrmCrmLeadsIdRouteImport
+      parentRoute: typeof CrmRoute
+    }
+    '/_ops/ops/pedidos/': {
+      id: '/_ops/ops/pedidos/'
+      path: '/ops/pedidos'
+      fullPath: '/ops/pedidos/'
+      preLoaderRoute: typeof OpsOpsPedidosIndexRouteImport
+      parentRoute: typeof OpsRoute
     }
     '/_ops/ops/pedidos/$id': {
       id: '/_ops/ops/pedidos/$id'
-      path: '/$id'
+      path: '/ops/pedidos/$id'
       fullPath: '/ops/pedidos/$id'
       preLoaderRoute: typeof OpsOpsPedidosIdRouteImport
-      parentRoute: typeof OpsOpsPedidosRoute
+      parentRoute: typeof OpsRoute
     }
     '/_studio/studio/paginas/$slug': {
       id: '/_studio/studio/paginas/$slug'
@@ -1614,28 +1654,22 @@ const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
   AuthenticatedRouteChildren,
 )
 
-interface CrmCrmClientesRouteChildren {
-  CrmCrmClientesIdRoute: typeof CrmCrmClientesIdRoute
-}
-
-const CrmCrmClientesRouteChildren: CrmCrmClientesRouteChildren = {
-  CrmCrmClientesIdRoute: CrmCrmClientesIdRoute,
-}
-
-const CrmCrmClientesRouteWithChildren = CrmCrmClientesRoute._addFileChildren(
-  CrmCrmClientesRouteChildren,
-)
-
 interface CrmRouteChildren {
-  CrmCrmClientesRoute: typeof CrmCrmClientesRouteWithChildren
-  CrmCrmSegmentosRoute: typeof CrmCrmSegmentosRoute
+  CrmCrmProspeccaoRoute: typeof CrmCrmProspeccaoRoute
   CrmCrmIndexRoute: typeof CrmCrmIndexRoute
+  CrmCrmEmpresasIdRoute: typeof CrmCrmEmpresasIdRoute
+  CrmCrmLeadsIdRoute: typeof CrmCrmLeadsIdRoute
+  CrmCrmEmpresasIndexRoute: typeof CrmCrmEmpresasIndexRoute
+  CrmCrmLeadsIndexRoute: typeof CrmCrmLeadsIndexRoute
 }
 
 const CrmRouteChildren: CrmRouteChildren = {
-  CrmCrmClientesRoute: CrmCrmClientesRouteWithChildren,
-  CrmCrmSegmentosRoute: CrmCrmSegmentosRoute,
+  CrmCrmProspeccaoRoute: CrmCrmProspeccaoRoute,
   CrmCrmIndexRoute: CrmCrmIndexRoute,
+  CrmCrmEmpresasIdRoute: CrmCrmEmpresasIdRoute,
+  CrmCrmLeadsIdRoute: CrmCrmLeadsIdRoute,
+  CrmCrmEmpresasIndexRoute: CrmCrmEmpresasIndexRoute,
+  CrmCrmLeadsIndexRoute: CrmCrmLeadsIndexRoute,
 }
 
 const CrmRouteWithChildren = CrmRoute._addFileChildren(CrmRouteChildren)
@@ -1662,30 +1696,20 @@ const MarketingRouteWithChildren = MarketingRoute._addFileChildren(
   MarketingRouteChildren,
 )
 
-interface OpsOpsPedidosRouteChildren {
-  OpsOpsPedidosIdRoute: typeof OpsOpsPedidosIdRoute
-}
-
-const OpsOpsPedidosRouteChildren: OpsOpsPedidosRouteChildren = {
-  OpsOpsPedidosIdRoute: OpsOpsPedidosIdRoute,
-}
-
-const OpsOpsPedidosRouteWithChildren = OpsOpsPedidosRoute._addFileChildren(
-  OpsOpsPedidosRouteChildren,
-)
-
 interface OpsRouteChildren {
   OpsOpsExpedicaoRoute: typeof OpsOpsExpedicaoRoute
-  OpsOpsPedidosRoute: typeof OpsOpsPedidosRouteWithChildren
   OpsOpsProducaoRoute: typeof OpsOpsProducaoRoute
   OpsOpsIndexRoute: typeof OpsOpsIndexRoute
+  OpsOpsPedidosIdRoute: typeof OpsOpsPedidosIdRoute
+  OpsOpsPedidosIndexRoute: typeof OpsOpsPedidosIndexRoute
 }
 
 const OpsRouteChildren: OpsRouteChildren = {
   OpsOpsExpedicaoRoute: OpsOpsExpedicaoRoute,
-  OpsOpsPedidosRoute: OpsOpsPedidosRouteWithChildren,
   OpsOpsProducaoRoute: OpsOpsProducaoRoute,
   OpsOpsIndexRoute: OpsOpsIndexRoute,
+  OpsOpsPedidosIdRoute: OpsOpsPedidosIdRoute,
+  OpsOpsPedidosIndexRoute: OpsOpsPedidosIndexRoute,
 }
 
 const OpsRouteWithChildren = OpsRoute._addFileChildren(OpsRouteChildren)
@@ -1728,20 +1752,6 @@ const StudioRouteChildren: StudioRouteChildren = {
 const StudioRouteWithChildren =
   StudioRoute._addFileChildren(StudioRouteChildren)
 
-interface CheckoutRouteChildren {
-  CheckoutRetornoRoute: typeof CheckoutRetornoRoute
-  CheckoutPagamentoOrderIdRoute: typeof CheckoutPagamentoOrderIdRoute
-}
-
-const CheckoutRouteChildren: CheckoutRouteChildren = {
-  CheckoutRetornoRoute: CheckoutRetornoRoute,
-  CheckoutPagamentoOrderIdRoute: CheckoutPagamentoOrderIdRoute,
-}
-
-const CheckoutRouteWithChildren = CheckoutRoute._addFileChildren(
-  CheckoutRouteChildren,
-)
-
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   SlugRoute: SlugRoute,
@@ -1758,7 +1768,6 @@ const rootRouteChildren: RootRouteChildren = {
   BusinessplanRoute: BusinessplanRoute,
   CadastroRoute: CadastroRoute,
   CarrinhoRoute: CarrinhoRoute,
-  CheckoutRoute: CheckoutRouteWithChildren,
   ConteudosRoute: ConteudosRoute,
   CorporativoRoute: CorporativoRoute,
   ExperienciasRoute: ExperienciasRoute,
@@ -1766,12 +1775,15 @@ const rootRouteChildren: RootRouteChildren = {
   MonClubRoute: MonClubRoute,
   QuizRoute: QuizRoute,
   SobreRoute: SobreRoute,
+  CheckoutRetornoRoute: CheckoutRetornoRoute,
   CursosSlugRoute: CursosSlugRoute,
   PoliticasDocRoute: PoliticasDocRoute,
   ProdutoSlugRoute: ProdutoSlugRoute,
   ProdutosSlugRoute: ProdutosSlugRoute,
+  CheckoutIndexRoute: CheckoutIndexRoute,
   CursosIndexRoute: CursosIndexRoute,
   ProdutosIndexRoute: ProdutosIndexRoute,
+  CheckoutPagamentoOrderIdRoute: CheckoutPagamentoOrderIdRoute,
   ApiPublicPaymentsMercadopagoRoute: ApiPublicPaymentsMercadopagoRoute,
   ApiPublicPaymentsWebhookRoute: ApiPublicPaymentsWebhookRoute,
 }

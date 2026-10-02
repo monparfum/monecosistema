@@ -10,7 +10,7 @@ import { quoteShipping } from "@/lib/shipping.functions";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
-export const Route = createFileRoute("/checkout")({
+export const Route = createFileRoute("/checkout/")({
   head: () => ({ meta: [{ title: "Checkout — Mon Parfum" }] }),
   component: Checkout,
 });

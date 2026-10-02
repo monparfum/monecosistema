@@ -4,7 +4,7 @@ export type IntegrationField = {
   options?: [value: string, label: string][];
 };
 export type Integration = {
-  id: "mercadopago" | "melhorenvio" | "resend" | "stripe" | "site";
+  id: "mercadopago" | "melhorenvio" | "resend" | "stripe" | "googleplaces" | "site";
   group: string; name: string; description: string; docs: string; docsLabel: string;
   required: string[]; // chaves mínimas para "Conectado"
   fields: IntegrationField[];
@@ -54,6 +54,15 @@ export const INTEGRATIONS: Integration[] = [
     fields: [
       { key: "RESEND_API_KEY", label: "API Key", secret: true, placeholder: "re_…" },
       { key: "EMAIL_FROM", label: "Remetente", secret: false, placeholder: "MON PARFUM <contato@monparfum.com.br>" },
+    ],
+  },
+  {
+    id: "googleplaces", group: "Prospecção", name: "Google Maps (busca de empresas)", testable: true,
+    description: "Usado pelo extrator de leads corporativos (CRM › Prospecção) para buscar empresas por segmento e cidade. A consulta por CNPJ funciona sem chave.",
+    docs: "https://console.cloud.google.com/google/maps-apis/credentials", docsLabel: "Google Cloud › APIs e serviços › Credenciais (ative a “Places API (New)”)",
+    required: ["GOOGLE_PLACES_API_KEY"],
+    fields: [
+      { key: "GOOGLE_PLACES_API_KEY", label: "Chave de API", secret: true, placeholder: "AIza…", help: "Restrinja a chave à Places API (New). O Google cobra por busca acima da cota gratuita mensal." },
     ],
   },
   {

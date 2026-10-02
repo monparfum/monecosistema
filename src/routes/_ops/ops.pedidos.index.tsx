@@ -9,7 +9,7 @@ import { useState } from "react";
 
 const STATUSES = ["all","pending_payment","paid","processing","shipped","delivered","cancelled"] as const;
 
-export const Route = createFileRoute("/_ops/ops/pedidos")({
+export const Route = createFileRoute("/_ops/ops/pedidos/")({
   head: () => ({ meta: [{ title: "Pedidos — Operações" }] }),
   component: OpsPedidos,
 });

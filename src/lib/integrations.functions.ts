@@ -1,3 +1,4 @@
+import { searchPlaces } from "@/lib/google-places.server";
 import { createServerFn } from "@tanstack/react-start";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { supabaseAdmin } from "@/integrations/supabase/client.server";
@@ -112,6 +113,11 @@ export const testIntegration = createServerFn({ method: "POST" })
           if (!domains.length) return { ok: false, message: "Chave válida, mas nenhum domínio cadastrado no Resend (Domains › Add domain)" };
           if (fromDomain && (!d || d.status !== "verified")) return { ok: false, message: `Chave válida, mas o domínio do remetente (${fromDomain}) não está verificado no Resend` };
           return { ok: true, message: `Chave válida · domínios: ${domains.map((x) => `${x.name} (${x.status === "verified" ? "verificado" : x.status})`).join(", ")}` };
+        }
+        case "googleplaces": {
+          if (!env("GOOGLE_PLACES_API_KEY")) return { ok: false, message: "Chave não configurada" };
+          const r = await searchPlaces("perfumaria em Florianópolis", undefined, 1);
+          return { ok: true, message: `Chave válida · teste encontrou “${r.places[0]?.name ?? "—"}”` };
         }
         case "stripe": {
           const pk = env("STRIPE_PUBLISHABLE_KEY") || env("VITE_PAYMENTS_CLIENT_TOKEN");

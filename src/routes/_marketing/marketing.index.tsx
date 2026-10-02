@@ -17,13 +17,14 @@ function MarketingIndex() {
     queryKey: ["marketing-conversions"],
     queryFn: async () => {
       const since = new Date(Date.now() - 30 * 86400_000).toISOString();
-      const { data: orders } = await supabase
-        .from("orders")
-        .select("total_cents, status, created_at")
-        .in("status", ["paid", "processing", "shipped", "delivered"])
-        .gte("created_at", since);
+      const [{ data: orders }, { count: contacts }] = await Promise.all([
+        supabase.from("orders").select("total_cents, status, created_at")
+          .in("status", ["paid", "processing", "shipped", "delivered"]).gte("created_at", since),
+        supabase.from("leads").select("id", { count: "exact", head: true }).gte("created_at", since),
+      ]);
       const rows = orders ?? [];
       return {
+        contacts: contacts ?? 0,
         conversions: rows.length,
         revenue: rows.reduce((s, o) => s + o.total_cents, 0),
       };
@@ -35,11 +36,11 @@ function MarketingIndex() {
       <PageHeader
         eyebrow="Módulo · Marketing"
         title="Inteligência de marca"
-        description="Conversões e receita já vêm do Commerce. Seguidores, leads e ROI ativam ao conectar canais."
+        description="Conversões, receita e contatos já vêm do site. Seguidores e ROI ativam ao conectar canais."
       />
       <StatGrid>
         <StatCard label="Seguidores" value="—" hint="Somatório redes conectadas" />
-        <StatCard label="Leads" value="—" hint="CRM · captura em breve" />
+        <StatCard label="Contatos · 30d" value={data?.contacts ?? "—"} hint="Formulários do site" />
         <StatCard label="Conversões · 30d" value={data?.conversions ?? "—"} hint="Pedidos pagos" />
         <StatCard label="Receita · 30d" value={data ? formatBRL(data.revenue) : "—"} />
       </StatGrid>
