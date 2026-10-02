@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { MonPage } from "@/components/mon/page";
 import { loadSite, Rich, useSite } from "@/lib/site-content";
+import { MEMBERS_APP_URL } from "@/lib/members-app";
 
 export const Route = createFileRoute("/mon-club")({
   loader: ({ context }) => loadSite(context.queryClient, "club"),
@@ -8,7 +9,6 @@ export const Route = createFileRoute("/mon-club")({
   component: Club,
 });
 
-const MEMBERS_APP_URL = import.meta.env.VITE_MEMBERS_APP_URL as string | undefined;
 
 function Club() {
   const c = useSite("club");

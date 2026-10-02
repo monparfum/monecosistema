@@ -1,4 +1,5 @@
 import type { LucideIcon } from "lucide-react";
+import { MEMBERS_APP_URL } from "@/lib/members-app";
 import {
   ShoppingBag,
   Palette,
@@ -15,7 +16,7 @@ export type ModuleId =
   | "estudio"
   | "operacoes"
   | "crm"
-  | "academy"
+  | "membros"
   | "marketing"
   | "administracao"
   | "site";
@@ -28,6 +29,7 @@ export type ModuleDef = {
   eyebrow: string;
   description: string;
   to: string;
+  href?: string; // link externo (abre outro sistema)
   icon: LucideIcon;
   items: string[];
   requiredRoles: RoleId[]; // vazio = qualquer admin; usado quando permissões granulares forem ligadas
@@ -77,17 +79,17 @@ export const MODULES: ModuleDef[] = [
     requiredRoles: ["admin"],
     status: "novo",
   },
-  {
-    id: "academy",
-    label: "Academy",
-    eyebrow: "Educação",
-    description: "Área de membros com cursos, aulas e certificados.",
-    to: "/academy",
+  ...(MEMBERS_APP_URL ? [{
+    id: "membros" as const,
+    label: "Área de membros",
+    eyebrow: "Cursos",
+    description: "Sua área de membros: cursos, aulas, alunos, provas e certificados. Abre em outra aba.",
+    to: "/",
+    href: `${MEMBERS_APP_URL}/app`,
     icon: GraduationCap,
-    items: ["Cursos", "Alunos", "Certificados"],
-    requiredRoles: ["admin"],
-    status: "novo",
-  },
+    items: ["Cursos", "Alunos", "Vendas", "Provas"],
+    requiredRoles: ["admin" as const],
+  }] : []),
   {
     id: "marketing",
     label: "Marketing",

@@ -19,17 +19,16 @@ const MODULES = [
   { key: "studio", label: "Estúdio" },
   { key: "ops", label: "Operações" },
   { key: "crm", label: "CRM" },
-  { key: "academy", label: "Academy" },
   { key: "marketing", label: "Marketing" },
   { key: "administracao", label: "Administração" },
 ];
 
 // r=read, w=write, p=publish
 const MATRIX: Record<Role, Record<string, string>> = {
-  admin:    { commerce: "rwp", studio: "rwp", ops: "rwp", crm: "rwp", academy: "rwp", marketing: "rwp", administracao: "rwp" },
-  editor:   { commerce: "r",   studio: "rw",  ops: "",    crm: "r",   academy: "rw",  marketing: "rw",  administracao: "" },
-  reviewer: { commerce: "r",   studio: "rwp", ops: "",    crm: "r",   academy: "rwp", marketing: "rwp", administracao: "" },
-  customer: { commerce: "r",   studio: "",    ops: "",    crm: "",    academy: "r",   marketing: "",    administracao: "" },
+  admin:    { commerce: "rwp", studio: "rwp", ops: "rwp", crm: "rwp", marketing: "rwp", administracao: "rwp" },
+  editor:   { commerce: "r",   studio: "rw",  ops: "",    crm: "r",   marketing: "rw",  administracao: "" },
+  reviewer: { commerce: "r",   studio: "rwp", ops: "",    crm: "r",   marketing: "rwp", administracao: "" },
+  customer: { commerce: "r",   studio: "",    ops: "",    crm: "",    marketing: "",    administracao: "" },
 };
 
 function scopeLabel(s: string) {

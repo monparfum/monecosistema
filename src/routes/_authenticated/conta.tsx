@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { useAuth } from "@/lib/auth-context";
+import { MEMBERS_APP_URL } from "@/lib/members-app";
 
 export const Route = createFileRoute("/_authenticated/conta")({
   head: () => ({ meta: [{ title: "Minha conta — Mon Parfum" }] }),
@@ -21,7 +22,7 @@ function Conta() {
         </dl>
         <div className="mt-10 flex flex-wrap gap-4">
           <Link to="/pedidos" className="bg-foreground text-background px-5 py-2.5 text-sm">Meus pedidos</Link>
-          <Link to="/meus-cursos" className="border border-border px-5 py-2.5 text-sm">Meus cursos</Link>
+          {MEMBERS_APP_URL && <a href={MEMBERS_APP_URL} className="border border-border px-5 py-2.5 text-sm">Área do aluno (cursos)</a>}
           <button onClick={signOut} className="border border-border px-5 py-2.5 text-sm">Sair</button>
         </div>
       </div>

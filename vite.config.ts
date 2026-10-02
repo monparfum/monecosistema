@@ -12,7 +12,9 @@ Object.assign(process.env, { ...loadEnv("development", process.cwd(), ""), ...pr
 
 // Redirect TanStack Start's bundled server entry to src/server.ts (our SSR error wrapper).
 // @cloudflare/vite-plugin builds from this — wrangler.jsonc main alone is insufficient.
+// Porta fixa 8081: a 8080 é da área de membros (app separado)
 export default defineConfig({
+  vite: { server: { port: 8081, strictPort: true } },
   tanstackStart: {
     server: { entry: "server" },
   },

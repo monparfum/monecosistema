@@ -3,6 +3,7 @@ import { useState } from "react";
 import { ShoppingBag, User } from "lucide-react";
 import { useCart } from "@/lib/cart-context";
 import { useAuth } from "@/lib/auth-context";
+import { MEMBERS_APP_URL } from "@/lib/members-app";
 
 const NAV = [
   { to: "/cursos", label: "Cursos" },
@@ -14,7 +15,6 @@ const NAV = [
 ] as const;
 
 // Área de membros (instalação separada); sem endereço configurado, cai em "Minha conta"
-const MEMBERS_APP_URL = import.meta.env.VITE_MEMBERS_APP_URL as string | undefined;
 
 export function SiteHeader() {
   const { count } = useCart();

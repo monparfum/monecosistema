@@ -11,7 +11,6 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as SlugRouteImport } from './routes/$slug'
-import { Route as AcademyRouteImport } from './routes/_academy'
 import { Route as AdminRouteImport } from './routes/_admin'
 import { Route as AdministracaoRouteImport } from './routes/_administracao'
 import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
@@ -32,7 +31,6 @@ import { Route as MonClubRouteImport } from './routes/mon-club'
 import { Route as QuizRouteImport } from './routes/quiz'
 import { Route as SobreRouteImport } from './routes/sobre'
 import { Route as AuthenticatedContaRouteImport } from './routes/_authenticated/conta'
-import { Route as AuthenticatedMeusCursosRouteImport } from './routes/_authenticated/meus-cursos'
 import { Route as AuthenticatedPedidosRouteImport } from './routes/_authenticated/pedidos'
 import { Route as StudioStudioRouteImport } from './routes/_studio/studio'
 import { Route as CheckoutIndexRouteImport } from './routes/checkout.index'
@@ -43,10 +41,6 @@ import { Route as PoliticasDocRouteImport } from './routes/politicas.$doc'
 import { Route as ProdutoSlugRouteImport } from './routes/produto.$slug'
 import { Route as ProdutosIndexRouteImport } from './routes/produtos.index'
 import { Route as ProdutosSlugRouteImport } from './routes/produtos.$slug'
-import { Route as AcademyAcademyIndexRouteImport } from './routes/_academy/academy.index'
-import { Route as AcademyAcademyAlunosRouteImport } from './routes/_academy/academy.alunos'
-import { Route as AcademyAcademyCertificadosRouteImport } from './routes/_academy/academy.certificados'
-import { Route as AcademyAcademyCursosRouteImport } from './routes/_academy/academy.cursos'
 import { Route as AdminAdminIndexRouteImport } from './routes/_admin/admin.index'
 import { Route as AdminAdminCategoriasRouteImport } from './routes/_admin/admin.categorias'
 import { Route as AdminAdminClientesRouteImport } from './routes/_admin/admin.clientes'
@@ -98,10 +92,6 @@ const IndexRoute = IndexRouteImport.update({
 const SlugRoute = SlugRouteImport.update({
   id: '/$slug',
   path: '/$slug',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AcademyRoute = AcademyRouteImport.update({
-  id: '/_academy',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminRoute = AdminRouteImport.update({
@@ -197,11 +187,6 @@ const AuthenticatedContaRoute = AuthenticatedContaRouteImport.update({
   path: '/conta',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
-const AuthenticatedMeusCursosRoute = AuthenticatedMeusCursosRouteImport.update({
-  id: '/meus-cursos',
-  path: '/meus-cursos',
-  getParentRoute: () => AuthenticatedRoute,
-} as any)
 const AuthenticatedPedidosRoute = AuthenticatedPedidosRouteImport.update({
   id: '/pedidos',
   path: '/pedidos',
@@ -251,27 +236,6 @@ const ProdutosSlugRoute = ProdutosSlugRouteImport.update({
   id: '/produtos/$slug',
   path: '/produtos/$slug',
   getParentRoute: () => rootRouteImport,
-} as any)
-const AcademyAcademyIndexRoute = AcademyAcademyIndexRouteImport.update({
-  id: '/academy/',
-  path: '/academy/',
-  getParentRoute: () => AcademyRoute,
-} as any)
-const AcademyAcademyAlunosRoute = AcademyAcademyAlunosRouteImport.update({
-  id: '/academy/alunos',
-  path: '/academy/alunos',
-  getParentRoute: () => AcademyRoute,
-} as any)
-const AcademyAcademyCertificadosRoute =
-  AcademyAcademyCertificadosRouteImport.update({
-    id: '/academy/certificados',
-    path: '/academy/certificados',
-    getParentRoute: () => AcademyRoute,
-  } as any)
-const AcademyAcademyCursosRoute = AcademyAcademyCursosRouteImport.update({
-  id: '/academy/cursos',
-  path: '/academy/cursos',
-  getParentRoute: () => AcademyRoute,
 } as any)
 const AdminAdminIndexRoute = AdminAdminIndexRouteImport.update({
   id: '/admin/',
@@ -514,7 +478,6 @@ export interface FileRoutesByFullPath {
   '/quiz': typeof QuizRoute
   '/sobre': typeof SobreRoute
   '/conta': typeof AuthenticatedContaRoute
-  '/meus-cursos': typeof AuthenticatedMeusCursosRoute
   '/pedidos': typeof AuthenticatedPedidosRoute
   '/studio': typeof StudioStudioRouteWithChildren
   '/checkout/retorno': typeof CheckoutRetornoRoute
@@ -525,9 +488,6 @@ export interface FileRoutesByFullPath {
   '/checkout/': typeof CheckoutIndexRoute
   '/cursos/': typeof CursosIndexRoute
   '/produtos/': typeof ProdutosIndexRoute
-  '/academy/alunos': typeof AcademyAcademyAlunosRoute
-  '/academy/certificados': typeof AcademyAcademyCertificadosRoute
-  '/academy/cursos': typeof AcademyAcademyCursosRoute
   '/admin/categorias': typeof AdminAdminCategoriasRoute
   '/admin/clientes': typeof AdminAdminClientesRoute
   '/admin/contatos': typeof AdminAdminContatosRoute
@@ -551,7 +511,6 @@ export interface FileRoutesByFullPath {
   '/studio/midia': typeof StudioStudioMidiaRoute
   '/studio/paginas': typeof StudioStudioPaginasRouteWithChildren
   '/checkout/pagamento/$orderId': typeof CheckoutPagamentoOrderIdRoute
-  '/academy/': typeof AcademyAcademyIndexRoute
   '/admin/': typeof AdminAdminIndexRoute
   '/administracao/': typeof AdministracaoAdministracaoIndexRoute
   '/crm/': typeof CrmCrmIndexRoute
@@ -588,7 +547,6 @@ export interface FileRoutesByTo {
   '/quiz': typeof QuizRoute
   '/sobre': typeof SobreRoute
   '/conta': typeof AuthenticatedContaRoute
-  '/meus-cursos': typeof AuthenticatedMeusCursosRoute
   '/pedidos': typeof AuthenticatedPedidosRoute
   '/studio': typeof StudioStudioRouteWithChildren
   '/checkout/retorno': typeof CheckoutRetornoRoute
@@ -599,9 +557,6 @@ export interface FileRoutesByTo {
   '/checkout': typeof CheckoutIndexRoute
   '/cursos': typeof CursosIndexRoute
   '/produtos': typeof ProdutosIndexRoute
-  '/academy/alunos': typeof AcademyAcademyAlunosRoute
-  '/academy/certificados': typeof AcademyAcademyCertificadosRoute
-  '/academy/cursos': typeof AcademyAcademyCursosRoute
   '/admin/categorias': typeof AdminAdminCategoriasRoute
   '/admin/clientes': typeof AdminAdminClientesRoute
   '/admin/contatos': typeof AdminAdminContatosRoute
@@ -625,7 +580,6 @@ export interface FileRoutesByTo {
   '/studio/midia': typeof StudioStudioMidiaRoute
   '/studio/paginas': typeof StudioStudioPaginasRouteWithChildren
   '/checkout/pagamento/$orderId': typeof CheckoutPagamentoOrderIdRoute
-  '/academy': typeof AcademyAcademyIndexRoute
   '/admin': typeof AdminAdminIndexRoute
   '/administracao': typeof AdministracaoAdministracaoIndexRoute
   '/crm': typeof CrmCrmIndexRoute
@@ -650,7 +604,6 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/$slug': typeof SlugRoute
-  '/_academy': typeof AcademyRouteWithChildren
   '/_admin': typeof AdminRouteWithChildren
   '/_administracao': typeof AdministracaoRouteWithChildren
   '/_authenticated': typeof AuthenticatedRouteWithChildren
@@ -671,7 +624,6 @@ export interface FileRoutesById {
   '/quiz': typeof QuizRoute
   '/sobre': typeof SobreRoute
   '/_authenticated/conta': typeof AuthenticatedContaRoute
-  '/_authenticated/meus-cursos': typeof AuthenticatedMeusCursosRoute
   '/_authenticated/pedidos': typeof AuthenticatedPedidosRoute
   '/_studio/studio': typeof StudioStudioRouteWithChildren
   '/checkout/retorno': typeof CheckoutRetornoRoute
@@ -682,9 +634,6 @@ export interface FileRoutesById {
   '/checkout/': typeof CheckoutIndexRoute
   '/cursos/': typeof CursosIndexRoute
   '/produtos/': typeof ProdutosIndexRoute
-  '/_academy/academy/alunos': typeof AcademyAcademyAlunosRoute
-  '/_academy/academy/certificados': typeof AcademyAcademyCertificadosRoute
-  '/_academy/academy/cursos': typeof AcademyAcademyCursosRoute
   '/_admin/admin/categorias': typeof AdminAdminCategoriasRoute
   '/_admin/admin/clientes': typeof AdminAdminClientesRoute
   '/_admin/admin/contatos': typeof AdminAdminContatosRoute
@@ -708,7 +657,6 @@ export interface FileRoutesById {
   '/_studio/studio/midia': typeof StudioStudioMidiaRoute
   '/_studio/studio/paginas': typeof StudioStudioPaginasRouteWithChildren
   '/checkout/pagamento/$orderId': typeof CheckoutPagamentoOrderIdRoute
-  '/_academy/academy/': typeof AcademyAcademyIndexRoute
   '/_admin/admin/': typeof AdminAdminIndexRoute
   '/_administracao/administracao/': typeof AdministracaoAdministracaoIndexRoute
   '/_crm/crm/': typeof CrmCrmIndexRoute
@@ -747,7 +695,6 @@ export interface FileRouteTypes {
     | '/quiz'
     | '/sobre'
     | '/conta'
-    | '/meus-cursos'
     | '/pedidos'
     | '/studio'
     | '/checkout/retorno'
@@ -758,9 +705,6 @@ export interface FileRouteTypes {
     | '/checkout/'
     | '/cursos/'
     | '/produtos/'
-    | '/academy/alunos'
-    | '/academy/certificados'
-    | '/academy/cursos'
     | '/admin/categorias'
     | '/admin/clientes'
     | '/admin/contatos'
@@ -784,7 +728,6 @@ export interface FileRouteTypes {
     | '/studio/midia'
     | '/studio/paginas'
     | '/checkout/pagamento/$orderId'
-    | '/academy/'
     | '/admin/'
     | '/administracao/'
     | '/crm/'
@@ -821,7 +764,6 @@ export interface FileRouteTypes {
     | '/quiz'
     | '/sobre'
     | '/conta'
-    | '/meus-cursos'
     | '/pedidos'
     | '/studio'
     | '/checkout/retorno'
@@ -832,9 +774,6 @@ export interface FileRouteTypes {
     | '/checkout'
     | '/cursos'
     | '/produtos'
-    | '/academy/alunos'
-    | '/academy/certificados'
-    | '/academy/cursos'
     | '/admin/categorias'
     | '/admin/clientes'
     | '/admin/contatos'
@@ -858,7 +797,6 @@ export interface FileRouteTypes {
     | '/studio/midia'
     | '/studio/paginas'
     | '/checkout/pagamento/$orderId'
-    | '/academy'
     | '/admin'
     | '/administracao'
     | '/crm'
@@ -882,7 +820,6 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/$slug'
-    | '/_academy'
     | '/_admin'
     | '/_administracao'
     | '/_authenticated'
@@ -903,7 +840,6 @@ export interface FileRouteTypes {
     | '/quiz'
     | '/sobre'
     | '/_authenticated/conta'
-    | '/_authenticated/meus-cursos'
     | '/_authenticated/pedidos'
     | '/_studio/studio'
     | '/checkout/retorno'
@@ -914,9 +850,6 @@ export interface FileRouteTypes {
     | '/checkout/'
     | '/cursos/'
     | '/produtos/'
-    | '/_academy/academy/alunos'
-    | '/_academy/academy/certificados'
-    | '/_academy/academy/cursos'
     | '/_admin/admin/categorias'
     | '/_admin/admin/clientes'
     | '/_admin/admin/contatos'
@@ -940,7 +873,6 @@ export interface FileRouteTypes {
     | '/_studio/studio/midia'
     | '/_studio/studio/paginas'
     | '/checkout/pagamento/$orderId'
-    | '/_academy/academy/'
     | '/_admin/admin/'
     | '/_administracao/administracao/'
     | '/_crm/crm/'
@@ -965,7 +897,6 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   SlugRoute: typeof SlugRoute
-  AcademyRoute: typeof AcademyRouteWithChildren
   AdminRoute: typeof AdminRouteWithChildren
   AdministracaoRoute: typeof AdministracaoRouteWithChildren
   AuthenticatedRoute: typeof AuthenticatedRouteWithChildren
@@ -1012,13 +943,6 @@ declare module '@tanstack/react-router' {
       path: '/$slug'
       fullPath: '/$slug'
       preLoaderRoute: typeof SlugRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/_academy': {
-      id: '/_academy'
-      path: ''
-      fullPath: '/'
-      preLoaderRoute: typeof AcademyRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_admin': {
@@ -1161,13 +1085,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedContaRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
-    '/_authenticated/meus-cursos': {
-      id: '/_authenticated/meus-cursos'
-      path: '/meus-cursos'
-      fullPath: '/meus-cursos'
-      preLoaderRoute: typeof AuthenticatedMeusCursosRouteImport
-      parentRoute: typeof AuthenticatedRoute
-    }
     '/_authenticated/pedidos': {
       id: '/_authenticated/pedidos'
       path: '/pedidos'
@@ -1237,34 +1154,6 @@ declare module '@tanstack/react-router' {
       fullPath: '/produtos/$slug'
       preLoaderRoute: typeof ProdutosSlugRouteImport
       parentRoute: typeof rootRouteImport
-    }
-    '/_academy/academy/': {
-      id: '/_academy/academy/'
-      path: '/academy'
-      fullPath: '/academy/'
-      preLoaderRoute: typeof AcademyAcademyIndexRouteImport
-      parentRoute: typeof AcademyRoute
-    }
-    '/_academy/academy/alunos': {
-      id: '/_academy/academy/alunos'
-      path: '/academy/alunos'
-      fullPath: '/academy/alunos'
-      preLoaderRoute: typeof AcademyAcademyAlunosRouteImport
-      parentRoute: typeof AcademyRoute
-    }
-    '/_academy/academy/certificados': {
-      id: '/_academy/academy/certificados'
-      path: '/academy/certificados'
-      fullPath: '/academy/certificados'
-      preLoaderRoute: typeof AcademyAcademyCertificadosRouteImport
-      parentRoute: typeof AcademyRoute
-    }
-    '/_academy/academy/cursos': {
-      id: '/_academy/academy/cursos'
-      path: '/academy/cursos'
-      fullPath: '/academy/cursos'
-      preLoaderRoute: typeof AcademyAcademyCursosRouteImport
-      parentRoute: typeof AcademyRoute
     }
     '/_admin/admin/': {
       id: '/_admin/admin/'
@@ -1563,23 +1452,6 @@ declare module '@tanstack/react-router' {
   }
 }
 
-interface AcademyRouteChildren {
-  AcademyAcademyAlunosRoute: typeof AcademyAcademyAlunosRoute
-  AcademyAcademyCertificadosRoute: typeof AcademyAcademyCertificadosRoute
-  AcademyAcademyCursosRoute: typeof AcademyAcademyCursosRoute
-  AcademyAcademyIndexRoute: typeof AcademyAcademyIndexRoute
-}
-
-const AcademyRouteChildren: AcademyRouteChildren = {
-  AcademyAcademyAlunosRoute: AcademyAcademyAlunosRoute,
-  AcademyAcademyCertificadosRoute: AcademyAcademyCertificadosRoute,
-  AcademyAcademyCursosRoute: AcademyAcademyCursosRoute,
-  AcademyAcademyIndexRoute: AcademyAcademyIndexRoute,
-}
-
-const AcademyRouteWithChildren =
-  AcademyRoute._addFileChildren(AcademyRouteChildren)
-
 interface AdminRouteChildren {
   AdminAdminCategoriasRoute: typeof AdminAdminCategoriasRoute
   AdminAdminClientesRoute: typeof AdminAdminClientesRoute
@@ -1640,13 +1512,11 @@ const AdministracaoRouteWithChildren = AdministracaoRoute._addFileChildren(
 
 interface AuthenticatedRouteChildren {
   AuthenticatedContaRoute: typeof AuthenticatedContaRoute
-  AuthenticatedMeusCursosRoute: typeof AuthenticatedMeusCursosRoute
   AuthenticatedPedidosRoute: typeof AuthenticatedPedidosRoute
 }
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedContaRoute: AuthenticatedContaRoute,
-  AuthenticatedMeusCursosRoute: AuthenticatedMeusCursosRoute,
   AuthenticatedPedidosRoute: AuthenticatedPedidosRoute,
 }
 
@@ -1755,7 +1625,6 @@ const StudioRouteWithChildren =
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   SlugRoute: SlugRoute,
-  AcademyRoute: AcademyRouteWithChildren,
   AdminRoute: AdminRouteWithChildren,
   AdministracaoRoute: AdministracaoRouteWithChildren,
   AuthenticatedRoute: AuthenticatedRouteWithChildren,
