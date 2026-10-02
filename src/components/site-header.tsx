@@ -27,18 +27,22 @@ export function SiteHeader() {
         <Link to="/" className="m-logo" aria-label="MON PARFUM — início">
           <img src="/logo-mon.png" alt="MON Parfum" width={707} height={418} style={{ height: 44, width: "auto", display: "block" }} />
         </Link>
-        <button className="m-mobile-toggle" aria-label="Menu" aria-expanded={open} onClick={() => setOpen(!open)}>☰</button>
+        <button className="m-mobile-toggle" aria-label="Menu" aria-expanded={open} onClick={() => setOpen(!open)}>{open ? "✕" : "☰"}</button>
         <nav className="m-nav" data-open={open} onClick={() => setOpen(false)}>
           {NAV.map((n) => <Link key={n.to} to={n.to}>{n.label}</Link>)}
           {isAdmin && <Link to="/admin">Painel</Link>}
+          <Link to="/quiz" className="only-m">Quiz Olfativo</Link>
+          {MEMBERS_APP_URL
+            ? <a href={MEMBERS_APP_URL} className="only-m">Área do aluno</a>
+            : <Link to={user ? "/conta" : "/login"} className="only-m">Área do aluno</Link>}
         </nav>
         <div className="m-acts">
-          <Link to="/quiz" className="m-btn sm brass">Quiz Olfativo</Link>
+          <Link to="/quiz" className="m-btn sm brass hide-m">Quiz Olfativo</Link>
           {MEMBERS_APP_URL
-            ? <a href={MEMBERS_APP_URL} className="m-small">Área do aluno</a>
-            : <Link to={user ? "/conta" : "/login"} className="m-small">Área do aluno</Link>}
-          <Link to={user ? "/pedidos" : "/login"} aria-label={user ? "Meus pedidos" : "Entrar"}><User size={18} strokeWidth={1.5} /></Link>
-          <Link to="/carrinho" className="m-cart" aria-label="Sacola">
+            ? <a href={MEMBERS_APP_URL} className="m-small hide-m">Área do aluno</a>
+            : <Link to={user ? "/conta" : "/login"} className="m-small hide-m">Área do aluno</Link>}
+          <Link className="m-ico" to={user ? "/pedidos" : "/login"} aria-label={user ? "Meus pedidos" : "Entrar"}><User size={18} strokeWidth={1.5} /></Link>
+          <Link to="/carrinho" className="m-cart m-ico" aria-label="Sacola">
             <ShoppingBag size={18} strokeWidth={1.5} />
             {count > 0 && <b>{count}</b>}
           </Link>

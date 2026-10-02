@@ -34,7 +34,7 @@ function Home() {
             </div>
           </div>
           <div style={{ display: "flex", flexDirection: "column", gap: "1.2rem" }}>
-            <Ph style={{ minHeight: 320 }} image={c.text("hero_foto")} alt="Fundadoras da MON PARFUM" />
+            <Ph style={{ minHeight: 400 }} image={c.text("hero_foto")} art="vanille" alt="Fundadoras da MON PARFUM" />
             {c.text("citacao") && (
               <div className="m-quote">
                 <p>{c.text("citacao")}</p>
@@ -60,8 +60,13 @@ function Home() {
 
       <div className="m-wrap">
         <section className="m-sec">
-          <h2>{c.text("manifesto_titulo")}</h2>
-          <div style={{ marginTop: "1.4rem" }}><Rich text={c.text("manifesto_texto")} /></div>
+          <div className="m-top">
+            <div>
+              <h2>{c.text("manifesto_titulo")}</h2>
+              <div style={{ marginTop: "1.4rem" }}><Rich text={c.text("manifesto_texto")} /></div>
+            </div>
+            <Ph art="lavande" />
+          </div>
         </section>
 
         <section className="m-sec">
@@ -73,18 +78,23 @@ function Home() {
 
         <section className="m-sec">
           <h2>Por onde entrar</h2>
-          <table className="m-table">
-            <thead><tr><th></th><th className="primary">Cursos</th><th>Experiências</th><th>Corporativo</th></tr></thead>
-            <tbody>
-              <tr><th>Formato</th><td className="primary">Online ou gravado, sempre com kit</td><td>Kit com vídeo-guia, enviado para sua casa</td><td>Workshop no seu evento ou empresa</td></tr>
-              <tr><th>Você sai com</th><td className="primary">Técnica, repertório e fórmulas suas</td><td>Seu perfume, envasado e nomeado por você</td><td>O perfume de cada participante e uma memória coletiva</td></tr>
-              <tr><th></th>
-                <td className="primary"><Link to="/cursos" className="m-btn sm">Ver cursos</Link></td>
-                <td><Link to="/experiencias" className="m-btn sm ghost">Ver experiências</Link></td>
-                <td><Link to="/corporativo" className="m-btn sm ghost">Solicitar proposta</Link></td>
-              </tr>
-            </tbody>
-          </table>
+          <div className="m-paths">
+            <div className="m-path primary">
+              <h3>Cursos</h3>
+              <dl><dt>Formato</dt><dd>Online ou gravado, sempre com kit</dd><dt>Você sai com</dt><dd>Técnica, repertório e fórmulas suas</dd></dl>
+              <Link to="/cursos" className="m-btn sm">Ver cursos</Link>
+            </div>
+            <div className="m-path">
+              <h3>Experiências</h3>
+              <dl><dt>Formato</dt><dd>Kit com vídeo-guia, enviado para sua casa</dd><dt>Você sai com</dt><dd>Seu perfume, envasado e nomeado por você</dd></dl>
+              <Link to="/experiencias" className="m-btn sm ghost">Ver experiências</Link>
+            </div>
+            <div className="m-path">
+              <h3>Corporativo</h3>
+              <dl><dt>Formato</dt><dd>Workshop no seu evento ou empresa</dd><dt>Você sai com</dt><dd>O perfume de cada participante e uma memória coletiva</dd></dl>
+              <Link to="/corporativo" className="m-btn sm ghost">Solicitar proposta</Link>
+            </div>
+          </div>
         </section>
 
         {destaques.length > 0 && (
@@ -105,13 +115,13 @@ function Home() {
               <div style={{ marginTop: "1.2rem" }}><Rich text={c.text("kit_texto")} /></div>
               <div className="m-ctas"><Link to="/experiencias" className="m-btn">Ver os Kits MON</Link></div>
             </div>
-            <Ph image={c.text("kit_foto")} alt="Kit MON aberto" />
+            <Ph style={{ minHeight: 300 }} image={c.text("kit_foto")} art="kit" alt="Kit MON aberto" />
           </div>
         </section>
 
         <section className="m-sec">
           <div className="m-grid m-g2" style={{ alignItems: "center" }}>
-            <Ph style={{ minHeight: 260 }} image={c.text("fundadoras_foto")} alt="Daniela Bitelo na bancada" />
+            <Ph style={{ minHeight: 300 }} image={c.text("fundadoras_foto")} art="jasmin" alt="Daniela Bitelo na bancada" />
             <div>
               <h2>{c.text("fundadoras_titulo")}</h2>
               <div style={{ marginTop: "1.2rem" }}><Rich text={c.text("fundadoras_texto")} /></div>

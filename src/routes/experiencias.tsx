@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { MonPage } from "@/components/mon/page";
-import { catalogQuery, FaqList, KitCard, kitName, useCatalog } from "@/components/mon/ui";
+import { catalogQuery, FaqList, KitCard, kitName, useCatalog, Ph } from "@/components/mon/ui";
 import { Inline, loadSite, Rich, useSite } from "@/lib/site-content";
 
 export const Route = createFileRoute("/experiencias")({
@@ -17,8 +17,13 @@ function Experiencias() {
     <MonPage>
       <div className="m-wrap">
         <section className="m-sec">
-          <h1>{c.text("titulo")}</h1>
-          <p className="m-lead" style={{ marginTop: "1.3rem" }}>{c.text("subtitulo")}</p>
+          <div className="m-top">
+            <div>
+              <h1>{c.text("titulo")}</h1>
+              <p className="m-lead" style={{ marginTop: "1.3rem" }}>{c.text("subtitulo")}</p>
+            </div>
+            <Ph art="lavande" />
+          </div>
         </section>
 
         <section className="m-sec">

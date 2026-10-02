@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { MonPage } from "@/components/mon/page";
-import { BuyButton, catalogQuery, Ph, Price, useCatalog } from "@/components/mon/ui";
+import { BuyButton, catalogQuery, Ph, Price, useCatalog, artFor } from "@/components/mon/ui";
 import { Inline, lines, loadSite, useSite } from "@/lib/site-content";
 
 export const Route = createFileRoute("/cursos/$slug")({
@@ -44,7 +44,7 @@ function Curso() {
               {d.dor && <p className="m-lead" style={{ marginTop: "1.2rem", fontFamily: "var(--m-serif)", fontStyle: "italic", fontSize: "1.35rem" }}>{d.dor}</p>}
               <p style={{ marginTop: "1rem" }}>{d.sub || p.description}</p>
             </div>
-            {p.image_url && <Ph style={{ minHeight: 320 }} image={p.image_url} alt={p.name} />}
+            <Ph style={{ minHeight: 320 }} image={p.image_url} art={artFor(p.name, "kit")} alt={p.name} />
           </div>
 
           <div className="m-kpis">

@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { MonPage } from "@/components/mon/page";
-import { catalogQuery, KitCard, Price, useCatalog } from "@/components/mon/ui";
+import { catalogQuery, KitCard, Price, useCatalog, Ph } from "@/components/mon/ui";
 import { loadSite, Rich, useSite } from "@/lib/site-content";
 
 export const Route = createFileRoute("/produtos/")({
@@ -22,8 +22,13 @@ function Produtos() {
     <MonPage>
       <div className="m-wrap">
         <section className="m-sec">
-          <h1>{c.text("titulo")}</h1>
-          <p className="m-lead" style={{ marginTop: "1.3rem" }}>{c.text("subtitulo")}</p>
+          <div className="m-top">
+            <div>
+              <h1>{c.text("titulo")}</h1>
+              <p className="m-lead" style={{ marginTop: "1.3rem" }}>{c.text("subtitulo")}</p>
+            </div>
+            <Ph art="ambre" />
+          </div>
         </section>
 
         {grupos.map(({ g, titulo, texto, cols, cta, price }) => kits(g).length > 0 && (

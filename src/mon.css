@@ -32,6 +32,8 @@
 .m-nav a[data-status="active"] { color: var(--m-ink); border-bottom-color: var(--m-brass); }
 .m-acts { display: flex; align-items: center; gap: .9rem; }
 .m-acts a { text-decoration: none; }
+.m-ico { display: inline-flex; align-items: center; justify-content: center; min-width: 2.25rem; min-height: 2.25rem; }
+.m-nav .only-m { display: none; }
 .m-cart { position: relative; display: inline-flex; }
 .m-cart b { position: absolute; top: -.5rem; right: -.6rem; background: var(--m-brass); color: #fff; font-size: .65rem; min-width: 1.1rem; height: 1.1rem; border-radius: 999px; display: grid; place-items: center; font-weight: 500; }
 
@@ -71,8 +73,8 @@
 .m-steps.c5 { grid-template-columns: repeat(5, 1fr); }
 .m-steps.c1 { grid-template-columns: 1fr; gap: 1rem; }
 .m-step { border-top: 1px solid var(--m-rule); padding-top: 1rem; }
-.m-step .n { font-family: var(--m-serif); font-size: 1.5rem; color: var(--m-brass); line-height: 1; }
-.m-step h3 { font-size: 1.02rem; margin: .5rem 0 .35rem; }
+.m-step .n { font-family: var(--m-serif); font-size: 2rem; color: var(--m-brass); line-height: 1; }
+.m-step h3 { font-size: 1.3rem; margin: .6rem 0 .4rem; }
 .m-step p { font-size: .92rem; color: var(--m-ink-soft); margin: 0; }
 
 .mon table.m-table { width: 100%; border-collapse: collapse; margin-top: 2rem; font-size: .93rem; }
@@ -87,7 +89,7 @@
 
 .m-course { border: 1px solid var(--m-rule); background: #fff; padding: 1.7rem; display: flex; flex-direction: column; text-align: left; transition: all .3s; box-shadow: 0 1px 2px rgba(0,0,0,.03); text-decoration: none; color: inherit; }
 .m-course:hover { border-color: var(--m-brass); box-shadow: 0 4px 20px rgba(0,0,0,.06); }
-.m-course .top { display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; margin-bottom: 1rem; }
+.m-course .top { display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; margin-bottom: 1rem; min-height: 1.9rem; }
 .m-tag { font-size: .7rem; letter-spacing: .1em; padding: .25rem .55rem; border: 1px solid var(--m-rule); color: var(--m-ink-faint); white-space: nowrap; text-transform: uppercase; }
 .m-tag.hot { border-color: var(--m-brass); color: var(--m-brass); }
 .m-score { font-family: var(--m-serif); font-size: 1.4rem; line-height: 1; font-weight: 300; }
@@ -109,6 +111,21 @@
 .m-limited { font-size: .82rem; color: var(--m-ink-faint); border-top: 1px solid var(--m-rule); padding-top: .7rem; margin-top: .4rem; width: 100%; }
 
 .m-ph { border: 1px solid var(--m-rule); background: linear-gradient(135deg, var(--m-paper-2), #ebe7e0); min-height: 220px; background-size: cover; background-position: center; }
+/* Ilustração de matérias-primas (quando ainda não há foto) */
+.m-ph.art { border: 0; background-color: #F5F2ED; background-size: contain; background-repeat: no-repeat; background-position: center; min-height: 320px; }
+.m-ph.mono { display: grid; place-items: center; background: #F5F2ED; border: 0; }
+.m-ph.mono span { font-family: var(--m-serif); font-weight: 300; font-size: clamp(4rem, 9vw, 6.5rem); letter-spacing: .08em; color: var(--m-brass); line-height: 1; }
+/* Topo de página: texto + imagem */
+.m-top { display: grid; grid-template-columns: 1.15fr .85fr; gap: clamp(2rem, 5vw, 4.5rem); align-items: center; }
+
+/* "Por onde entrar": três caminhos lado a lado (empilham no celular) */
+.m-paths { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.6rem; margin-top: 2rem; }
+.m-path { border: 1px solid var(--m-rule); padding: 1.7rem; display: flex; flex-direction: column; align-items: flex-start; }
+.m-path.primary { background: #fff; border-color: var(--m-ink); }
+.m-path h3 { font-size: 1.6rem; font-weight: 300; }
+.m-path dl { margin: 1.1rem 0 1.5rem; flex: 1; }
+.m-path dt { font-size: .75rem; letter-spacing: .08em; text-transform: uppercase; color: var(--m-ink-faint); margin-top: .9rem; }
+.m-path dd { margin: .15rem 0 0; font-size: .95rem; color: var(--m-ink-soft); }
 
 .mon ul.m-clean { list-style: none; padding: 0; margin: 1rem 0; max-width: var(--m-measure); }
 .m-clean li { padding: .6rem 0; border-bottom: 1px solid var(--m-rule); font-size: .97rem; }
@@ -174,18 +191,25 @@
 .m-kpis span { font-size: .78rem; color: var(--m-ink-faint); }
 .m-buy { border: 1px solid var(--m-rule); background: #fff; padding: 1.8rem; margin-top: 2rem; max-width: 34rem; }
 
-.m-mobile-toggle { display: none; background: none; border: 0; font-size: 1.4rem; cursor: pointer; color: var(--m-ink); }
+.m-mobile-toggle { display: none; background: none; border: 0; font-size: 1.4rem; cursor: pointer; color: var(--m-ink); width: 2.75rem; height: 2.75rem; line-height: 1; }
 
 @media (max-width: 900px) {
-  .m-hero, .m-creds, .m-steps, .m-steps.c5, .m-g3, .m-g2, .m-fcols, .m-kpis, .m-logos, .m-form .row { grid-template-columns: 1fr !important; }
+  .m-hero, .m-top, .m-paths, .m-creds, .m-steps, .m-steps.c5, .m-g3, .m-g2, .m-kpis, .m-logos, .m-form .row { grid-template-columns: 1fr !important; }
   .m-hero { gap: 2rem; }
+  .m-ph.art { min-height: 260px !important; }
+  .m-fcols { grid-template-columns: 1fr 1fr; gap: 2rem 1.5rem; }
+  .m-fcols > :last-child { grid-column: 1 / -1; }
+  .m-footer a { padding: .45rem 0; }
   .m-creds > div, .m-kpis > div, .m-logos div { border-left: 0; border-top: 1px solid var(--m-rule); }
   .m-creds > div:first-child, .m-kpis > div:first-child, .m-logos div:first-child { border-top: 0; }
-  .m-bar { flex-wrap: wrap; gap: 1rem; }
-  .m-mobile-toggle { display: block; margin-left: auto; }
-  .m-nav { display: none; flex-basis: 100%; flex-direction: column; gap: .6rem; order: 3; }
+  .m-bar { flex-wrap: wrap; gap: .25rem; padding-block: .6rem; }
+  .m-acts { order: 1; margin-left: auto; gap: .1rem; }
+  .m-mobile-toggle { display: block; order: 2; }
+  .m-nav { display: none; flex-basis: 100%; flex-direction: column; gap: 0; order: 3; padding: .4rem 0 .8rem; }
   .m-nav[data-open="true"] { display: flex; }
-  .m-acts { order: 2; }
+  .m-nav a { font-size: .95rem; padding: .8rem 0; border-bottom: 1px solid var(--m-rule); }
+  .m-nav .only-m { display: block; }
+  .m-acts .hide-m { display: none; }
   .m-table, .m-table tbody, .m-table tr, .m-table td, .m-table th { display: block; width: 100%; }
   .m-table thead { display: none; }
 }

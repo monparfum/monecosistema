@@ -27,7 +27,7 @@ function Corporativo() {
               <p className="m-lead" style={{ marginTop: "1.3rem" }}>{c.text("subtitulo")}</p>
               <div className="m-ctas"><button className="m-btn" onClick={toForm}>Solicitar proposta</button></div>
             </div>
-            {c.text("foto") && <Ph style={{ minHeight: 360 }} image={c.text("foto")} alt="Workshop MON Corporativo" />}
+            <Ph style={{ minHeight: 360 }} image={c.text("foto")} art="kit" alt="Workshop MON Corporativo" />
           </div>
           <div style={{ marginTop: "2rem" }}><Rich text={c.text("texto")} /></div>
         </section>

@@ -40,9 +40,14 @@ function Cursos() {
     <MonPage>
       <div className="m-wrap">
         <section className="m-sec">
-          <h1>{c.text("titulo")}</h1>
-          <p className="m-lead" style={{ marginTop: "1.3rem" }}>{c.text("subtitulo")}</p>
-          <div style={{ marginTop: "1.6rem" }}><Rich text={c.text("texto")} /></div>
+          <div className="m-top">
+            <div>
+              <h1>{c.text("titulo")}</h1>
+              <p className="m-lead" style={{ marginTop: "1.3rem" }}>{c.text("subtitulo")}</p>
+              <div style={{ marginTop: "1.6rem" }}><Rich text={c.text("texto")} /></div>
+            </div>
+            <Ph art="bois" />
+          </div>
           <div className="m-note row" style={{ marginTop: "1.6rem" }}>
             <div><b>Ainda não sabe qual escolher?</b> Faça o quiz e receba uma recomendação personalizada.</div>
             <Link to="/quiz" className="m-btn sm">Fazer o quiz</Link>
@@ -73,7 +78,7 @@ function Cursos() {
           <p style={{ marginTop: "1.2rem" }}>{c.text("kit_texto")}</p>
           <div className="m-grid m-g2" style={{ marginTop: "1.2rem", alignItems: "start" }}>
             <ul className="m-clean">{c.list("kit_itens").map((i, k) => <li key={k}><Inline text={i.texto ?? ""} /></li>)}</ul>
-            <Ph style={{ minHeight: 280 }} image={c.text("kit_foto")} alt="Kit do curso aberto" />
+            <Ph style={{ minHeight: 300 }} image={c.text("kit_foto")} art="kit" alt="Kit do curso aberto" />
           </div>
         </section>
 

@@ -17,8 +17,13 @@ function Sobre() {
     <MonPage>
       <div className="m-wrap">
         <section className="m-sec">
-          <h1>{c.text("titulo")}</h1>
-          <div style={{ marginTop: "1.6rem" }}><Rich text={c.text("intro")} /></div>
+          <div className="m-top">
+            <div>
+              <h1>{c.text("titulo")}</h1>
+              <div style={{ marginTop: "1.6rem" }}><Rich text={c.text("intro")} /></div>
+            </div>
+            <Ph art="jasmin" />
+          </div>
         </section>
         <section className="m-sec">
           <h2>Por que a MON existe</h2>
@@ -31,12 +36,12 @@ function Sobre() {
               <p style={cargo}>{c.text("daniela_cargo")}</p>
               <div style={{ marginTop: "1.2rem" }}><Rich text={c.text("daniela_texto")} /></div>
             </div>
-            <Ph style={{ minHeight: 300 }} image={c.text("daniela_foto")} alt="Daniela Bitelo" />
+            <Ph style={{ minHeight: 300 }} image={c.text("daniela_foto")} initials="DB" alt="Daniela Bitelo" />
           </div>
         </section>
         <section className="m-sec">
           <div className="m-grid m-g2" style={{ alignItems: "start" }}>
-            <Ph style={{ minHeight: 300 }} image={c.text("leticia_foto")} alt="Letícia Netto Zelaquett" />
+            <Ph style={{ minHeight: 300 }} image={c.text("leticia_foto")} initials="LZ" alt="Letícia Netto Zelaquett" />
             <div>
               <h2>Letícia Netto Zelaquett</h2>
               <p style={cargo}>{c.text("leticia_cargo")}</p>

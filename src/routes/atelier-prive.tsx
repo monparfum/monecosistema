@@ -22,7 +22,7 @@ function AtelierPrive() {
               <p className="m-lead" style={{ marginTop: "1.2rem" }}>{c.text("subtitulo")}</p>
               <div style={{ marginTop: "2rem" }}><Rich text={c.text("intro")} /></div>
             </div>
-            {c.text("foto") && <Ph style={{ minHeight: 380 }} image={c.text("foto")} alt="Atelier MON" />}
+            <Ph style={{ minHeight: 380 }} image={c.text("foto")} art="ambre" alt="Atelier MON" />
           </div>
         </section>
         <section className="m-sec">

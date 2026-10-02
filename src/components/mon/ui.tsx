@@ -102,10 +102,26 @@ export function FaqList({ items }: { items: Record<string, string>[] }) {
   );
 }
 
-export function Ph({ style, image, alt = "" }: { style?: React.CSSProperties; image?: string | null; alt?: string }) {
+export type Art = "vanille" | "lavande" | "bois" | "kit" | "jasmin" | "ambre";
+
+// Ilustração que combina com o nome do produto/curso (enquanto não houver foto)
+export function artFor(text: string, fallback: Art = "kit"): Art {
+  const t = text.toLowerCase();
+  if (/baunilha|gourmand|vanil/.test(t)) return "vanille";
+  if (/jasmim|n[eé]roli|flor|jardin/.test(t)) return "jasmin";
+  if (/madeira|bois|vetiver/.test(t)) return "bois";
+  if (/lavanda|dilui|erva|banana/.test(t)) return "lavande";
+  if (/heritage|magn|[aâ]mbar|resina|legais/.test(t)) return "ambre";
+  return fallback;
+}
+
+// Foto enviada pelo Estúdio; sem foto, mostra a ilustração (art) ou o monograma (initials)
+export function Ph({ style, image, alt = "", art, initials }: { style?: React.CSSProperties; image?: string | null; alt?: string; art?: Art; initials?: string }) {
+  if (!image && initials) return <div className="m-ph mono" aria-hidden="true" style={style}><span>{initials}</span></div>;
+  const src = image || (art ? `/img/mon-${art}.svg` : null);
   return (
-    <div className="m-ph" role={image ? "img" : undefined} aria-label={image ? alt : undefined} aria-hidden={image ? undefined : true}
-      style={{ ...style, ...(image ? { backgroundImage: `url(${image})` } : {}) }} />
+    <div className={`m-ph${!image && art ? " art" : ""}`} role={image ? "img" : undefined} aria-label={image ? alt : undefined} aria-hidden={image ? undefined : true}
+      style={{ ...style, ...(src ? { backgroundImage: `url(${src})` } : {}) }} />
   );
 }
 

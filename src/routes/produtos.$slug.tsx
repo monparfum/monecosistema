@@ -1,6 +1,6 @@
 import { createFileRoute, Link, redirect } from "@tanstack/react-router";
 import { MonPage } from "@/components/mon/page";
-import { BuyButton, catalogQuery, kitName, Ph, Price, useCatalog } from "@/components/mon/ui";
+import { BuyButton, catalogQuery, kitName, Ph, Price, useCatalog, artFor } from "@/components/mon/ui";
 import { loadSite, useSite } from "@/lib/site-content";
 
 export const Route = createFileRoute("/produtos/$slug")({
@@ -64,7 +64,7 @@ function Produto() {
               </div>
               {d.grupo === "limitada" && <p className="m-small" style={{ marginTop: "1rem" }}>Edição limitada. Produzida uma única vez. Quando acaba, não volta.</p>}
             </div>
-            <Ph style={{ minHeight: 420 }} image={p.image_url} alt={nome} />
+            <Ph style={{ minHeight: 420 }} image={p.image_url} art={artFor(`${nome} ${d.cor ?? ""}`, "kit")} alt={nome} />
           </div>
         </section>
 
