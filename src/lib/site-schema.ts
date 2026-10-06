@@ -283,7 +283,7 @@ export const SITE_PAGES: PageDef[] = [
           ["Quem é a responsável técnica?", "Daniela Bitelo, perfumista formada pelo ISIPCA (Versailles, França) e pela International Perfume Foundation (Paris). Ela conduz as formações, orienta as criações dos alunos e assina os projetos olfativos corporativos."],
           ["Por onde eu começo?", "Se você quer criar um perfume e ver como é, comece por um Kit MON. Se você quer aprender a criar de verdade, comece pela Introdução à Perfumaria. Em dúvida, faça o quiz e veja a recomendação da MON para você."],
           ["O que acontece depois que o curso termina?", "Você entra no MON Club, a comunidade de alunos e ex-alunos da MON. É onde a prática continua: troca de fórmulas, dúvidas técnicas e encontros ao vivo com Daniela Bitelo e perfumistas convidadas."],
-          ["O que é edição limitada?", "Magnetique e Heritage são produzidos uma única vez, em 75 unidades cada. Quando acabam, não voltam. MON BOIS e MON JARDIN são de linha contínua e estão sempre disponíveis."],
+          ["O que é edição limitada?", "Nossas edições especiais e limitadas são produzidas em lotes únicos e exclusivos. Quando acabam, não voltam mais ao catálogo."],
           ["Para onde vocês enviam?", "Enviamos para todo o Brasil. O prazo e o valor do frete são calculados no checkout a partir do seu CEP."],
           ["Como faço para agendar o Atelier Privé?", "O Atelier Privé funciona por solicitação, não por compra direta. Preencha o formulário na página do Atelier Privé e retornamos com as datas disponíveis."],
           ["Como falo com a MON?", "Pelo WhatsApp (48) 98486-5885 ou pelo formulário da página de Contato. Atendemos de terça a sexta, das 9h às 18h, e sábados das 9h às 17h."],

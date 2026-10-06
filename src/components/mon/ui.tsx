@@ -15,6 +15,7 @@ export type Details = {
   dor?: string; sub?: string; aprende?: string; prereq?: string; naoE?: string;
   grupo?: "criacao" | "treino" | "limitada"; cor?: "bois" | "jardin" | "magnetic" | "heritage"; titulo?: string; resumo?: string; desc?: string;
   topo?: string; coracao?: string; fundo?: string;
+  order?: number;
 };
 
 export type ShopProduct = {
@@ -129,6 +130,16 @@ export function CourseCard({ p }: { p: ShopProduct }) {
   const d = p.details;
   return (
     <Link to="/cursos/$slug" params={{ slug: p.slug }} className="m-course">
+      {p.image_url && (
+        <div style={{ margin: "-1.7rem -1.7rem 1.2rem -1.7rem", height: 180, overflow: "hidden", background: "#f5f2ed" }}>
+          <img
+            src={p.image_url}
+            alt={p.name}
+            loading="lazy"
+            style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+          />
+        </div>
+      )}
       <div className="top">
         {d.badge ? <span className={`m-tag ${d.badge === "Mais procurado" ? "hot" : ""}`}>{d.badge}</span> : <span />}
         {d.nota && <span className="m-score">{d.nota}</span>}

@@ -6,6 +6,7 @@ import {
   useRouter,
   HeadContent,
   Scripts,
+  ErrorComponentProps,
 } from "@tanstack/react-router";
 import { useEffect } from "react";
 
@@ -24,7 +25,7 @@ function NotFoundComponent() {
         <p className="mt-3 text-sm text-muted-foreground">
           O endereço acessado não existe ou foi removido.
         </p>
-        <div className="mt-8">
+        <div className="mt-6">
           <Link
             to="/"
             className="inline-block border-b border-foreground pb-1 text-sm hover:opacity-70"
@@ -37,14 +38,15 @@ function NotFoundComponent() {
   );
 }
 
-function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
+function ErrorComponent({ error, reset }: ErrorComponentProps) {
   console.error(error);
   const router = useRouter();
+  const errorMessage = error instanceof Error ? error.message : String(error ?? "Erro inesperado");
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
       <div className="max-w-md text-center">
         <h1 className="font-display text-3xl">Algo deu errado</h1>
-        <p className="mt-3 text-sm text-muted-foreground">{error.message}</p>
+        <p className="mt-3 text-sm text-muted-foreground">{errorMessage}</p>
         <div className="mt-6 flex justify-center gap-4">
           <button
             onClick={() => { router.invalidate(); reset(); }}
