@@ -29,6 +29,8 @@ export function SiteFooter() {
             </div>
             <div>
               <h4>Conteúdos</h4>
+              <Link to="/noticias">Notícias</Link>
+              <Link to="/blog">Blog</Link>
               <Link to="/conteudos">Perguntas frequentes</Link>
             </div>
             <div>

@@ -53,10 +53,10 @@ export const MODULES: ModuleDef[] = [
     id: "estudio",
     label: "Estúdio",
     eyebrow: "Conteúdo",
-    description: "Composição visual de páginas, blocos e mídia.",
+    description: "Páginas do site, notícias, blog e mídia.",
     to: "/studio",
     icon: Palette,
-    items: ["Páginas", "Mídia", "Templates"],
+    items: ["Páginas", "Notícias", "Blog", "Mídia"],
     requiredRoles: ["admin", "editor", "reviewer"],
   },
   {

@@ -67,6 +67,8 @@ function StudioLayout() {
         <nav className="flex-1 space-y-1 text-sm border-t border-border pt-6">
           <StudioLink to="/studio" exact>Visão geral</StudioLink>
           <StudioLink to="/studio/paginas">Páginas</StudioLink>
+          <StudioLink to="/studio/publicacoes">Notícias e Blog</StudioLink>
+          <StudioLink to="/studio/categorias">Categorias</StudioLink>
           <StudioLink to="/studio/midia">Mídia</StudioLink>
           {isAdmin && <StudioLink to="/studio/equipe">Equipe</StudioLink>}
         </nav>

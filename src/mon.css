@@ -154,6 +154,41 @@
 .m-tag.hot { border-color: var(--m-ink); background: var(--m-ink); color: #fff; }
 .m-score { font-family: var(--m-mono); font-size: .9rem; line-height: 1; color: var(--m-ink-soft); }
 .m-course h3 { margin-bottom: .4rem; }
+/* ---------- Notícias e Blog ---------- */
+.m-crumbs { font-family: var(--m-mono); font-size: .68rem; letter-spacing: .06em; text-transform: uppercase; color: var(--m-ink-faint); margin-bottom: 1.4rem; }
+.m-crumbs a { color: inherit; text-decoration: none; } .m-crumbs a:hover { color: var(--m-ink); }
+.m-post-cats { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: 1.6rem; }
+.m-post-cats a { font-size: .82rem; padding: .45rem .9rem; border: 1px solid var(--m-rule); border-radius: 999px; color: var(--m-ink-soft); text-decoration: none; }
+.m-post-cats a[aria-current="page"], .m-post-cats a:hover { border-color: var(--m-ink); color: var(--m-ink); }
+.m-post-card { display: flex; flex-direction: column; border: 1px solid var(--m-rule); border-radius: var(--m-r-lg); overflow: hidden; background: #fff; }
+.m-post-card .img { display: block; aspect-ratio: 16 / 10; background: var(--m-paper-2); overflow: hidden; }
+.m-post-card .img img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .5s; }
+.m-post-card:hover .img img { transform: scale(1.03); }
+.m-post-card .img span { display: grid; place-items: center; height: 100%; font-family: var(--m-mono); font-size: .7rem; text-transform: uppercase; color: var(--m-ink-faint); }
+.m-post-card .body { padding: 1.3rem 1.4rem 1.5rem; }
+.m-post-card .meta, .m-post .meta { display: flex; flex-wrap: wrap; gap: .4rem 1rem; font-size: .68rem; color: var(--m-ink-faint); text-transform: uppercase; letter-spacing: .06em; margin-bottom: .7rem; }
+.m-post-card .meta a { color: var(--m-ink-soft); text-decoration: none; }
+.m-post-card h3 { font-size: 1.2rem; line-height: 1.25; } .m-post-card h3 a { color: inherit; text-decoration: none; }
+.m-post-card p { margin-top: .6rem; font-size: .93rem; color: var(--m-ink-soft); }
+.m-post-card.big { display: grid; grid-template-columns: 1.3fr 1fr; }
+.m-post-card.big .img { aspect-ratio: auto; min-height: 340px; }
+.m-post-card.big .body { padding: clamp(1.5rem, 3vw, 2.6rem); align-self: center; }
+.m-post-card.big h3 { font-size: clamp(1.5rem, 2.6vw, 2.1rem); }
+.m-post { max-width: 760px; margin: 0 auto; padding-top: clamp(2rem, 5vw, 4rem); }
+.m-post header h1 { font-size: clamp(2.1rem, 4.6vw, 3.4rem); margin: .4rem 0 1rem; }
+.m-post header .m-lead { margin-bottom: 1.2rem; }
+.m-post .cover { margin: 2rem 0; border-radius: var(--m-r-lg); overflow: hidden; aspect-ratio: 16 / 9; background: var(--m-paper-2); }
+.m-post .cover img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.m-post-body { font-size: 1.08rem; line-height: 1.75; color: var(--m-ink); }
+.m-post-body p, .m-post-body ul, .m-post-body figure { margin: 0 0 1.3rem; }
+.m-post-body h2 { font-size: 1.6rem; margin: 2.4rem 0 .9rem; } .m-post-body h3 { font-size: 1.25rem; margin: 1.8rem 0 .7rem; }
+.m-post-body ul { padding-left: 1.2rem; } .m-post-body li { margin-bottom: .35rem; }
+.m-post-body a { color: var(--m-ink); text-decoration: underline; text-underline-offset: 3px; }
+.m-post-body img { width: 100%; border-radius: var(--m-r-lg); display: block; }
+.m-post-body figcaption { font-size: .8rem; color: var(--m-ink-faint); margin-top: .5rem; }
+.m-post-tags { display: flex; flex-wrap: wrap; gap: .4rem; list-style: none; padding: 1.4rem 0 0; margin: 2rem 0 0; border-top: 1px solid var(--m-rule); }
+.m-post-tags li { font-family: var(--m-mono); font-size: .7rem; padding: .3rem .7rem; background: var(--m-paper-2); border-radius: 999px; color: var(--m-ink-soft); }
+@media (max-width: 900px) { .m-post-card.big { grid-template-columns: 1fr; } .m-post-card.big .img { min-height: 0; aspect-ratio: 16 / 10; } }
 .m-card-ov { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: flex-start; padding: 8% 8% 0; background: linear-gradient(to right, rgba(10,8,6,.55) 0%, rgba(10,8,6,.2) 55%, transparent 75%); color: #f3ece2; pointer-events: none; }
 .m-card-ov img { height: 9%; width: auto; margin-bottom: 18%; opacity: .9; }
 .m-card-ov b { font-family: "Cormorant Garamond", Georgia, serif; font-weight: 400; text-transform: uppercase; letter-spacing: .04em; line-height: 1.08; font-size: clamp(1.1rem, 2vw, 1.55rem); max-width: 55%; }

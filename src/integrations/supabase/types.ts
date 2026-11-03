@@ -572,6 +572,35 @@ export type Database = {
         Update: { key?: string; value?: string; updated_at?: string; updated_by?: string | null }
         Relationships: []
       }
+      post_categories: {
+        Row: { created_at: string; description: string | null; id: string; kind: string; name: string; slug: string }
+        Insert: { created_at?: string; description?: string | null; id?: string; kind: string; name: string; slug: string }
+        Update: { created_at?: string; description?: string | null; id?: string; kind?: string; name?: string; slug?: string }
+        Relationships: []
+      }
+      posts: {
+        Row: {
+          author: string | null; category_id: string | null; content: string; cover_alt: string | null; cover_url: string | null
+          created_at: string; excerpt: string | null; id: string; kind: string; published_at: string | null
+          seo_description: string | null; seo_title: string | null; slug: string; status: string; tags: string[]
+          title: string; updated_at: string; updated_by: string | null
+        }
+        Insert: {
+          author?: string | null; category_id?: string | null; content?: string; cover_alt?: string | null; cover_url?: string | null
+          created_at?: string; excerpt?: string | null; id?: string; kind: string; published_at?: string | null
+          seo_description?: string | null; seo_title?: string | null; slug: string; status?: string; tags?: string[]
+          title: string; updated_at?: string; updated_by?: string | null
+        }
+        Update: {
+          author?: string | null; category_id?: string | null; content?: string; cover_alt?: string | null; cover_url?: string | null
+          created_at?: string; excerpt?: string | null; id?: string; kind?: string; published_at?: string | null
+          seo_description?: string | null; seo_title?: string | null; slug?: string; status?: string; tags?: string[]
+          title?: string; updated_at?: string; updated_by?: string | null
+        }
+        Relationships: [
+          { foreignKeyName: "posts_category_id_fkey"; columns: ["category_id"]; isOneToOne: false; referencedRelation: "post_categories"; referencedColumns: ["id"] },
+        ]
+      }
       site_content: {
         Row: { data: Json; page: string; updated_at: string; updated_by: string | null }
         Insert: { data?: Json; page: string; updated_at?: string; updated_by?: string | null }

@@ -30,14 +30,20 @@ import { Route as ExperienciasRouteImport } from './routes/experiencias'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as MonClubRouteImport } from './routes/mon-club'
 import { Route as QuizRouteImport } from './routes/quiz'
+import { Route as RobotsDottxtRouteImport } from './routes/robots[.]txt'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as SobreRouteImport } from './routes/sobre'
 import { Route as AuthenticatedContaRouteImport } from './routes/_authenticated/conta'
 import { Route as AuthenticatedPedidosRouteImport } from './routes/_authenticated/pedidos'
 import { Route as StudioStudioRouteImport } from './routes/_studio/studio'
+import { Route as BlogIndexRouteImport } from './routes/blog.index'
+import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 import { Route as CheckoutIndexRouteImport } from './routes/checkout.index'
 import { Route as CheckoutRetornoRouteImport } from './routes/checkout.retorno'
 import { Route as CursosIndexRouteImport } from './routes/cursos.index'
 import { Route as CursosSlugRouteImport } from './routes/cursos.$slug'
+import { Route as NoticiasIndexRouteImport } from './routes/noticias.index'
+import { Route as NoticiasSlugRouteImport } from './routes/noticias.$slug'
 import { Route as PoliticasDocRouteImport } from './routes/politicas.$doc'
 import { Route as ProdutoSlugRouteImport } from './routes/produto.$slug'
 import { Route as ProdutosIndexRouteImport } from './routes/produtos.index'
@@ -77,10 +83,14 @@ import { Route as MarketingMarketingSocialRouteImport } from './routes/_marketin
 import { Route as OpsOpsIndexRouteImport } from './routes/_ops/ops.index'
 import { Route as OpsOpsExpedicaoRouteImport } from './routes/_ops/ops.expedicao'
 import { Route as OpsOpsProducaoRouteImport } from './routes/_ops/ops.producao'
+import { Route as StudioStudioCategoriasRouteImport } from './routes/_studio/studio.categorias'
 import { Route as StudioStudioEquipeRouteImport } from './routes/_studio/studio.equipe'
 import { Route as StudioStudioMidiaRouteImport } from './routes/_studio/studio.midia'
 import { Route as StudioStudioPaginasRouteImport } from './routes/_studio/studio.paginas'
+import { Route as StudioStudioPublicacoesRouteImport } from './routes/_studio/studio.publicacoes'
+import { Route as BlogCategoriaCategoriaRouteImport } from './routes/blog.categoria.$categoria'
 import { Route as CheckoutPagamentoOrderIdRouteImport } from './routes/checkout.pagamento.$orderId'
+import { Route as NoticiasCategoriaCategoriaRouteImport } from './routes/noticias.categoria.$categoria'
 import { Route as AdminAdminClientesIndexRouteImport } from './routes/_admin/admin.clientes.index'
 import { Route as AdminAdminClientesIdRouteImport } from './routes/_admin/admin.clientes.$id'
 import { Route as AdminAdminProdutosIndexRouteImport } from './routes/_admin/admin.produtos.index'
@@ -95,6 +105,7 @@ import { Route as CrmCrmLeadsIdRouteImport } from './routes/_crm/crm.leads.$id'
 import { Route as OpsOpsPedidosIndexRouteImport } from './routes/_ops/ops.pedidos.index'
 import { Route as OpsOpsPedidosIdRouteImport } from './routes/_ops/ops.pedidos.$id'
 import { Route as StudioStudioPaginasSlugRouteImport } from './routes/_studio/studio.paginas.$slug'
+import { Route as StudioStudioPublicacoesIdRouteImport } from './routes/_studio/studio.publicacoes.$id'
 import { Route as ApiPublicPaymentsMercadopagoRouteImport } from './routes/api/public/payments/mercadopago'
 import { Route as ApiPublicPaymentsWebhookRouteImport } from './routes/api/public/payments/webhook'
 
@@ -195,6 +206,16 @@ const QuizRoute = QuizRouteImport.update({
   path: '/quiz',
   getParentRoute: () => rootRouteImport,
 } as any)
+const RobotsDottxtRoute = RobotsDottxtRouteImport.update({
+  id: '/robots.txt',
+  path: '/robots.txt',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SobreRoute = SobreRouteImport.update({
   id: '/sobre',
   path: '/sobre',
@@ -215,6 +236,16 @@ const StudioStudioRoute = StudioStudioRouteImport.update({
   path: '/studio',
   getParentRoute: () => StudioRoute,
 } as any)
+const BlogIndexRoute = BlogIndexRouteImport.update({
+  id: '/blog/',
+  path: '/blog/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BlogSlugRoute = BlogSlugRouteImport.update({
+  id: '/blog/$slug',
+  path: '/blog/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CheckoutIndexRoute = CheckoutIndexRouteImport.update({
   id: '/checkout/',
   path: '/checkout/',
@@ -233,6 +264,16 @@ const CursosIndexRoute = CursosIndexRouteImport.update({
 const CursosSlugRoute = CursosSlugRouteImport.update({
   id: '/cursos/$slug',
   path: '/cursos/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NoticiasIndexRoute = NoticiasIndexRouteImport.update({
+  id: '/noticias/',
+  path: '/noticias/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NoticiasSlugRoute = NoticiasSlugRouteImport.update({
+  id: '/noticias/$slug',
+  path: '/noticias/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PoliticasDocRoute = PoliticasDocRouteImport.update({
@@ -449,6 +490,11 @@ const OpsOpsProducaoRoute = OpsOpsProducaoRouteImport.update({
   path: '/ops/producao',
   getParentRoute: () => OpsRoute,
 } as any)
+const StudioStudioCategoriasRoute = StudioStudioCategoriasRouteImport.update({
+  id: '/categorias',
+  path: '/categorias',
+  getParentRoute: () => StudioStudioRoute,
+} as any)
 const StudioStudioEquipeRoute = StudioStudioEquipeRouteImport.update({
   id: '/equipe',
   path: '/equipe',
@@ -464,10 +510,26 @@ const StudioStudioPaginasRoute = StudioStudioPaginasRouteImport.update({
   path: '/paginas',
   getParentRoute: () => StudioStudioRoute,
 } as any)
+const StudioStudioPublicacoesRoute = StudioStudioPublicacoesRouteImport.update({
+  id: '/publicacoes',
+  path: '/publicacoes',
+  getParentRoute: () => StudioStudioRoute,
+} as any)
+const BlogCategoriaCategoriaRoute = BlogCategoriaCategoriaRouteImport.update({
+  id: '/blog/categoria/$categoria',
+  path: '/blog/categoria/$categoria',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CheckoutPagamentoOrderIdRoute =
   CheckoutPagamentoOrderIdRouteImport.update({
     id: '/checkout/pagamento/$orderId',
     path: '/checkout/pagamento/$orderId',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const NoticiasCategoriaCategoriaRoute =
+  NoticiasCategoriaCategoriaRouteImport.update({
+    id: '/noticias/categoria/$categoria',
+    path: '/noticias/categoria/$categoria',
     getParentRoute: () => rootRouteImport,
   } as any)
 const AdminAdminClientesIndexRoute = AdminAdminClientesIndexRouteImport.update({
@@ -540,6 +602,12 @@ const StudioStudioPaginasSlugRoute = StudioStudioPaginasSlugRouteImport.update({
   path: '/$slug',
   getParentRoute: () => StudioStudioPaginasRoute,
 } as any)
+const StudioStudioPublicacoesIdRoute =
+  StudioStudioPublicacoesIdRouteImport.update({
+    id: '/$id',
+    path: '/$id',
+    getParentRoute: () => StudioStudioPublicacoesRoute,
+  } as any)
 const ApiPublicPaymentsMercadopagoRoute =
   ApiPublicPaymentsMercadopagoRouteImport.update({
     id: '/api/public/payments/mercadopago',
@@ -567,17 +635,23 @@ export interface FileRoutesByFullPath {
   '/login': typeof LoginRoute
   '/mon-club': typeof MonClubRoute
   '/quiz': typeof QuizRoute
+  '/robots.txt': typeof RobotsDottxtRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/sobre': typeof SobreRoute
   '/conta': typeof AuthenticatedContaRoute
   '/pedidos': typeof AuthenticatedPedidosRoute
   '/studio': typeof StudioStudioRouteWithChildren
+  '/blog/$slug': typeof BlogSlugRoute
   '/checkout/retorno': typeof CheckoutRetornoRoute
   '/cursos/$slug': typeof CursosSlugRoute
+  '/noticias/$slug': typeof NoticiasSlugRoute
   '/politicas/$doc': typeof PoliticasDocRoute
   '/produto/$slug': typeof ProdutoSlugRoute
   '/produtos/$slug': typeof ProdutosSlugRoute
+  '/blog/': typeof BlogIndexRoute
   '/checkout/': typeof CheckoutIndexRoute
   '/cursos/': typeof CursosIndexRoute
+  '/noticias/': typeof NoticiasIndexRoute
   '/produtos/': typeof ProdutosIndexRoute
   '/admin/categorias': typeof AdminAdminCategoriasRoute
   '/admin/configuracoes': typeof AdminAdminConfiguracoesRoute
@@ -608,10 +682,14 @@ export interface FileRoutesByFullPath {
   '/marketing/social': typeof MarketingMarketingSocialRoute
   '/ops/expedicao': typeof OpsOpsExpedicaoRoute
   '/ops/producao': typeof OpsOpsProducaoRoute
+  '/studio/categorias': typeof StudioStudioCategoriasRoute
   '/studio/equipe': typeof StudioStudioEquipeRoute
   '/studio/midia': typeof StudioStudioMidiaRoute
   '/studio/paginas': typeof StudioStudioPaginasRouteWithChildren
+  '/studio/publicacoes': typeof StudioStudioPublicacoesRouteWithChildren
+  '/blog/categoria/$categoria': typeof BlogCategoriaCategoriaRoute
   '/checkout/pagamento/$orderId': typeof CheckoutPagamentoOrderIdRoute
+  '/noticias/categoria/$categoria': typeof NoticiasCategoriaCategoriaRoute
   '/admin/': typeof AdminAdminIndexRoute
   '/administracao/': typeof AdministracaoAdministracaoIndexRoute
   '/crm/': typeof CrmCrmIndexRoute
@@ -626,6 +704,7 @@ export interface FileRoutesByFullPath {
   '/crm/leads/$id': typeof CrmCrmLeadsIdRoute
   '/ops/pedidos/$id': typeof OpsOpsPedidosIdRoute
   '/studio/paginas/$slug': typeof StudioStudioPaginasSlugRoute
+  '/studio/publicacoes/$id': typeof StudioStudioPublicacoesIdRoute
   '/api/public/payments/mercadopago': typeof ApiPublicPaymentsMercadopagoRoute
   '/api/public/payments/webhook': typeof ApiPublicPaymentsWebhookRoute
   '/admin/clientes/': typeof AdminAdminClientesIndexRoute
@@ -649,17 +728,23 @@ export interface FileRoutesByTo {
   '/login': typeof LoginRoute
   '/mon-club': typeof MonClubRoute
   '/quiz': typeof QuizRoute
+  '/robots.txt': typeof RobotsDottxtRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/sobre': typeof SobreRoute
   '/conta': typeof AuthenticatedContaRoute
   '/pedidos': typeof AuthenticatedPedidosRoute
   '/studio': typeof StudioStudioRouteWithChildren
+  '/blog/$slug': typeof BlogSlugRoute
   '/checkout/retorno': typeof CheckoutRetornoRoute
   '/cursos/$slug': typeof CursosSlugRoute
+  '/noticias/$slug': typeof NoticiasSlugRoute
   '/politicas/$doc': typeof PoliticasDocRoute
   '/produto/$slug': typeof ProdutoSlugRoute
   '/produtos/$slug': typeof ProdutosSlugRoute
+  '/blog': typeof BlogIndexRoute
   '/checkout': typeof CheckoutIndexRoute
   '/cursos': typeof CursosIndexRoute
+  '/noticias': typeof NoticiasIndexRoute
   '/produtos': typeof ProdutosIndexRoute
   '/admin/categorias': typeof AdminAdminCategoriasRoute
   '/admin/configuracoes': typeof AdminAdminConfiguracoesRoute
@@ -690,10 +775,14 @@ export interface FileRoutesByTo {
   '/marketing/social': typeof MarketingMarketingSocialRoute
   '/ops/expedicao': typeof OpsOpsExpedicaoRoute
   '/ops/producao': typeof OpsOpsProducaoRoute
+  '/studio/categorias': typeof StudioStudioCategoriasRoute
   '/studio/equipe': typeof StudioStudioEquipeRoute
   '/studio/midia': typeof StudioStudioMidiaRoute
   '/studio/paginas': typeof StudioStudioPaginasRouteWithChildren
+  '/studio/publicacoes': typeof StudioStudioPublicacoesRouteWithChildren
+  '/blog/categoria/$categoria': typeof BlogCategoriaCategoriaRoute
   '/checkout/pagamento/$orderId': typeof CheckoutPagamentoOrderIdRoute
+  '/noticias/categoria/$categoria': typeof NoticiasCategoriaCategoriaRoute
   '/admin': typeof AdminAdminIndexRoute
   '/administracao': typeof AdministracaoAdministracaoIndexRoute
   '/crm': typeof CrmCrmIndexRoute
@@ -708,6 +797,7 @@ export interface FileRoutesByTo {
   '/crm/leads/$id': typeof CrmCrmLeadsIdRoute
   '/ops/pedidos/$id': typeof OpsOpsPedidosIdRoute
   '/studio/paginas/$slug': typeof StudioStudioPaginasSlugRoute
+  '/studio/publicacoes/$id': typeof StudioStudioPublicacoesIdRoute
   '/api/public/payments/mercadopago': typeof ApiPublicPaymentsMercadopagoRoute
   '/api/public/payments/webhook': typeof ApiPublicPaymentsWebhookRoute
   '/admin/clientes': typeof AdminAdminClientesIndexRoute
@@ -740,17 +830,23 @@ export interface FileRoutesById {
   '/login': typeof LoginRoute
   '/mon-club': typeof MonClubRoute
   '/quiz': typeof QuizRoute
+  '/robots.txt': typeof RobotsDottxtRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/sobre': typeof SobreRoute
   '/_authenticated/conta': typeof AuthenticatedContaRoute
   '/_authenticated/pedidos': typeof AuthenticatedPedidosRoute
   '/_studio/studio': typeof StudioStudioRouteWithChildren
+  '/blog/$slug': typeof BlogSlugRoute
   '/checkout/retorno': typeof CheckoutRetornoRoute
   '/cursos/$slug': typeof CursosSlugRoute
+  '/noticias/$slug': typeof NoticiasSlugRoute
   '/politicas/$doc': typeof PoliticasDocRoute
   '/produto/$slug': typeof ProdutoSlugRoute
   '/produtos/$slug': typeof ProdutosSlugRoute
+  '/blog/': typeof BlogIndexRoute
   '/checkout/': typeof CheckoutIndexRoute
   '/cursos/': typeof CursosIndexRoute
+  '/noticias/': typeof NoticiasIndexRoute
   '/produtos/': typeof ProdutosIndexRoute
   '/_admin/admin/categorias': typeof AdminAdminCategoriasRoute
   '/_admin/admin/configuracoes': typeof AdminAdminConfiguracoesRoute
@@ -781,10 +877,14 @@ export interface FileRoutesById {
   '/_marketing/marketing/social': typeof MarketingMarketingSocialRoute
   '/_ops/ops/expedicao': typeof OpsOpsExpedicaoRoute
   '/_ops/ops/producao': typeof OpsOpsProducaoRoute
+  '/_studio/studio/categorias': typeof StudioStudioCategoriasRoute
   '/_studio/studio/equipe': typeof StudioStudioEquipeRoute
   '/_studio/studio/midia': typeof StudioStudioMidiaRoute
   '/_studio/studio/paginas': typeof StudioStudioPaginasRouteWithChildren
+  '/_studio/studio/publicacoes': typeof StudioStudioPublicacoesRouteWithChildren
+  '/blog/categoria/$categoria': typeof BlogCategoriaCategoriaRoute
   '/checkout/pagamento/$orderId': typeof CheckoutPagamentoOrderIdRoute
+  '/noticias/categoria/$categoria': typeof NoticiasCategoriaCategoriaRoute
   '/_admin/admin/': typeof AdminAdminIndexRoute
   '/_administracao/administracao/': typeof AdministracaoAdministracaoIndexRoute
   '/_crm/crm/': typeof CrmCrmIndexRoute
@@ -799,6 +899,7 @@ export interface FileRoutesById {
   '/_crm/crm/leads/$id': typeof CrmCrmLeadsIdRoute
   '/_ops/ops/pedidos/$id': typeof OpsOpsPedidosIdRoute
   '/_studio/studio/paginas/$slug': typeof StudioStudioPaginasSlugRoute
+  '/_studio/studio/publicacoes/$id': typeof StudioStudioPublicacoesIdRoute
   '/api/public/payments/mercadopago': typeof ApiPublicPaymentsMercadopagoRoute
   '/api/public/payments/webhook': typeof ApiPublicPaymentsWebhookRoute
   '/_admin/admin/clientes/': typeof AdminAdminClientesIndexRoute
@@ -824,17 +925,23 @@ export interface FileRouteTypes {
     | '/login'
     | '/mon-club'
     | '/quiz'
+    | '/robots.txt'
+    | '/sitemap.xml'
     | '/sobre'
     | '/conta'
     | '/pedidos'
     | '/studio'
+    | '/blog/$slug'
     | '/checkout/retorno'
     | '/cursos/$slug'
+    | '/noticias/$slug'
     | '/politicas/$doc'
     | '/produto/$slug'
     | '/produtos/$slug'
+    | '/blog/'
     | '/checkout/'
     | '/cursos/'
+    | '/noticias/'
     | '/produtos/'
     | '/admin/categorias'
     | '/admin/configuracoes'
@@ -865,10 +972,14 @@ export interface FileRouteTypes {
     | '/marketing/social'
     | '/ops/expedicao'
     | '/ops/producao'
+    | '/studio/categorias'
     | '/studio/equipe'
     | '/studio/midia'
     | '/studio/paginas'
+    | '/studio/publicacoes'
+    | '/blog/categoria/$categoria'
     | '/checkout/pagamento/$orderId'
+    | '/noticias/categoria/$categoria'
     | '/admin/'
     | '/administracao/'
     | '/crm/'
@@ -883,6 +994,7 @@ export interface FileRouteTypes {
     | '/crm/leads/$id'
     | '/ops/pedidos/$id'
     | '/studio/paginas/$slug'
+    | '/studio/publicacoes/$id'
     | '/api/public/payments/mercadopago'
     | '/api/public/payments/webhook'
     | '/admin/clientes/'
@@ -906,17 +1018,23 @@ export interface FileRouteTypes {
     | '/login'
     | '/mon-club'
     | '/quiz'
+    | '/robots.txt'
+    | '/sitemap.xml'
     | '/sobre'
     | '/conta'
     | '/pedidos'
     | '/studio'
+    | '/blog/$slug'
     | '/checkout/retorno'
     | '/cursos/$slug'
+    | '/noticias/$slug'
     | '/politicas/$doc'
     | '/produto/$slug'
     | '/produtos/$slug'
+    | '/blog'
     | '/checkout'
     | '/cursos'
+    | '/noticias'
     | '/produtos'
     | '/admin/categorias'
     | '/admin/configuracoes'
@@ -947,10 +1065,14 @@ export interface FileRouteTypes {
     | '/marketing/social'
     | '/ops/expedicao'
     | '/ops/producao'
+    | '/studio/categorias'
     | '/studio/equipe'
     | '/studio/midia'
     | '/studio/paginas'
+    | '/studio/publicacoes'
+    | '/blog/categoria/$categoria'
     | '/checkout/pagamento/$orderId'
+    | '/noticias/categoria/$categoria'
     | '/admin'
     | '/administracao'
     | '/crm'
@@ -965,6 +1087,7 @@ export interface FileRouteTypes {
     | '/crm/leads/$id'
     | '/ops/pedidos/$id'
     | '/studio/paginas/$slug'
+    | '/studio/publicacoes/$id'
     | '/api/public/payments/mercadopago'
     | '/api/public/payments/webhook'
     | '/admin/clientes'
@@ -996,17 +1119,23 @@ export interface FileRouteTypes {
     | '/login'
     | '/mon-club'
     | '/quiz'
+    | '/robots.txt'
+    | '/sitemap.xml'
     | '/sobre'
     | '/_authenticated/conta'
     | '/_authenticated/pedidos'
     | '/_studio/studio'
+    | '/blog/$slug'
     | '/checkout/retorno'
     | '/cursos/$slug'
+    | '/noticias/$slug'
     | '/politicas/$doc'
     | '/produto/$slug'
     | '/produtos/$slug'
+    | '/blog/'
     | '/checkout/'
     | '/cursos/'
+    | '/noticias/'
     | '/produtos/'
     | '/_admin/admin/categorias'
     | '/_admin/admin/configuracoes'
@@ -1037,10 +1166,14 @@ export interface FileRouteTypes {
     | '/_marketing/marketing/social'
     | '/_ops/ops/expedicao'
     | '/_ops/ops/producao'
+    | '/_studio/studio/categorias'
     | '/_studio/studio/equipe'
     | '/_studio/studio/midia'
     | '/_studio/studio/paginas'
+    | '/_studio/studio/publicacoes'
+    | '/blog/categoria/$categoria'
     | '/checkout/pagamento/$orderId'
+    | '/noticias/categoria/$categoria'
     | '/_admin/admin/'
     | '/_administracao/administracao/'
     | '/_crm/crm/'
@@ -1055,6 +1188,7 @@ export interface FileRouteTypes {
     | '/_crm/crm/leads/$id'
     | '/_ops/ops/pedidos/$id'
     | '/_studio/studio/paginas/$slug'
+    | '/_studio/studio/publicacoes/$id'
     | '/api/public/payments/mercadopago'
     | '/api/public/payments/webhook'
     | '/_admin/admin/clientes/'
@@ -1087,16 +1221,24 @@ export interface RootRouteChildren {
   LoginRoute: typeof LoginRoute
   MonClubRoute: typeof MonClubRoute
   QuizRoute: typeof QuizRoute
+  RobotsDottxtRoute: typeof RobotsDottxtRoute
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   SobreRoute: typeof SobreRoute
+  BlogSlugRoute: typeof BlogSlugRoute
   CheckoutRetornoRoute: typeof CheckoutRetornoRoute
   CursosSlugRoute: typeof CursosSlugRoute
+  NoticiasSlugRoute: typeof NoticiasSlugRoute
   PoliticasDocRoute: typeof PoliticasDocRoute
   ProdutoSlugRoute: typeof ProdutoSlugRoute
   ProdutosSlugRoute: typeof ProdutosSlugRoute
+  BlogIndexRoute: typeof BlogIndexRoute
   CheckoutIndexRoute: typeof CheckoutIndexRoute
   CursosIndexRoute: typeof CursosIndexRoute
+  NoticiasIndexRoute: typeof NoticiasIndexRoute
   ProdutosIndexRoute: typeof ProdutosIndexRoute
+  BlogCategoriaCategoriaRoute: typeof BlogCategoriaCategoriaRoute
   CheckoutPagamentoOrderIdRoute: typeof CheckoutPagamentoOrderIdRoute
+  NoticiasCategoriaCategoriaRoute: typeof NoticiasCategoriaCategoriaRoute
   ApiPublicPaymentsMercadopagoRoute: typeof ApiPublicPaymentsMercadopagoRoute
   ApiPublicPaymentsWebhookRoute: typeof ApiPublicPaymentsWebhookRoute
 }
@@ -1250,6 +1392,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof QuizRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/robots.txt': {
+      id: '/robots.txt'
+      path: '/robots.txt'
+      fullPath: '/robots.txt'
+      preLoaderRoute: typeof RobotsDottxtRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/sobre': {
       id: '/sobre'
       path: '/sobre'
@@ -1278,6 +1434,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof StudioStudioRouteImport
       parentRoute: typeof StudioRoute
     }
+    '/blog/': {
+      id: '/blog/'
+      path: '/blog'
+      fullPath: '/blog/'
+      preLoaderRoute: typeof BlogIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/blog/$slug': {
+      id: '/blog/$slug'
+      path: '/blog/$slug'
+      fullPath: '/blog/$slug'
+      preLoaderRoute: typeof BlogSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/checkout/': {
       id: '/checkout/'
       path: '/checkout'
@@ -1304,6 +1474,20 @@ declare module '@tanstack/react-router' {
       path: '/cursos/$slug'
       fullPath: '/cursos/$slug'
       preLoaderRoute: typeof CursosSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/noticias/': {
+      id: '/noticias/'
+      path: '/noticias'
+      fullPath: '/noticias/'
+      preLoaderRoute: typeof NoticiasIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/noticias/$slug': {
+      id: '/noticias/$slug'
+      path: '/noticias/$slug'
+      fullPath: '/noticias/$slug'
+      preLoaderRoute: typeof NoticiasSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/politicas/$doc': {
@@ -1579,6 +1763,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof OpsOpsProducaoRouteImport
       parentRoute: typeof OpsRoute
     }
+    '/_studio/studio/categorias': {
+      id: '/_studio/studio/categorias'
+      path: '/categorias'
+      fullPath: '/studio/categorias'
+      preLoaderRoute: typeof StudioStudioCategoriasRouteImport
+      parentRoute: typeof StudioStudioRoute
+    }
     '/_studio/studio/equipe': {
       id: '/_studio/studio/equipe'
       path: '/equipe'
@@ -1600,11 +1791,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof StudioStudioPaginasRouteImport
       parentRoute: typeof StudioStudioRoute
     }
+    '/_studio/studio/publicacoes': {
+      id: '/_studio/studio/publicacoes'
+      path: '/publicacoes'
+      fullPath: '/studio/publicacoes'
+      preLoaderRoute: typeof StudioStudioPublicacoesRouteImport
+      parentRoute: typeof StudioStudioRoute
+    }
+    '/blog/categoria/$categoria': {
+      id: '/blog/categoria/$categoria'
+      path: '/blog/categoria/$categoria'
+      fullPath: '/blog/categoria/$categoria'
+      preLoaderRoute: typeof BlogCategoriaCategoriaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/checkout/pagamento/$orderId': {
       id: '/checkout/pagamento/$orderId'
       path: '/checkout/pagamento/$orderId'
       fullPath: '/checkout/pagamento/$orderId'
       preLoaderRoute: typeof CheckoutPagamentoOrderIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/noticias/categoria/$categoria': {
+      id: '/noticias/categoria/$categoria'
+      path: '/noticias/categoria/$categoria'
+      fullPath: '/noticias/categoria/$categoria'
+      preLoaderRoute: typeof NoticiasCategoriaCategoriaRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_admin/admin/clientes/': {
@@ -1704,6 +1916,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/studio/paginas/$slug'
       preLoaderRoute: typeof StudioStudioPaginasSlugRouteImport
       parentRoute: typeof StudioStudioPaginasRoute
+    }
+    '/_studio/studio/publicacoes/$id': {
+      id: '/_studio/studio/publicacoes/$id'
+      path: '/$id'
+      fullPath: '/studio/publicacoes/$id'
+      preLoaderRoute: typeof StudioStudioPublicacoesIdRouteImport
+      parentRoute: typeof StudioStudioPublicacoesRoute
     }
     '/api/public/payments/mercadopago': {
       id: '/api/public/payments/mercadopago'
@@ -1901,16 +2120,34 @@ const StudioStudioPaginasRouteChildren: StudioStudioPaginasRouteChildren = {
 const StudioStudioPaginasRouteWithChildren =
   StudioStudioPaginasRoute._addFileChildren(StudioStudioPaginasRouteChildren)
 
+interface StudioStudioPublicacoesRouteChildren {
+  StudioStudioPublicacoesIdRoute: typeof StudioStudioPublicacoesIdRoute
+}
+
+const StudioStudioPublicacoesRouteChildren: StudioStudioPublicacoesRouteChildren =
+  {
+    StudioStudioPublicacoesIdRoute: StudioStudioPublicacoesIdRoute,
+  }
+
+const StudioStudioPublicacoesRouteWithChildren =
+  StudioStudioPublicacoesRoute._addFileChildren(
+    StudioStudioPublicacoesRouteChildren,
+  )
+
 interface StudioStudioRouteChildren {
+  StudioStudioCategoriasRoute: typeof StudioStudioCategoriasRoute
   StudioStudioEquipeRoute: typeof StudioStudioEquipeRoute
   StudioStudioMidiaRoute: typeof StudioStudioMidiaRoute
   StudioStudioPaginasRoute: typeof StudioStudioPaginasRouteWithChildren
+  StudioStudioPublicacoesRoute: typeof StudioStudioPublicacoesRouteWithChildren
 }
 
 const StudioStudioRouteChildren: StudioStudioRouteChildren = {
+  StudioStudioCategoriasRoute: StudioStudioCategoriasRoute,
   StudioStudioEquipeRoute: StudioStudioEquipeRoute,
   StudioStudioMidiaRoute: StudioStudioMidiaRoute,
   StudioStudioPaginasRoute: StudioStudioPaginasRouteWithChildren,
+  StudioStudioPublicacoesRoute: StudioStudioPublicacoesRouteWithChildren,
 }
 
 const StudioStudioRouteWithChildren = StudioStudioRoute._addFileChildren(
@@ -1950,16 +2187,24 @@ const rootRouteChildren: RootRouteChildren = {
   LoginRoute: LoginRoute,
   MonClubRoute: MonClubRoute,
   QuizRoute: QuizRoute,
+  RobotsDottxtRoute: RobotsDottxtRoute,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
   SobreRoute: SobreRoute,
+  BlogSlugRoute: BlogSlugRoute,
   CheckoutRetornoRoute: CheckoutRetornoRoute,
   CursosSlugRoute: CursosSlugRoute,
+  NoticiasSlugRoute: NoticiasSlugRoute,
   PoliticasDocRoute: PoliticasDocRoute,
   ProdutoSlugRoute: ProdutoSlugRoute,
   ProdutosSlugRoute: ProdutosSlugRoute,
+  BlogIndexRoute: BlogIndexRoute,
   CheckoutIndexRoute: CheckoutIndexRoute,
   CursosIndexRoute: CursosIndexRoute,
+  NoticiasIndexRoute: NoticiasIndexRoute,
   ProdutosIndexRoute: ProdutosIndexRoute,
+  BlogCategoriaCategoriaRoute: BlogCategoriaCategoriaRoute,
   CheckoutPagamentoOrderIdRoute: CheckoutPagamentoOrderIdRoute,
+  NoticiasCategoriaCategoriaRoute: NoticiasCategoriaCategoriaRoute,
   ApiPublicPaymentsMercadopagoRoute: ApiPublicPaymentsMercadopagoRoute,
   ApiPublicPaymentsWebhookRoute: ApiPublicPaymentsWebhookRoute,
 }
