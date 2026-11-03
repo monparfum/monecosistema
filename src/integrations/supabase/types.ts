@@ -581,19 +581,19 @@ export type Database = {
       posts: {
         Row: {
           author: string | null; category_id: string | null; content: string; cover_alt: string | null; cover_url: string | null
-          created_at: string; excerpt: string | null; id: string; kind: string; published_at: string | null
+          created_at: string; excerpt: string | null; gallery: Json; id: string; kind: string; published_at: string | null
           seo_description: string | null; seo_title: string | null; slug: string; status: string; tags: string[]
           title: string; updated_at: string; updated_by: string | null
         }
         Insert: {
           author?: string | null; category_id?: string | null; content?: string; cover_alt?: string | null; cover_url?: string | null
-          created_at?: string; excerpt?: string | null; id?: string; kind: string; published_at?: string | null
+          created_at?: string; excerpt?: string | null; gallery?: Json; id?: string; kind: string; published_at?: string | null
           seo_description?: string | null; seo_title?: string | null; slug: string; status?: string; tags?: string[]
           title: string; updated_at?: string; updated_by?: string | null
         }
         Update: {
           author?: string | null; category_id?: string | null; content?: string; cover_alt?: string | null; cover_url?: string | null
-          created_at?: string; excerpt?: string | null; id?: string; kind?: string; published_at?: string | null
+          created_at?: string; excerpt?: string | null; gallery?: Json; id?: string; kind?: string; published_at?: string | null
           seo_description?: string | null; seo_title?: string | null; slug?: string; status?: string; tags?: string[]
           title?: string; updated_at?: string; updated_by?: string | null
         }

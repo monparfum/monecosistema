@@ -1,8 +1,9 @@
 import { Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
+import { useEffect, useRef, useState } from "react";
 import { MonPage } from "@/components/mon/page";
 import { parseBody, readingMinutes, type Inline } from "@/lib/post-body";
-import { categoriesQuery, formatDate, KINDS, postQuery, postsQuery, type Post, type PostKind } from "@/lib/posts";
+import { categoriesQuery, formatDate, KINDS, postQuery, postsQuery, type GalleryItem, type Post, type PostKind } from "@/lib/posts";
 
 function InlineText({ parts }: { parts: Inline[] }) {
   return (
@@ -29,6 +30,50 @@ export function PostBody({ text }: { text: string }) {
   );
 }
 
+// Galeria: miniaturas em grade; clique abre a foto grande (<dialog> nativo: Esc fecha, setas navegam)
+export function PostGallery({ items }: { items: GalleryItem[] }) {
+  const ref = useRef<HTMLDialogElement>(null);
+  const [i, setI] = useState<number | null>(null);
+  const n = items.length;
+  const go = (d: number) => setI((v) => (v === null ? v : (v + d + n) % n));
+  useEffect(() => {
+    const dlg = ref.current;
+    if (!dlg) return;
+    if (i !== null && !dlg.open) dlg.showModal();
+    if (i === null && dlg.open) dlg.close();
+  }, [i]);
+  if (!n) return null;
+  const cur = i !== null ? items[i] : null;
+  return (
+    <section className="m-gallery" aria-label="Galeria de fotos">
+      <h2>Galeria de fotos</h2>
+      <ul>
+        {items.map((g, k) => (
+          <li key={g.url + k}>
+            <button type="button" onClick={() => setI(k)} aria-label={`Ampliar foto ${k + 1} de ${n}${g.alt ? `: ${g.alt}` : ""}`}>
+              <img src={g.url} alt={g.alt} loading="lazy" />
+            </button>
+          </li>
+        ))}
+      </ul>
+      <dialog ref={ref} className="m-lightbox" onClose={() => setI(null)} onClick={(e) => e.target === e.currentTarget && setI(null)}
+        onKeyDown={(e) => { if (e.key === "ArrowRight") go(1); if (e.key === "ArrowLeft") go(-1); }} aria-label="Foto ampliada">
+        {cur && (
+          <figure>
+            <img src={cur.url} alt={cur.alt} />
+            <figcaption><span>{cur.alt}</span><span className="m-mono">{(i ?? 0) + 1} / {n}</span></figcaption>
+          </figure>
+        )}
+        {n > 1 && <>
+          <button type="button" className="nav prev" onClick={() => go(-1)} aria-label="Foto anterior">‹</button>
+          <button type="button" className="nav next" onClick={() => go(1)} aria-label="Próxima foto">›</button>
+        </>}
+        <button type="button" className="close" onClick={() => setI(null)} aria-label="Fechar">×</button>
+      </dialog>
+    </section>
+  );
+}
+
 const postLink = (p: Post) => `${KINDS[p.kind].base}/${p.slug}`;
 
 export function PostCard({ p, big = false }: { p: Post; big?: boolean }) {
@@ -41,6 +86,7 @@ export function PostCard({ p, big = false }: { p: Post; big?: boolean }) {
         <div className="m-mono meta">
           {p.category && <a href={`${KINDS[p.kind].base}/categoria/${p.category.slug}`}>{p.category.name}</a>}
           {p.published_at && <time dateTime={p.published_at}>{formatDate(p.published_at)}</time>}
+          {(p.gallery?.length ?? 0) > 0 && <span>{p.gallery.length} fotos</span>}
         </div>
         <h3><a href={postLink(p)}>{p.title}</a></h3>
         {p.excerpt && <p>{p.excerpt}</p>}
@@ -124,6 +170,7 @@ export function PostArticle({ kind, slug }: { kind: PostKind; slug: string }) {
             <figure className="cover"><img src={p.cover_url} alt={p.cover_alt ?? ""} fetchPriority="high" /></figure>
           )}
           <PostBody text={p.content} />
+          <PostGallery items={p.gallery ?? []} />
           {p.tags.filter((t) => t !== "exemplo").length > 0 && (
             <ul className="m-post-tags" aria-label="Assuntos">{p.tags.filter((t) => t !== "exemplo").map((t) => <li key={t}>{t}</li>)}</ul>
           )}

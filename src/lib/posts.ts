@@ -16,9 +16,11 @@ export type Post = {
   status: "rascunho" | "publicado"; published_at: string | null; updated_at: string;
   seo_title: string | null; seo_description: string | null;
   category: { slug: string; name: string } | null;
+  gallery: GalleryItem[];
 };
+export type GalleryItem = { url: string; alt: string };
 
-const COLS = "id, kind, slug, title, excerpt, content, cover_url, cover_alt, category_id, tags, author, status, published_at, updated_at, seo_title, seo_description, category:post_categories(slug, name)";
+const COLS = "id, kind, slug, title, excerpt, content, cover_url, cover_alt, category_id, tags, author, status, published_at, updated_at, seo_title, seo_description, gallery, category:post_categories(slug, name)";
 
 // Só o que está publicado e com data já alcançada (a equipe logada também veria rascunhos sem este filtro)
 const published = () => supabase.from("posts").select(COLS).eq("status", "publicado").lte("published_at", new Date().toISOString());
@@ -100,10 +102,11 @@ export function postHead(site: string, p: Post) {
   const description = postDescription(p);
   const url = `${site}${k.base}/${p.slug}`;
   const image = abs(site, p.cover_url);
+  const images = [image, ...(p.gallery ?? []).map((g) => abs(site, g.url))].filter(Boolean);
   const ld = [
     {
       "@context": "https://schema.org", "@type": k.schema, headline: p.title, description, url,
-      mainEntityOfPage: url, image: image ? [image] : undefined, datePublished: p.published_at, dateModified: p.updated_at,
+      mainEntityOfPage: url, image: images.length ? images : undefined, datePublished: p.published_at, dateModified: p.updated_at,
       articleSection: p.category?.name, keywords: p.tags.filter((t) => t !== "exemplo").join(", ") || undefined,
       author: { "@type": p.author && p.author !== "Equipe MON" ? "Person" : "Organization", name: p.author || "MON PARFUM" },
       publisher: { "@type": "Organization", name: "MON PARFUM", logo: { "@type": "ImageObject", url: `${site}/logo-mon.png` } },

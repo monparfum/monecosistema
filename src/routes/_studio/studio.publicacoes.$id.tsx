@@ -4,7 +4,8 @@ import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { slugify } from "@/lib/format";
-import { categoriesQuery, KINDS, type PostKind } from "@/lib/posts";
+import { categoriesQuery, KINDS, type GalleryItem, type PostKind } from "@/lib/posts";
+import { compressImage } from "@/lib/image";
 import { plainText } from "@/lib/post-body";
 import { PostBody } from "@/components/mon/posts";
 
@@ -13,7 +14,7 @@ export const Route = createFileRoute("/_studio/studio/publicacoes/$id")({ compon
 type Form = {
   kind: PostKind; title: string; slug: string; excerpt: string; content: string; cover_url: string; cover_alt: string;
   category_id: string; tags: string; author: string; status: "rascunho" | "publicado"; published_at: string;
-  seo_title: string; seo_description: string;
+  seo_title: string; seo_description: string; gallery: GalleryItem[];
 };
 
 const NEW: Record<string, PostKind> = { "nova-noticia": "noticia", "novo-blog": "blog" };
@@ -44,13 +45,14 @@ function PostEditor() {
 
   useEffect(() => {
     if (isNew) {
-      setForm({ kind: NEW[id], title: "", slug: "", excerpt: "", content: "", cover_url: "", cover_alt: "", category_id: "", tags: "", author: "Equipe MON", status: "rascunho", published_at: "", seo_title: "", seo_description: "" });
+      setForm({ kind: NEW[id], title: "", slug: "", excerpt: "", content: "", cover_url: "", cover_alt: "", category_id: "", tags: "", author: "Equipe MON", status: "rascunho", published_at: "", seo_title: "", seo_description: "", gallery: [] });
     } else if (existing) {
       setForm({
         kind: existing.kind as PostKind, title: existing.title, slug: existing.slug, excerpt: existing.excerpt ?? "", content: existing.content,
         cover_url: existing.cover_url ?? "", cover_alt: existing.cover_alt ?? "", category_id: existing.category_id ?? "", tags: existing.tags.join(", "),
         author: existing.author ?? "", status: existing.status as Form["status"], published_at: toLocal(existing.published_at),
         seo_title: existing.seo_title ?? "", seo_description: existing.seo_description ?? "",
+        gallery: Array.isArray(existing.gallery) ? (existing.gallery as GalleryItem[]) : [],
       });
     }
   }, [id, isNew, existing]);
@@ -67,24 +69,57 @@ function PostEditor() {
   const seoTitle = form.seo_title || form.title;
   const seoDesc = form.seo_description || form.excerpt || plainText(form.content).slice(0, 160);
 
+  // Reduz (WebP, até 1600 px) e sobe; devolve a URL pública
+  const sendImage = async (file: File): Promise<string> => {
+    if (!file.type.startsWith("image/")) throw new Error(`${file.name}: não é imagem.`);
+    if (file.size > 25 * 1024 * 1024) throw new Error(`${file.name}: acima de 25 MB.`);
+    const blob = await compressImage(file);
+    const ext = blob.type === "image/webp" ? "webp" : (file.name.split(".").pop() ?? "jpg");
+    const base = slugify(file.name.replace(/\.[^.]+$/, "")) || "foto";
+    const path = `posts/${Date.now()}-${Math.random().toString(36).slice(2, 7)}-${base}.${ext}`;
+    const { error: upErr } = await supabase.storage.from("products").upload(path, blob, { contentType: blob.type, cacheControl: "31536000" });
+    if (upErr) throw upErr;
+    return supabase.storage.from("products").getPublicUrl(path).data.publicUrl;
+  };
+
   const upload = async (file?: File) => {
     if (!file) return;
-    if (!file.type.startsWith("image/")) return toast.error("Envie uma imagem (JPG, PNG ou WebP).");
-    if (file.size > 3 * 1024 * 1024) return toast.error("Imagem acima de 3 MB. Reduza antes de enviar para o site ficar leve.");
     setBusy(true);
-    const path = `posts/${Date.now()}-${slugify(file.name)}`;
-    const { error: upErr } = await supabase.storage.from("products").upload(path, file);
-    setBusy(false);
-    if (upErr) return toast.error(upErr.message);
-    set("cover_url", supabase.storage.from("products").getPublicUrl(path).data.publicUrl);
-    toast.success("Capa enviada");
+    try { set("cover_url", await sendImage(file)); toast.success("Capa enviada"); }
+    catch (e) { toast.error((e as Error).message); }
+    finally { setBusy(false); }
   };
+
+  const addGallery = async (files: FileList | null) => {
+    if (!files?.length) return;
+    const room = 40 - form.gallery.length;
+    if (room <= 0) return toast.error("A galeria aceita até 40 fotos.");
+    setBusy(true);
+    const added: GalleryItem[] = [];
+    for (const file of Array.from(files).slice(0, room)) {
+      try { added.push({ url: await sendImage(file), alt: "" }); }
+      catch (e) { toast.error((e as Error).message); }
+    }
+    setBusy(false);
+    if (added.length) {
+      setForm((f) => (f ? { ...f, gallery: [...f.gallery, ...added] } : f));
+      toast.success(`${added.length} foto(s) na galeria. Descreva cada uma e salve.`);
+    }
+  };
+  const setGallery = (fn: (g: GalleryItem[]) => GalleryItem[]) => setForm((f) => (f ? { ...f, gallery: fn(f.gallery) } : f));
+  const move = (i: number, d: number) => setGallery((g) => {
+    const a = [...g]; const j = i + d;
+    if (j < 0 || j >= a.length) return a;
+    [a[i], a[j]] = [a[j], a[i]];
+    return a;
+  });
 
   const save = async (status?: Form["status"]) => {
     const f = { ...form, status: status ?? form.status };
     if (!f.title.trim()) return toast.error("Dê um título.");
     if (!SLUG.test(f.slug)) return toast.error("Endereço (slug) só com letras minúsculas, números e hífen.");
     if (f.cover_url && !f.cover_alt.trim()) return toast.error("Descreva a capa (texto alternativo) — conta para SEO e acessibilidade.");
+    if (f.gallery.some((g) => !g.alt.trim())) return toast.error("Descreva todas as fotos da galeria (texto alternativo).");
     setBusy(true);
     const { data: { user } } = await supabase.auth.getUser();
     const row = {
@@ -93,6 +128,7 @@ function PostEditor() {
       tags: f.tags.split(",").map((t) => t.trim().toLowerCase()).filter(Boolean).slice(0, 20), author: f.author.trim() || null,
       status: f.status, published_at: f.published_at ? new Date(f.published_at).toISOString() : null,
       seo_title: f.seo_title.trim() || null, seo_description: f.seo_description.trim() || null, updated_by: user?.id ?? null,
+      gallery: f.gallery.map((g) => ({ url: g.url, alt: g.alt.trim().slice(0, 200) })),
     };
     const res = isNew
       ? await supabase.from("posts").insert(row).select("id").single()
@@ -155,6 +191,38 @@ function PostEditor() {
             )}
             <p className="text-[11px] text-muted-foreground">Linha em branco = novo parágrafo · <code>## Subtítulo</code> · <code>### Subtítulo menor</code> · <code>- item de lista</code> · <code>**negrito**</code> · <code>[texto](/cursos)</code> link · <code>![descrição](url)</code> imagem</p>
           </div>
+
+          <div className="space-y-3 border border-border p-4">
+            <div className="flex justify-between items-end gap-4 flex-wrap">
+              <div>
+                <div className="eyebrow">Galeria de fotos ({form.gallery.length}/40)</div>
+                <p className="text-[11px] text-muted-foreground mt-1">Aparece depois do texto. As fotos são reduzidas automaticamente (WebP, até 1600 px) para o site ficar leve.</p>
+              </div>
+              <label className={`text-xs px-3 py-2 border border-foreground cursor-pointer ${busy ? "opacity-50 pointer-events-none" : ""}`}>
+                {busy ? "Enviando…" : "+ Adicionar fotos"}
+                <input type="file" accept="image/*" multiple className="sr-only" disabled={busy} onChange={(e) => { addGallery(e.target.files); e.target.value = ""; }} />
+              </label>
+            </div>
+            {form.gallery.length > 0 && (
+              <ul className="grid gap-3 sm:grid-cols-2">
+                {form.gallery.map((g, i) => (
+                  <li key={g.url + i} className="flex gap-3 border border-border p-2">
+                    <img src={g.url} alt="" className="w-20 h-20 object-cover shrink-0" />
+                    <div className="flex-1 min-w-0 space-y-2">
+                      <input className={`${input} ${g.alt.trim() ? "" : "border-destructive"}`} value={g.alt} maxLength={200} placeholder="Descreva a foto (obrigatório)"
+                        onChange={(e) => setGallery((a) => a.map((x, j) => (j === i ? { ...x, alt: e.target.value } : x)))} aria-label={`Descrição da foto ${i + 1}`} />
+                      <div className="flex gap-3 text-xs flex-wrap">
+                        <button type="button" onClick={() => move(i, -1)} disabled={i === 0} className="disabled:opacity-30">← antes</button>
+                        <button type="button" onClick={() => move(i, 1)} disabled={i === form.gallery.length - 1} className="disabled:opacity-30">depois →</button>
+                        <button type="button" onClick={() => { set("cover_url", g.url); if (!form.cover_alt) set("cover_alt", g.alt); }} className="underline">usar como capa</button>
+                        <button type="button" onClick={() => setGallery((a) => a.filter((_, j) => j !== i))} className="ml-auto text-destructive">remover</button>
+                      </div>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
         </div>
 
         <aside className="space-y-5">
@@ -184,7 +252,7 @@ function PostEditor() {
             <input type="file" accept="image/*" disabled={busy} onChange={(e) => upload(e.target.files?.[0])} className="text-xs" aria-label="Enviar capa" />
             <label className="block text-xs space-y-1"><span>Descrição da imagem (alt)</span>
               <input className={input} value={form.cover_alt} maxLength={200} onChange={(e) => set("cover_alt", e.target.value)} placeholder="Ex.: Aluna sentindo fita olfativa" /></label>
-            <p className="text-[11px] text-muted-foreground">Horizontal, até 1600 px e 3 MB (ideal: WebP com menos de 200 KB).</p>
+            <p className="text-[11px] text-muted-foreground">Foto horizontal. É reduzida automaticamente para o site ficar leve.</p>
           </div>
 
           <div className="space-y-2 border border-border p-4">
