@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ShoppingBag, User } from "lucide-react";
 import { useCart } from "@/lib/cart-context";
 import { useAuth } from "@/lib/auth-context";
@@ -14,38 +14,46 @@ const NAV = [
   { to: "/sobre", label: "Sobre" },
 ] as const;
 
-// Área de membros (instalação separada); sem endereço configurado, cai em "Minha conta"
-
-export function SiteHeader() {
+// overlay: header transparente sobre o banner (home); vira branco ao rolar ou ao abrir o menu
+export function SiteHeader({ overlay = false }: { overlay?: boolean }) {
   const { count } = useCart();
   const { user, isAdmin } = useAuth();
   const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(!overlay);
+
+  useEffect(() => {
+    if (!overlay) return;
+    const onScroll = () => setScrolled(window.scrollY > 24);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [overlay]);
+
+  const light = overlay && !scrolled && !open;
+  const aluno = MEMBERS_APP_URL
+    ? { href: MEMBERS_APP_URL }
+    : { to: user ? "/conta" : "/login" } as const;
 
   return (
-    <header className="mon m-header">
+    <header className={`mon m-header${overlay ? " over" : ""}`} data-light={light} data-open={open}>
       <div className="m-bar">
         <Link to="/" className="m-logo" aria-label="MON PARFUM — início">
-          <img src="/logo-mon.png" alt="MON Parfum" width={707} height={418} style={{ height: 44, width: "auto", display: "block" }} />
+          <img src={light ? "/logo-mon-branco.png" : "/logo-mon.png"} alt="MON Parfum" width={707} height={418} style={{ height: 44, width: "auto", display: "block" }} />
         </Link>
-        <button className="m-mobile-toggle" aria-label="Menu" aria-expanded={open} onClick={() => setOpen(!open)}>{open ? "✕" : "☰"}</button>
         <nav className="m-nav" data-open={open} onClick={() => setOpen(false)}>
           {NAV.map((n) => <Link key={n.to} to={n.to}>{n.label}</Link>)}
           {isAdmin && <Link to="/admin">Painel</Link>}
-          <Link to="/quiz" className="only-m">Quiz Olfativo</Link>
-          {MEMBERS_APP_URL
-            ? <a href={MEMBERS_APP_URL} className="only-m">Área do aluno</a>
-            : <Link to={user ? "/conta" : "/login"} className="only-m">Área do aluno</Link>}
+          {"href" in aluno ? <a href={aluno.href} className="only-m">Área do aluno</a> : <Link to={aluno.to} className="only-m">Área do aluno</Link>}
+          <Link to="/quiz" className="cta">Quiz Olfativo</Link>
         </nav>
         <div className="m-acts">
-          <Link to="/quiz" className="m-btn sm brass hide-m">Quiz Olfativo</Link>
-          {MEMBERS_APP_URL
-            ? <a href={MEMBERS_APP_URL} className="m-small hide-m">Área do aluno</a>
-            : <Link to={user ? "/conta" : "/login"} className="m-small hide-m">Área do aluno</Link>}
+          {"href" in aluno ? <a href={aluno.href} className="m-small hide-m">Área do aluno</a> : <Link to={aluno.to} className="m-small hide-m">Área do aluno</Link>}
           <Link className="m-ico" to={user ? "/pedidos" : "/login"} aria-label={user ? "Meus pedidos" : "Entrar"}><User size={18} strokeWidth={1.5} /></Link>
           <Link to="/carrinho" className="m-cart m-ico" aria-label="Sacola">
             <ShoppingBag size={18} strokeWidth={1.5} />
             {count > 0 && <b>{count}</b>}
           </Link>
+          <button className="m-mobile-toggle" aria-label="Menu" aria-expanded={open} onClick={() => setOpen(!open)}>{open ? "✕" : "☰"}</button>
         </div>
       </div>
     </header>

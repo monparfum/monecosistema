@@ -55,7 +55,7 @@ function SitePageEditor({ value, onChange }: { value: Details; onChange: (d: Det
             {txt("turma", "Próxima turma", "Ex.: 14 de novembro de 2026 ou Em breve")}
             {txt("badge", "Selo", "Ex.: Mais procurado, Novo")}
           </div>
-          <label className="flex items-center gap-2 text-sm"><input type="checkbox" checked={!!value.destaque} onChange={(e) => set("destaque", e.target.checked)} /> Destaque na home (Cursos em destaque)</label>
+          <label className="flex items-center gap-2 text-sm"><input type="checkbox" checked={!!value.destaque} onChange={(e) => set("destaque", e.target.checked)} /> Destaque na home (usado quando nenhum curso é escolhido em Estúdio › Páginas › Home)</label>
           {txt("dor", "Frase de abertura (a dor do aluno)")}
           {area("sub", "Subtítulo da página")}
           {area("aprende", "O que você vai aprender", "Um item por linha")}

@@ -64,7 +64,7 @@ function CrmDashboard() {
   return (
     <div className="space-y-10 max-w-[1200px]">
       <PageHeader eyebrow="Módulo · CRM" title="Relacionamento corporativo"
-        description="Propostas, empresas atendidas e eventos. Pedidos do formulário Corporativo do site entram sozinhos no funil." />
+        description="Propostas, empresas atendidas e eventos. Pedidos do formulário Corporativo e respostas do Quiz Olfativo entram sozinhos no funil." />
       {error && <p className="text-sm text-destructive">{(error as Error).message}</p>}
 
       <StatGrid>

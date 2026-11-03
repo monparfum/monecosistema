@@ -6,7 +6,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { PageHeader } from "@/components/module-shell";
 import { formatBRL } from "@/lib/format";
 import { Field, LostDialog, Modal, inputCls as input } from "@/components/crm-ui";
-import { CRM_KINDS, OPEN_STAGES, STAGES, STAGE_LABEL, centsToInput, fmtDate, isOverdue, parseBRL, useAccounts, useTeam, waHref, type Lead, type Stage } from "@/lib/crm";
+import { CRM_KINDS, OPEN_STAGES, STAGES, STAGE_LABEL, centsToInput, fmtDate, isOverdue, originOf, parseBRL, useAccounts, useTeam, waHref, type Lead, type Stage } from "@/lib/crm";
 
 export const Route = createFileRoute("/_crm/crm/leads/")({
   head: () => ({ meta: [{ title: "Oportunidades — CRM" }] }),
@@ -41,7 +41,7 @@ function Leads() {
     return leads.filter((l) =>
       (!owner || (owner === "me" ? l.owner_id === me : owner === "none" ? !l.owner_id : l.owner_id === owner)) &&
       (!onlyLate || isOverdue(l)) &&
-      (!term || [l.name, l.email, l.phone, l.company, l.event_type, l.event_city, ...(l.tags ?? [])].some((v) => v?.toLowerCase().includes(term))));
+      (!term || [l.name, l.email, l.phone, l.company, l.event_type, l.event_city, originOf(l).label, ...(l.tags ?? [])].some((v) => v?.toLowerCase().includes(term))));
   }, [leads, q, owner, onlyLate, me]);
 
   const stats = useMemo(() => {
@@ -68,7 +68,7 @@ function Leads() {
 
   const exportCsv = () => {
     const name = (id: string | null) => team.find((t) => t.id === id)?.name ?? "";
-    const rows = filtered.map((l) => [new Date(l.created_at).toLocaleString("pt-BR"), l.kind === "corporativo" ? "Site" : "Manual", STAGE_LABEL[l.status] ?? l.status, l.company ?? "", l.name ?? "", l.email, l.phone ?? "",
+    const rows = filtered.map((l) => [new Date(l.created_at).toLocaleString("pt-BR"), originOf(l).label, STAGE_LABEL[l.status] ?? l.status, l.company ?? "", l.name ?? "", l.email, l.phone ?? "",
       l.event_type ?? "", l.event_date ? fmtDate(l.event_date) : "", l.participants ?? "", l.event_city ?? "", centsToInput(l.value_cents), name(l.owner_id), l.next_action ?? "",
       l.next_action_at ? fmtDate(l.next_action_at) : "", l.lost_reason ?? "", (l.tags ?? []).join(", ")]);
     const csv = [["criado", "origem", "etapa", "empresa", "contato", "email", "telefone", "formato", "data do evento", "participantes", "cidade", "valor", "responsável", "próximo passo", "data", "motivo perda", "tags"], ...rows]
@@ -157,7 +157,7 @@ function Leads() {
                   <td className="p-3">{l.value_cents != null ? formatBRL(l.value_cents) : "—"}</td>
                   <td className="p-3">{team.find((t) => t.id === l.owner_id)?.name ?? "—"}</td>
                   <td className={`p-3 ${isOverdue(l) ? "text-destructive" : ""}`}>{l.next_action_at ? `${fmtDate(l.next_action_at)}${l.next_action ? ` · ${l.next_action}` : ""}` : "—"}</td>
-                  <td className="p-3 text-muted-foreground">{fmtDate(l.created_at)} · {l.kind === "corporativo" ? "site" : "manual"}</td>
+                  <td className="p-3 text-muted-foreground">{fmtDate(l.created_at)} <span className={`ml-1 px-1.5 text-[11px] ${originOf(l).badge}`}>{originOf(l).label}</span></td>
                 </tr>
               ))}
             </tbody>
@@ -185,9 +185,10 @@ function Stat({ label, value, hint, alert, onClick }: { label: string; value: Re
 function Card({ lead: l, owner, onDragStart, onDragEnd, onOpen }: { lead: Lead; owner?: string; onDragStart: () => void; onDragEnd: () => void; onOpen: () => void }) {
   const late = isOverdue(l);
   const wa = waHref(l.phone);
+  const origin = originOf(l);
   return (
     <div draggable onDragStart={onDragStart} onDragEnd={onDragEnd} onClick={onOpen}
-      className="bg-background border border-border p-3 cursor-pointer hover:border-foreground transition-colors space-y-1.5">
+      className={`bg-background border border-border p-3 cursor-pointer hover:border-foreground transition-colors space-y-1.5 ${origin.accent}`}>
       <div className="flex justify-between gap-2">
         <div className="font-medium text-sm leading-tight">{l.company || l.name || l.email}</div>
         {wa && <a href={wa} target="_blank" rel="noreferrer" onClick={(e) => e.stopPropagation()} className="text-xs text-[color:var(--gold)] shrink-0" title="WhatsApp">WA</a>}
@@ -208,7 +209,7 @@ function Card({ lead: l, owner, onDragStart, onDragEnd, onOpen }: { lead: Lead; 
       {l.status === "perdido" && l.lost_reason && <div className="text-xs text-muted-foreground">Motivo: {l.lost_reason}</div>}
       <div className="flex justify-between text-[11px] text-muted-foreground">
         <span>{owner ?? "Sem responsável"}</span>
-        <span>{l.kind === "corporativo" ? "site" : "manual"} · {new Date(l.created_at).toLocaleDateString("pt-BR", { day: "2-digit", month: "short" })}</span>
+        <span><span className={`px-1.5 ${origin.badge}`}>{origin.label}</span> · {new Date(l.created_at).toLocaleDateString("pt-BR", { day: "2-digit", month: "short" })}</span>
       </div>
     </div>
   );

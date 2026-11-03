@@ -22,7 +22,7 @@ function Sobre() {
               <h1>{c.text("titulo")}</h1>
               <div style={{ marginTop: "1.6rem" }}><Rich text={c.text("intro")} /></div>
             </div>
-            <Ph art="jasmin" />
+            <Ph image="/img/sobre.webp" alt="Kit MON aberto com frascos e caixa da marca" />
           </div>
         </section>
         <section className="m-sec">

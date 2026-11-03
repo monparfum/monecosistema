@@ -5,13 +5,14 @@
 export type SubField = { key: string; label: string; type: "text" | "textarea" };
 export type Field =
   | { key: string; label: string; type: "text" | "textarea" | "image"; default: string; help?: string }
+  | { key: string; label: string; type: "courses"; default: string; help?: string }
   | { key: string; label: string; type: "list"; fields: SubField[]; default: Record<string, string>[]; help?: string };
 export type Section = { title: string; fields: Field[] };
 export type PageDef = { slug: string; title: string; path: string; sections: Section[] };
 
 const t = (key: string, label: string, def: string, help?: string): Field => ({ key, label, type: "text", default: def, help });
 const ta = (key: string, label: string, def: string, help?: string): Field => ({ key, label, type: "textarea", default: def, help });
-const img = (key: string, label: string, help?: string): Field => ({ key, label, type: "image", default: "", help });
+const img = (key: string, label: string, help?: string, def = ""): Field => ({ key, label, type: "image", default: def, help });
 const steps = (key: string, label: string, def: [string, string][]): Field => ({
   key, label, type: "list", fields: [{ key: "titulo", label: "Título", type: "text" }, { key: "texto", label: "Texto", type: "textarea" }],
   default: def.map(([titulo, texto]) => ({ titulo, texto })),
@@ -50,10 +51,13 @@ export const SITE_PAGES: PageDef[] = [
   {
     slug: "home", title: "Home", path: "/",
     sections: [
-      { title: "Abertura", fields: [
-        ta("hero_titulo", "Título", "O perfume nasce no nariz.\nA MON leva o nariz até a bancada.", "Cada linha vira uma linha do título"),
-        ta("hero_texto", "Texto", "Matérias-primas na sua casa, aulas com perfumistas experientes, e no final — uma fórmula que é só sua."),
-        img("hero_foto", "Foto (fundadoras na bancada)"),
+      { title: "Banner de abertura (tela cheia)", fields: [
+        img("hero_foto", "Imagem do banner", "Foto horizontal, mínimo 1600×900. O título fica sobre ela, embaixo à esquerda. Sem foto, o site usa a foto padrão da aluna com o kit em casa (com versão para celular)."),
+        t("hero_kick", "Rótulo pequeno acima do título", "Escola e atelier de perfumaria", "Aparece entre colchetes: [ ESCOLA E ATELIER DE PERFUMARIA ]"),
+        ta("hero_titulo", "Título sobre a imagem", "Crie o seu perfume.\nEm casa, com método.", "Cada linha vira uma linha do título"),
+      ] },
+      { title: "Nossa missão (logo abaixo do banner)", fields: [
+        ta("hero_texto", "Texto da missão", "Matérias-primas na sua casa, aulas com perfumistas experientes, e no final — uma fórmula que é só sua."),
         ta("citacao", "Citação", "\"A perfumaria é um universo de memória, identidade e criação. A MON existe para transformar a curiosidade de quem ama perfume em conhecimento real — com matéria-prima na mão e método na prática.\""),
         t("citacao_autor", "Autoria da citação", "**Daniela Bitelo** e **Letícia Zelaquett** — Fundadoras da MON PARFUM"),
       ] },
@@ -64,23 +68,25 @@ export const SITE_PAGES: PageDef[] = [
       { title: "Manifesto", fields: [
         t("manifesto_titulo", "Título", "Ler sobre perfume não é sentir perfume"),
         ta("manifesto_texto", "Texto", "Você já leu sobre topo, coração e fundo. Já imaginou como seria misturar.\n\nMas a perfumaria mora no instante em que você cheira a matéria-prima pela primeira vez, erra a diluição e descobre — no silêncio entre um Sambac e um Grandiflorum — que seu nariz sabe mais do que você pensava.\n\nOlfato não se aprende. Se desperta.\n\nNa MON, tudo vem com matéria-prima — a sua bancada no conforto do seu endereço."),
+        img("manifesto_foto", "Foto ao lado do manifesto", "Sem foto, o site usa a imagem padrão (manifesto.jpg)."),
       ] },
       { title: "Como a Jornada acontece", fields: [
         t("jornada_titulo", "Título", "Como a Jornada acontece"),
         steps("jornada", "Passos", [["Escolha onde entrar", "Cada nariz tem seu ponto de partida."], ["O kit chega primeiro", "Matérias-primas, fitas, frascos — tudo na sua porta antes da primeira aula."], ["Nariz na bancada", "Daniela Bitelo e perfumistas convidadas. Ao vivo ou gravado, no seu ritmo."], ["A fórmula é sua", "Toda Jornada MON termina com uma criação autoral. Registrada e pronta para evoluir."]]),
       ] },
       { title: "Cursos em destaque", fields: [
-        t("destaques_titulo", "Título", "Cursos em destaque"), t("destaques_texto", "Subtítulo", "Os mais procurados", "Os cursos marcados como “Destaque na home” no cadastro aparecem aqui"),
+        t("destaques_titulo", "Título", "Cursos em destaque"), t("destaques_texto", "Subtítulo", "Os mais procurados"),
+        { key: "destaques_cursos", label: "Cursos exibidos", type: "courses", default: "", help: "Marque os cursos na ordem em que devem aparecer. Sem nenhum marcado, entram os 3 primeiros com “Destaque na home” no cadastro do produto." },
       ] },
       { title: "Kit MON", fields: [
         t("kit_titulo", "Título", "Antes de estudar, crie"),
         ta("kit_texto", "Texto", "O Kit MON é a forma mais direta de sentir o que é criar um perfume.\n\nChega na sua casa com matérias-primas, vídeo-guia e tudo para compor. No final — um perfume seu, envasado, com o nome que você deu."),
-        img("kit_foto", "Foto do Kit MON aberto"),
+        img("kit_foto", "Foto do Kit MON aberto", undefined, "/img/kit.webp"),
       ] },
       { title: "Fundadoras", fields: [
         t("fundadoras_titulo", "Título", "As mentes brilhantes por trás da MON"),
         ta("fundadoras_texto", "Texto", "**Daniela Bitelo** — perfumista, fundadora. ISIPCA (Versailles), International Perfume Foundation (Paris). Cria fragrâncias e forma perfumistas há mais de uma década. Cada Jornada MON passa pelas mãos dela.\n\n**Letícia Netto Zelaquett** — sócia, comercial. Formação em saúde, especialista em perfumaria e neurociência do olfato. Na MON, é a ponte entre a ciência e o que você sente."),
-        img("fundadoras_foto", "Foto de Daniela na bancada"),
+        img("fundadoras_foto", "Foto de Daniela na bancada", undefined, "/img/fundadoras.webp"),
       ] },
       { title: "Depoimentos", fields: [
         { key: "depoimentos", label: "Depoimentos de alunos", type: "list", help: "Sem depoimentos, a seção fica escondida",
@@ -106,7 +112,7 @@ export const SITE_PAGES: PageDef[] = [
         t("kit_titulo", "Título", "O que vem no seu kit"),
         t("kit_texto", "Texto", "O kit é o coração da Jornada MON. Ele chega na sua casa antes da primeira aula."),
         items("kit_itens", "Itens", ["**Matérias-primas olfativas** — óleos essenciais e moléculas sintéticas selecionados para o curso", "**Acordes MON** — composições de referência para você comparar e estudar", "**Fitas olfativas e porta-fitas**", "**Frascos de ensaio, cânulas e material de bancada**", "**Material didático** — folder técnico e apostila em PDF"]),
-        img("kit_foto", "Foto do kit aberto"),
+        img("kit_foto", "Foto do kit aberto", undefined, "/img/kit.webp"),
       ] },
       { title: "Incluído em todo curso", fields: [
         t("incluso_titulo", "Título", "O que está incluído em todo curso"),
@@ -191,7 +197,7 @@ export const SITE_PAGES: PageDef[] = [
         t("titulo", "Título", "Atelier Privé"),
         t("subtitulo", "Subtítulo", "Uma tarde. Uma bancada. Daniela Bitelo ao seu lado."),
         ta("intro", "Introdução", "O Atelier Privé é a forma mais íntima de viver a perfumaria na MON — criar ao lado da fundadora, com acesso à mesa completa de matérias-primas do Atelier.\n\nNão é kit. Não é curso. É uma sessão individual com uma perfumista formada pelo ISIPCA, em Versailles — a mesma pessoa que desenvolve as fragrâncias da MON e forma perfumistas no Brasil há mais de uma década."),
-        img("foto", "Foto do Atelier"),
+        img("foto", "Foto do Atelier", undefined, "/img/atelier.webp"),
         ta("acontece", "O que acontece", "Você trabalha na mesa completa de matérias-primas do Atelier MON — muito além do que cabe em qualquer kit. Cheira, compara, erra e ajusta com orientação individual, matéria-prima por matéria-prima.\n\nDaniela conduz a construção da sua fórmula do começo ao fim. Você sai com seu perfume envasado, nomeado por você, e com a fórmula registrada para poder retomar."),
         ta("agenda", "Por que a agenda é restrita", "A condução é feita pessoalmente por Daniela e não é delegada. Isso limita naturalmente o número de sessões disponíveis a cada trimestre.\n\nNão trabalhamos com calendário aberto. Cada sessão é agendada individualmente, conforme a disponibilidade."),
         t("investimento", "Investimento (valor)", "Sob consulta", "Ex.: A partir de R$ 1.800 por sessão"),
@@ -207,7 +213,7 @@ export const SITE_PAGES: PageDef[] = [
         t("titulo", "Título", "O perfume fica. A memória, também."),
         ta("subtitulo", "Subtítulo", "Cada participante cria e leva o próprio perfume. Meses depois, o frasco ainda está na mesa — e o que viveram juntos, na memória."),
         ta("texto", "Texto", "O Atelier MON Corporativo é um workshop de criação de perfumes para empresas, conduzido por perfumistas da MON PARFUM. Cada participante compõe e envasa sua própria fragrância durante a atividade. A MON leva estrutura completa de bancada, matérias-primas e materiais para eventos em todo o Brasil.\n\n**Cada evento é único.** Os acordes olfativos são desenvolvidos exclusivamente para cada experiência — não repetimos formatos nem reutilizamos composições. A curadoria de matérias-primas é feita sob medida para o briefing, o público e o contexto de cada empresa."),
-        img("foto", "Foto de evento corporativo"),
+        img("foto", "Foto de evento corporativo", undefined, "/img/corporativo.webp"),
       ] },
       { title: "Clientes", fields: [
         items("clientes", "Empresas atendidas", ["Porto Seguro", "McLaren", "Boon Saúde", "Hypera", "Rede Múltipla", "MERS"]),
@@ -259,12 +265,12 @@ export const SITE_PAGES: PageDef[] = [
       { title: "Daniela Bitelo", fields: [
         t("daniela_cargo", "Cargo", "Perfumista · Fundadora · Responsável técnica"),
         ta("daniela_texto", "Texto", "Formou-se no ISIPCA, em Versailles (França) — instituição fundada em 1970 e reconhecida como principal referência mundial na formação de perfumistas — e pela International Perfume Foundation, em Paris.\n\nCria fragrâncias, conduz Jornadas e orienta cada aluno pessoalmente. Assina os projetos olfativos corporativos da MON."),
-        img("daniela_foto", "Foto"),
+        img("daniela_foto", "Foto", undefined, "/img/daniela.webp"),
       ] },
       { title: "Letícia Netto Zelaquett", fields: [
         t("leticia_cargo", "Cargo", "Sócia · Comercial · Neurociência do olfato"),
         ta("leticia_texto", "Texto", "Com formação em saúde e especialização em perfumaria, estuda a neurociência do olfato — como o cérebro processa, memoriza e responde emocionalmente às fragrâncias.\n\nResponsável pelo comercial. Traduz a ciência do olfato em experiências que conectam perfumaria a pessoas e empresas."),
-        img("leticia_foto", "Foto"),
+        img("leticia_foto", "Foto", undefined, "/img/leticia.webp"),
       ] },
       { title: "Método e números", fields: [
         steps("metodo", "Nosso método", [["Cheirar antes de nomear", "Repertório se constrói com exposição, não com definição decorada."], ["Erro guiado", "Acorde que não fecha, diluição que turva. Errar com orientação vale mais do que acertar por acaso."], ["Criação autoral desde o primeiro contato", "Nada na MON termina sem uma criação sua. Não reproduzimos fórmulas — ensinamos a construir."]]),

@@ -9,7 +9,7 @@ export const Route = createFileRoute("/_marketing/marketing/contatos")({
   component: Contatos,
 });
 
-const KINDS: Record<string, string> = { quiz: "Quiz", atelier: "Atelier Privé", contato: "Contato", newsletter: "Newsletter" };
+const KINDS: Record<string, string> = { atelier: "Atelier Privé", contato: "Contato", newsletter: "Newsletter" };
 const STATUS: Record<string, string> = { novo: "Novo", em_contato: "Em contato", ganho: "Concluído" };
 
 function Contatos() {

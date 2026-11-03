@@ -46,7 +46,7 @@ function Cursos() {
               <p className="m-lead" style={{ marginTop: "1.3rem" }}>{c.text("subtitulo")}</p>
               <div style={{ marginTop: "1.6rem" }}><Rich text={c.text("texto")} /></div>
             </div>
-            <Ph art="bois" />
+            <Ph image="/img/cursos-topo.webp" alt="Aluna estudando com o kit MON aberto, caderno e fitas olfativas" />
           </div>
           <div className="m-note row" style={{ marginTop: "1.6rem" }}>
             <div><b>Ainda não sabe qual escolher?</b> Faça o quiz e receba uma recomendação personalizada.</div>

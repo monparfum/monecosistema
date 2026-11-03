@@ -6,7 +6,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { EmptyState } from "@/components/empty-state";
 import { Field, LostDialog, inputCls as input } from "@/components/crm-ui";
 import {
-  ACTIVITY, PAYLOAD_LABEL, STAGES, STAGE_LABEL, centsToInput, fmtDate, isOverdue, parseBRL, useAccounts, useTeam, waHref,
+  ACTIVITY, PAYLOAD_LABEL, PAYLOAD_VALUE, STAGES, STAGE_LABEL, centsToInput, fmtDate, isOverdue, originOf, parseBRL, useAccounts, useTeam, waHref,
   type Lead, type Stage,
 } from "@/lib/crm";
 
@@ -68,7 +68,7 @@ function LeadPage() {
         <Link to="/crm/leads" className="eyebrow text-muted-foreground hover:text-foreground">← Oportunidades</Link>
         <div className="flex flex-wrap justify-between items-end gap-4 mt-3">
           <div>
-            <div className="eyebrow">{l.kind === "corporativo" ? "Proposta pelo site" : "Cadastro manual"} · {new Date(l.created_at).toLocaleString("pt-BR")}</div>
+            <div className="eyebrow flex items-center gap-2"><span className={`px-1.5 ${originOf(l).badge}`}>{originOf(l).label}</span> {l.kind === "corporativo" ? "Proposta pelo site" : l.kind === "quiz" ? "Lead do Quiz Olfativo" : "Cadastro manual"} · {new Date(l.created_at).toLocaleString("pt-BR")}</div>
             <h1 className="font-display text-4xl mt-1">{l.company || l.name || l.email}</h1>
             <div className="text-muted-foreground">
               {[l.company && l.name, l.event_type, l.participants && `${l.participants} pessoas`, l.event_date && `evento ${fmtDate(l.event_date)}`].filter(Boolean).join(" · ")}
@@ -118,7 +118,7 @@ function LeadPage() {
               <li className="relative">
                 <span className="absolute -left-[31px] top-1 w-3 h-3 bg-[color:var(--gold)]" />
                 <div className="eyebrow">Entrada · {new Date(l.created_at).toLocaleString("pt-BR")}</div>
-                <div className="mt-1 text-sm">{l.kind === "manual" ? "Cadastrada manualmente" : "Pedido de proposta pelo site (Corporativo)"}</div>
+                <div className="mt-1 text-sm">{l.kind === "manual" ? "Cadastrada manualmente" : l.kind === "quiz" ? "Respondeu o Quiz Olfativo no site" : "Pedido de proposta pelo site (Corporativo)"}</div>
               </li>
             </ol>
           </section>
@@ -130,11 +130,11 @@ function LeadPage() {
 
           {payload.length > 0 && (
             <section className="border border-border p-5">
-              <div className="eyebrow mb-3">Pedido original (site)</div>
+              <div className="eyebrow mb-3">{l.kind === "quiz" ? "Resultado do quiz" : "Pedido original (site)"}</div>
               <dl className="space-y-2 text-sm">
                 {payload.map(([k, v]) => (
                   <div key={k}><dt className="text-xs text-muted-foreground">{PAYLOAD_LABEL[k] ?? k}</dt>
-                    <dd className="whitespace-pre-wrap">{k === "data_prevista" && typeof v === "string" ? fmtDate(v) : typeof v === "object" ? JSON.stringify(v) : String(v)}</dd></div>
+                    <dd className="whitespace-pre-wrap">{k === "data_prevista" && typeof v === "string" ? fmtDate(v) : typeof v === "string" && PAYLOAD_VALUE[k] ? PAYLOAD_VALUE[k](v) : typeof v === "object" ? JSON.stringify(v) : String(v)}</dd></div>
                 ))}
               </dl>
             </section>

@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import type { Tables } from "@/integrations/supabase/types";
+import { QUIZ_INTERESSE, QUIZ_OBJETIVO } from "@/lib/mon-content";
 
 export type Lead = Tables<"leads">;
 export type Account = Tables<"corporate_accounts">;
@@ -18,8 +19,22 @@ export type Stage = (typeof STAGES)[number]["id"];
 export const STAGE_LABEL = Object.fromEntries(STAGES.map((s) => [s.id, s.label])) as Record<string, string>;
 export const OPEN_STAGES: Stage[] = ["novo", "em_contato", "proposta", "negociacao"];
 
-// CRM = só clientes corporativos (formulário Corporativo + cadastro manual)
-export const CRM_KINDS = ["corporativo", "manual"];
+// CRM = clientes corporativos (formulário Corporativo + cadastro manual) + leads do Quiz Olfativo (filtro de cliente)
+export const CRM_KINDS = ["corporativo", "manual", "quiz"];
+
+// Origem da oportunidade: rótulo + cor (quiz ganha destaque para a equipe identificar na hora)
+export const ORIGIN: Record<string, { label: string; badge: string; accent: string }> = {
+  corporativo: { label: "Site", badge: "bg-[color:var(--muted)]", accent: "" },
+  manual: { label: "Manual", badge: "bg-[color:var(--muted)]", accent: "" },
+  quiz: { label: "Quiz olfativo", badge: "bg-violet-600 text-white", accent: "border-l-4 border-l-violet-600" },
+};
+export const originOf = (l: Pick<Lead, "kind">) => ORIGIN[l.kind] ?? { label: l.kind, badge: "bg-[color:var(--muted)]", accent: "" };
+
+// Valores do payload que vêm como chave (respostas do quiz) → nome legível
+export const PAYLOAD_VALUE: Record<string, (v: string) => string> = {
+  interesse: (v) => (QUIZ_INTERESSE as Record<string, { nome: string }>)[v]?.nome ?? v,
+  objetivo: (v) => (QUIZ_OBJETIVO as Record<string, { nome: string }>)[v]?.nome ?? v,
+};
 
 export const ACTIVITY: Record<string, string> = {
   nota: "Nota", ligacao: "Ligação", whatsapp: "WhatsApp", email: "E-mail", reuniao: "Reunião", etapa: "Etapa", sistema: "Sistema",
@@ -36,6 +51,7 @@ export const fmtDate = (d: string | null) => (d ? new Date(d.length === 10 ? d +
 export const PAYLOAD_LABEL: Record<string, string> = {
   empresa: "Empresa (informada)", cidade: "Cidade do evento", data_prevista: "Data prevista", participantes: "Participantes",
   tipo_evento: "Tipo de evento", mensagem: "Mensagem", assunto: "Assunto",
+  interesse: "Território olfativo", objetivo: "Objetivo declarado",
 };
 
 export const isOverdue = (l: Pick<Lead, "next_action_at" | "status">) =>

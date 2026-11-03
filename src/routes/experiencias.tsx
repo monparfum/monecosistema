@@ -22,7 +22,7 @@ function Experiencias() {
               <h1>{c.text("titulo")}</h1>
               <p className="m-lead" style={{ marginTop: "1.3rem" }}>{c.text("subtitulo")}</p>
             </div>
-            <Ph art="lavande" />
+            <Ph image="/img/experiencias-topo.webp" alt="Aluna em casa sentindo uma fita olfativa com o kit MON aberto" />
           </div>
         </section>
 

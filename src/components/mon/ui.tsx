@@ -24,6 +24,14 @@ export type ShopProduct = {
   image_url: string | null; delivery_type: "physical" | "digital" | "hybrid"; details: Details; created_at: string;
 };
 
+const NEW_COURSE_IMG: Record<string, string> = Object.fromEntries([
+  "introducao-a-perfumaria", "diluicao-aspectos-praticos", "madeiras-na-composicao", "neroli-e-flor-de-laranjeira",
+  "baunilhas-na-perfumaria", "mimosa-a-luz-dourada-da-perfumaria", "rosa-a-rainha-da-perfumaria", "familias-olfativas-novas-construcoes",
+  "curso-velas-perfumadas-online", "curso-marketing-olfativo-cheiro-emocao-comportamento", "aspectos-legais-e-regulatorios",
+].map((s) => [s, `/img/cursos/${s}.webp`]));
+// shortcut: Jasmim recortado do PDF (já com título, baixa resolução); trocar pela foto sem texto quando chegar
+NEW_COURSE_IMG["os-segredos-do-jasmim"] = "/img/cursos-card/os-segredos-do-jasmim.webp";
+
 export const catalogQuery = queryOptions({
   queryKey: ["catalog"],
   staleTime: 60_000,
@@ -32,7 +40,8 @@ export const catalogQuery = queryOptions({
       .select("id, slug, name, brand, description, notes, price_cents, compare_at_cents, stock, active, coming_soon, image_url, delivery_type, details, created_at")
       .eq("active", true).order("created_at");
     if (error) throw error;
-    return (data ?? []) as unknown as ShopProduct[];
+    // shortcut: fotos novas dos cursos forçadas pelo código; apagar quando a migration 20261103120000 rodar no banco
+    return ((data ?? []) as unknown as ShopProduct[]).map((p) => (NEW_COURSE_IMG[p.slug] ? { ...p, image_url: NEW_COURSE_IMG[p.slug] } : p));
   },
 });
 
@@ -126,18 +135,44 @@ export function Ph({ style, image, alt = "", art, initials }: { style?: React.CS
   );
 }
 
+// Série padronizada dos cards (PDF "Imagens do novo site MON"): logo + título + subtítulo sobre a foto escura.
+// shortcut: textos fixos por slug no código; mover para products.details se o painel precisar editar.
+const CARD_TXT: Record<string, [string, string]> = {
+  "introducao-a-perfumaria": ["Introdução à perfumaria:", "sua primeira composição autoral"],
+  "diluicao-aspectos-praticos": ["Diluição:", "aspectos práticos do dia a dia do perfumista"],
+  "madeiras-na-composicao": ["Madeiras na composição:", "do acorde à fragrância"],
+  "os-segredos-do-jasmim": ["Os segredos do jasmim:", "a flor da noite"],
+  "neroli-e-flor-de-laranjeira": ["Néroli & flor de laranjeira:", "da laranja amarga à flor"],
+  "baunilhas-na-perfumaria": ["Baunilha na perfumaria:", "da fava à fórmula"],
+  "mimosa-a-luz-dourada-da-perfumaria": ["Mimosa:", "a luz dourada da perfumaria"],
+  "rosa-a-rainha-da-perfumaria": ["Rosa:", "a rainha da perfumaria"],
+  "familias-olfativas-novas-construcoes": ["Famílias olfativas:", "novas construções"],
+  "curso-velas-perfumadas-online": ["Velas perfumadas:", "da fragrância à chama"],
+  "curso-marketing-olfativo-cheiro-emocao-comportamento": ["Marketing olfativo:", "cheiro, emoção e comportamento"],
+  "aspectos-legais-e-regulatorios": ["Aspectos legais e regulatórios:", "perfumaria com segurança"],
+};
+
 export function CourseCard({ p }: { p: ShopProduct }) {
   const d = p.details;
+  // só nas fotos novas (sem texto); imagens antigas já trazem a própria arte
+  const txt = p.image_url?.startsWith("/img/cursos/") ? CARD_TXT[p.slug] : undefined;
   return (
     <Link to="/cursos/$slug" params={{ slug: p.slug }} className="m-course">
       {p.image_url && (
-        <div style={{ margin: "-1.7rem -1.7rem 1.2rem -1.7rem", height: 180, overflow: "hidden", background: "#f5f2ed" }}>
+        <div style={{ position: "relative", margin: "-1.5rem -1.5rem 1.2rem -1.5rem", aspectRatio: "1 / 1", overflow: "hidden", background: "var(--m-paper-2)", borderRadius: "var(--m-r-lg) var(--m-r-lg) 0 0" }}>
           <img
             src={p.image_url}
             alt={p.name}
             loading="lazy"
             style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
           />
+          {txt && (
+            <div className="m-card-ov" aria-hidden="true">
+              <img src="/logo-mon-branco.png" alt="" width={707} height={418} />
+              <b>{txt[0]}</b>
+              <i>{txt[1]}</i>
+            </div>
+          )}
         </div>
       )}
       <div className="top">

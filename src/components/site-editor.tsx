@@ -4,6 +4,7 @@ import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import type { Json } from "@/integrations/supabase/types";
 import { useAuth } from "@/lib/auth-context";
+import { useCatalog } from "@/components/mon/ui";
 import { slugify } from "@/lib/format";
 import { defaultsOf, pageDef, type Field, type ListItem, type PageValues } from "@/lib/site-schema";
 
@@ -123,12 +124,52 @@ function FieldEditor({ field, value, onChange, onReset, page }: { field: Field; 
 
   const v = typeof value === "string" ? value : "";
   if (field.type === "image") return <ImageField field={field} value={v} onChange={onChange} onReset={onReset} page={page} />;
+  if (field.type === "courses") return <CoursesField field={field} value={v} onChange={onChange} onReset={onReset} />;
   return (
     <div>
       <Label field={field} onReset={onReset} />
       {field.type === "textarea"
         ? <textarea className={input} rows={Math.min(14, Math.max(3, Math.ceil(v.length / 70) + v.split("\n").length))} value={v} onChange={(e) => onChange(e.target.value)} />
         : <input className={input} value={v} onChange={(e) => onChange(e.target.value)} />}
+      {field.help && <p className="text-xs text-muted-foreground mt-1">{field.help}</p>}
+    </div>
+  );
+}
+
+// Escolha ordenada de cursos do catálogo (ids separados por vírgula)
+function CoursesField({ field, value, onChange, onReset }: { field: Field; value: string; onChange: (v: string) => void; onReset?: () => void }) {
+  const { cursos, isLoading } = useCatalog();
+  const chosen = value.split(",").map((s) => s.trim()).filter(Boolean);
+  const toggle = (id: string) => onChange((chosen.includes(id) ? chosen.filter((c) => c !== id) : [...chosen, id]).join(","));
+  const move = (id: string, dir: -1 | 1) => {
+    const i = chosen.indexOf(id), j = i + dir; if (i < 0 || j < 0 || j >= chosen.length) return;
+    const next = [...chosen]; [next[i], next[j]] = [next[j], next[i]]; onChange(next.join(","));
+  };
+  const ordered = [...cursos].sort((a, b) => (chosen.indexOf(a.id) + 1 || 999) - (chosen.indexOf(b.id) + 1 || 999));
+  return (
+    <div>
+      <Label field={field} onReset={onReset} />
+      {isLoading ? <p className="text-xs text-muted-foreground">Carregando cursos…</p> : !cursos.length ? <p className="text-xs text-muted-foreground">Nenhum curso ativo no catálogo.</p> : (
+        <ul className="border border-border divide-y divide-border">
+          {ordered.map((p) => {
+            const pos = chosen.indexOf(p.id);
+            return (
+              <li key={p.id} className="flex items-center gap-3 px-3 py-2 text-sm">
+                <input type="checkbox" checked={pos >= 0} onChange={() => toggle(p.id)} />
+                {p.image_url && <img src={p.image_url} alt="" className="size-8 object-cover shrink-0" />}
+                <span className="flex-1 min-w-0 truncate">{p.name}</span>
+                {pos >= 0 && (
+                  <span className="flex items-center gap-2 text-xs text-muted-foreground shrink-0">
+                    <b className="text-foreground">{pos + 1}º</b>
+                    {pos > 0 && <button type="button" onClick={() => move(p.id, -1)}>↑</button>}
+                    {pos < chosen.length - 1 && <button type="button" onClick={() => move(p.id, 1)}>↓</button>}
+                  </span>
+                )}
+              </li>
+            );
+          })}
+        </ul>
+      )}
       {field.help && <p className="text-xs text-muted-foreground mt-1">{field.help}</p>}
     </div>
   );
