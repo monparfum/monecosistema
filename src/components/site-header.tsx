@@ -32,7 +32,7 @@ export function SiteHeader({ overlay = false }: { overlay?: boolean }) {
 
   const light = overlay && !scrolled && !open;
   const aluno = MEMBERS_APP_URL
-    ? { href: MEMBERS_APP_URL }
+    ? { href: `${MEMBERS_APP_URL}/app` } // /app: quem não é da equipe cai sozinho na área do aluno ou no login
     : { to: user ? "/conta" : "/login" } as const;
 
   return (

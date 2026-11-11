@@ -19,6 +19,7 @@ import { Route as FinanceiroRouteImport } from './routes/_financeiro'
 import { Route as MarketingRouteImport } from './routes/_marketing'
 import { Route as OpsRouteImport } from './routes/_ops'
 import { Route as StudioRouteImport } from './routes/_studio'
+import { Route as AppRouteImport } from './routes/app'
 import { Route as AtelierPriveRouteImport } from './routes/atelier-prive'
 import { Route as BuscaRouteImport } from './routes/busca'
 import { Route as BusinessplanRouteImport } from './routes/businessplan'
@@ -149,6 +150,11 @@ const OpsRoute = OpsRouteImport.update({
 } as any)
 const StudioRoute = StudioRouteImport.update({
   id: '/_studio',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AppRoute = AppRouteImport.update({
+  id: '/app',
+  path: '/app',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AtelierPriveRoute = AtelierPriveRouteImport.update({
@@ -624,6 +630,7 @@ const ApiPublicPaymentsWebhookRoute =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/$slug': typeof SlugRoute
+  '/app': typeof AppRoute
   '/atelier-prive': typeof AtelierPriveRoute
   '/busca': typeof BuscaRoute
   '/businessplan': typeof BusinessplanRoute
@@ -717,6 +724,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/$slug': typeof SlugRoute
+  '/app': typeof AppRoute
   '/atelier-prive': typeof AtelierPriveRoute
   '/busca': typeof BuscaRoute
   '/businessplan': typeof BusinessplanRoute
@@ -819,6 +827,7 @@ export interface FileRoutesById {
   '/_marketing': typeof MarketingRouteWithChildren
   '/_ops': typeof OpsRouteWithChildren
   '/_studio': typeof StudioRouteWithChildren
+  '/app': typeof AppRoute
   '/atelier-prive': typeof AtelierPriveRoute
   '/busca': typeof BuscaRoute
   '/businessplan': typeof BusinessplanRoute
@@ -914,6 +923,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/$slug'
+    | '/app'
     | '/atelier-prive'
     | '/busca'
     | '/businessplan'
@@ -1007,6 +1017,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/$slug'
+    | '/app'
     | '/atelier-prive'
     | '/busca'
     | '/businessplan'
@@ -1108,6 +1119,7 @@ export interface FileRouteTypes {
     | '/_marketing'
     | '/_ops'
     | '/_studio'
+    | '/app'
     | '/atelier-prive'
     | '/busca'
     | '/businessplan'
@@ -1210,6 +1222,7 @@ export interface RootRouteChildren {
   MarketingRoute: typeof MarketingRouteWithChildren
   OpsRoute: typeof OpsRouteWithChildren
   StudioRoute: typeof StudioRouteWithChildren
+  AppRoute: typeof AppRoute
   AtelierPriveRoute: typeof AtelierPriveRoute
   BuscaRoute: typeof BuscaRoute
   BusinessplanRoute: typeof BusinessplanRoute
@@ -1313,6 +1326,13 @@ declare module '@tanstack/react-router' {
       path: ''
       fullPath: '/'
       preLoaderRoute: typeof StudioRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/app': {
+      id: '/app'
+      path: '/app'
+      fullPath: '/app'
+      preLoaderRoute: typeof AppRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/atelier-prive': {
@@ -2176,6 +2196,7 @@ const rootRouteChildren: RootRouteChildren = {
   MarketingRoute: MarketingRouteWithChildren,
   OpsRoute: OpsRouteWithChildren,
   StudioRoute: StudioRouteWithChildren,
+  AppRoute: AppRoute,
   AtelierPriveRoute: AtelierPriveRoute,
   BuscaRoute: BuscaRoute,
   BusinessplanRoute: BusinessplanRoute,
