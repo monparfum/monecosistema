@@ -19,12 +19,17 @@ export async function markOrderPaid(orderId: string, method: "stripe" | "mercado
     console.error(`[${method}] amount mismatch`, orderId, amountCents, order.total_cents);
     return false;
   }
-  const { data: updated } = await supabaseAdmin
+  const { data: updated, error } = await supabaseAdmin
     .from("orders")
     .update({ status: "paid", payment_method: method, payment_reference: paymentRef })
     .eq("id", orderId)
     .eq("status", "pending_payment")
     .select("id");
+  // Banco recusou (ex.: gatilho quebrado): falha alto para o gateway reenviar o aviso, em vez de fingir que confirmou
+  if (error) {
+    console.error(`[${method}] pagamento recebido mas o pedido não pôde ser marcado como pago`, orderId, paymentRef, error.message);
+    throw new Error(`Pedido ${order.order_number}: pagamento recebido, mas o banco recusou a confirmação (${error.message})`);
+  }
   if (updated?.[0]) await afterOrderPaid(orderId);
   return true;
 }
@@ -63,7 +68,8 @@ export async function afterOrderPaid(orderId: string) {
     await notifyOrder(notice);
   }
   if (!o.requires_shipping) {
-    await supabaseAdmin.from("orders").update({ status: "delivered" }).eq("id", o.id).eq("status", "paid");
+    const { error } = await supabaseAdmin.from("orders").update({ status: "delivered" }).eq("id", o.id).eq("status", "paid");
+    if (error) console.error("[pedido] digital pago não pôde ser marcado como entregue", o.order_number, error.message);
   }
 }
 

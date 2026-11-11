@@ -136,10 +136,12 @@ export const buyShippingLabel = createServerFn({ method: "POST" })
     });
 
     const code = await melhorEnvio.tracking(labelId).catch(() => null);
-    await supabaseAdmin
+    const { error: saveErr } = await supabaseAdmin
       .from("orders")
       .update({ shipping_label_id: labelId, shipping_label_url: labelUrl, status: "processing", ...(code ? { tracking_code: code } : {}) })
       .eq("id", o.id);
+    // Etiqueta já foi paga: se o banco recusar, devolve o link no erro para ela não se perder
+    if (saveErr) throw new Error(`Etiqueta comprada, mas não foi salva no pedido (${saveErr.message}). Guarde o link: ${labelUrl}`);
     return { labelUrl, trackingCode: code };
   });
 
