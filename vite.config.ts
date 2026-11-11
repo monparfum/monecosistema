@@ -8,7 +8,9 @@ import { defineConfig } from "@lovable.dev/vite-tanstack-config";
 import { loadEnv } from "vite";
 
 // Fora do Lovable: expõe .env/.env.local ao código de servidor (process.env), sem sobrescrever variáveis reais do host.
-Object.assign(process.env, { ...loadEnv("development", process.cwd(), ""), ...process.env });
+// VITE_* fica fora: o Vite carrega por modo, senão o build de produção herdava .env.development (ex.: Área do aluno em localhost)
+const devEnv = Object.entries(loadEnv("development", process.cwd(), "")).filter(([k]) => !k.startsWith("VITE_"));
+Object.assign(process.env, { ...Object.fromEntries(devEnv), ...process.env });
 
 // Redirect TanStack Start's bundled server entry to src/server.ts (our SSR error wrapper).
 // @cloudflare/vite-plugin builds from this — wrangler.jsonc main alone is insufficient.
