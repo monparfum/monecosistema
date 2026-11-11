@@ -4,7 +4,8 @@ import { supabaseAdmin } from "@/integrations/supabase/client.server";
 import * as melhorEnvio from "@/lib/melhor-envio.server";
 import * as mercadoPago from "@/lib/mercadopago.server";
 import { sendEmail, emails } from "@/lib/email.server";
-import { afterOrderPaid, afterOrderCancelled } from "@/lib/payments.server";
+import { afterOrderPaid, afterOrderCancelled, markOrderPaid } from "@/lib/payments.server";
+import { nextOrderStatus } from "@/lib/shipment-status";
 import { createStripeClient, currentStripeEnv, getStripeErrorMessage } from "@/lib/stripe.server";
 
 const UUID = /^[0-9a-f-]{36}$/i;
@@ -140,6 +141,86 @@ export const buyShippingLabel = createServerFn({ method: "POST" })
       .update({ shipping_label_id: labelId, shipping_label_url: labelUrl, status: "processing", ...(code ? { tracking_code: code } : {}) })
       .eq("id", o.id);
     return { labelUrl, trackingCode: code };
+  });
+
+type ShipOrder = { id: string; order_number: string; email: string; status: string; tracking_code: string | null; shipping_label_id: string | null };
+const SHIP_COLS = "id, order_number, email, status, tracking_code, shipping_label_id";
+
+// Puxa o estado da etiqueta no Melhor Envio e aplica no pedido: grava o rastreio; postado = enviado (cliente avisado); entregue = entregue
+async function applyShipment(o: ShipOrder) {
+  const info = o.shipping_label_id ? await melhorEnvio.shipmentInfo(o.shipping_label_id) : null;
+  if (!info) return { status: o.status, trackingCode: o.tracking_code, carrierStatus: null as string | null, changed: false };
+  const code = info.tracking ?? o.tracking_code;
+  const status = nextOrderStatus(o.status, { status: info.status, tracking: code });
+  const changed = status !== o.status || code !== o.tracking_code;
+  if (changed) {
+    const { error } = await supabaseAdmin.from("orders").update({ status: status as "shipped", tracking_code: code }).eq("id", o.id);
+    if (error) throw error;
+    if (status === "shipped" && o.status !== "shipped" && code) {
+      const m = emails.shipped(o.order_number, code);
+      await sendEmail(o.email, m.subject, m.html);
+    }
+  }
+  return { status, trackingCode: code, carrierStatus: info.status, changed };
+}
+
+// Botão "Atualizar rastreio" do pedido
+export const syncShipment = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((d: { orderId: string }) => {
+    if (!UUID.test(d.orderId)) throw new Error("orderId inválido");
+    return d;
+  })
+  .handler(async ({ data, context }) => {
+    await assertAdmin(context.supabase, context.userId);
+    if (!melhorEnvio.melhorEnvioEnabled()) throw new Error("Melhor Envio não configurado (MELHOR_ENVIO_TOKEN)");
+    const { data: o } = await supabaseAdmin.from("orders").select(SHIP_COLS).eq("id", data.orderId).maybeSingle();
+    if (!o) throw new Error("Pedido não encontrado");
+    if (!o.shipping_label_id) throw new Error("Pedido sem etiqueta do Melhor Envio");
+    return applyShipment(o);
+  });
+
+// Ao abrir a Expedição: atualiza todos os envios em aberto que têm etiqueta
+// shortcut: roda quando alguém abre a tela (até 25 pedidos); trocar por cron do Cloudflare se o volume crescer
+export const syncOpenShipments = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .handler(async ({ context }) => {
+    await assertAdmin(context.supabase, context.userId);
+    if (!melhorEnvio.melhorEnvioEnabled()) return { checked: 0, changed: 0 };
+    const { data: orders } = await supabaseAdmin.from("orders").select(SHIP_COLS)
+      .in("status", ["paid", "processing", "shipped"]).not("shipping_label_id", "is", null).order("created_at").limit(25);
+    let changed = 0;
+    for (const o of orders ?? []) {
+      const r = await applyShipment(o).catch((e) => { console.error("[expedição] rastreio", o.order_number, e); return null; });
+      if (r?.changed) changed++;
+    }
+    return { checked: orders?.length ?? 0, changed };
+  });
+
+// Pedido aguardando pagamento: pergunta direto ao gateway (quando o aviso automático não chegou)
+export const checkPayment = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((d: { orderId: string }) => {
+    if (!UUID.test(d.orderId)) throw new Error("orderId inválido");
+    return d;
+  })
+  .handler(async ({ data, context }) => {
+    await assertAdmin(context.supabase, context.userId);
+    const { data: o } = await supabaseAdmin.from("orders").select("id, status").eq("id", data.orderId).maybeSingle();
+    if (!o) throw new Error("Pedido não encontrado");
+    if (o.status !== "pending_payment") return { paid: o.status !== "cancelled" };
+    const errors: string[] = [];
+    if (mercadoPago.mercadoPagoEnabled()) {
+      try { if (await mercadoPago.syncOrderPayment(o.id)) return { paid: true }; }
+      catch (e) { errors.push((e as Error).message); }
+    }
+    try {
+      const found = await createStripeClient(currentStripeEnv()).paymentIntents.search({ query: `metadata['orderId']:'${o.id}' AND status:'succeeded'`, limit: 1 });
+      const pi = found.data[0];
+      if (pi && await markOrderPaid(o.id, "stripe", pi.id, pi.amount_received, pi.currency)) return { paid: true };
+    } catch (e) { errors.push(`Stripe: ${getStripeErrorMessage(e)}`); }
+    if (errors.length) throw new Error(`Não foi possível consultar: ${errors.join(" · ")}`);
+    return { paid: false };
   });
 
 // Registra envio (código manual ou do Melhor Envio) e avisa o cliente

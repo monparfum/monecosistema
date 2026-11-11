@@ -4,8 +4,9 @@ import { supabase } from "@/integrations/supabase/client";
 import { PageHeader } from "@/components/module-shell";
 import { EmptyState } from "@/components/empty-state";
 import { SkeletonRow } from "@/components/skeleton-row";
-import { buyShippingLabel, markShipped } from "@/lib/shipping.functions";
-import { useState } from "react";
+import { buyShippingLabel, markShipped, syncOpenShipments } from "@/lib/shipping.functions";
+import { ORDER_STATUS } from "@/lib/format";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/_ops/ops/expedicao")({
@@ -26,9 +27,19 @@ function OpsExpedicao() {
     ).data ?? [],
   });
 
+  // Ao abrir: puxa do Melhor Envio o que já foi postado/entregue (pedido muda de status e o cliente é avisado)
+  const [synced, setSynced] = useState<string | null>(null);
+  useEffect(() => {
+    syncOpenShipments().then((r) => {
+      if (r.checked) setSynced(`${r.checked} envio(s) conferido(s) no Melhor Envio${r.changed ? ` · ${r.changed} atualizado(s)` : ""}`);
+      if (r.changed) qc.invalidateQueries({ queryKey: ["ops-expedicao"] });
+    }).catch(() => setSynced("Não foi possível conferir o Melhor Envio agora."));
+  }, [qc]);
+
   return (
     <div className="space-y-8 max-w-[1400px]">
       <PageHeader eyebrow="Operações" title="Expedição" description="Pedidos pagos: gere a etiqueta (Melhor Envio) ou informe o rastreio manualmente. O cliente é avisado por email." />
+      {synced && <p className="text-xs text-muted-foreground -mt-4" role="status">{synced}</p>}
       {isLoading ? (
         <div className="border-y border-border divide-y divide-border">
           {Array.from({ length: 3 }).map((_, i) => <SkeletonRow key={i} cols={3} />)}
@@ -96,7 +107,7 @@ function ExpedicaoRow({ order, onSaved }: { order: ExpedicaoOrder; onSaved: () =
   return (
     <div className="py-5 grid grid-cols-[1.2fr_1fr_1.4fr_auto] gap-6 items-center">
       <div>
-        <div className="eyebrow">{new Date(order.created_at).toLocaleDateString("pt-BR")} · {order.status}</div>
+        <div className="eyebrow">{new Date(order.created_at).toLocaleDateString("pt-BR")} · {ORDER_STATUS[order.status] ?? order.status}</div>
         <Link to="/ops/pedidos/$id" params={{ id: order.id }} className="font-display text-xl hover:underline">{order.order_number}</Link>
         <div className="text-xs text-muted-foreground mt-1">{order.shipping_recipient} · {order.shipping_city}/{order.shipping_state} · {order.shipping_postal_code}</div>
       </div>

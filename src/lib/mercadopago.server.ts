@@ -53,6 +53,13 @@ export async function syncPayment(paymentId: string, expectedOrderId?: string) {
   return markOrderPaid(p.external_reference, "mercadopago", String(p.id), Math.round(p.transaction_amount * 100), p.currency_id);
 }
 
+// Conferência manual (webhook perdido): procura pagamento aprovado do pedido e aplica
+export async function syncOrderPayment(orderId: string) {
+  const r = await mp<{ results: Payment[] }>(`/v1/payments/search?external_reference=${encodeURIComponent(orderId)}&status=approved&limit=1`);
+  const p = r.results?.[0];
+  return p ? syncPayment(String(p.id), orderId) : false;
+}
+
 export async function refund(paymentId: string) {
   await mp(`/v1/payments/${encodeURIComponent(paymentId)}/refunds`, { method: "POST", body: {}, idempotencyKey: `refund-${paymentId}` });
 }

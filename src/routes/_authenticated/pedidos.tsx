@@ -49,9 +49,12 @@ function Pedidos() {
                     {o.order_items.map((i) => `${i.product_name} ×${i.quantity}`).join(" · ")}
                   </div>
                   {o.tracking_code && (
-                    <a href={`https://www.melhorrastreio.com.br/rastreio/${encodeURIComponent(o.tracking_code)}`} target="_blank" rel="noreferrer" className="text-sm underline mt-1 inline-block">
-                      Rastrear: {o.tracking_code}
-                    </a>
+                    <div className="mt-3">
+                      <a href={`https://www.melhorrastreio.com.br/rastreio/${encodeURIComponent(o.tracking_code)}`} target="_blank" rel="noreferrer" className="inline-block bg-foreground text-background px-4 py-2 text-xs uppercase tracking-[0.15em]">
+                        Acompanhar entrega
+                      </a>
+                      <div className="text-xs text-muted-foreground mt-1">Rastreio: {o.tracking_code}</div>
+                    </div>
                   )}
                   {o.status === "pending_payment" && (
                     <Link to="/checkout/pagamento/$orderId" params={{ orderId: o.id }} className="text-sm underline mt-1 inline-block">Pagar agora</Link>

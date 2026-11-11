@@ -4,7 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { PageHeader } from "@/components/module-shell";
 import { SkeletonRow } from "@/components/skeleton-row";
 import { EmptyState } from "@/components/empty-state";
-import { formatBRL } from "@/lib/format";
+import { formatBRL, ORDER_STATUS } from "@/lib/format";
 import { useState } from "react";
 
 const STATUSES = ["all","pending_payment","paid","processing","shipped","delivered","cancelled"] as const;
@@ -40,7 +40,7 @@ function OpsPedidos() {
           className="flex-1 min-w-[260px] bg-transparent border border-border px-3 py-2 text-sm"
         />
         <select value={filter} onChange={(e) => setFilter(e.target.value as typeof STATUSES[number])} className="bg-transparent border border-border px-3 py-2 text-sm">
-          {STATUSES.map((s) => <option key={s} value={s}>{s === "all" ? "Todos os status" : s}</option>)}
+          {STATUSES.map((s) => <option key={s} value={s}>{s === "all" ? "Todos os status" : ORDER_STATUS[s] ?? s}</option>)}
         </select>
       </div>
 
@@ -65,7 +65,7 @@ function OpsPedidos() {
                 <div className="text-sm text-muted-foreground">{o.shipping_recipient} · {o.shipping_city}/{o.shipping_state}</div>
               </div>
               <div className="text-sm text-muted-foreground">{o.email}</div>
-              <div className="eyebrow">{o.status}</div>
+              <div className="eyebrow">{ORDER_STATUS[o.status] ?? o.status}</div>
               <div className="font-display text-xl">{formatBRL(o.total_cents)}</div>
             </Link>
           ))}

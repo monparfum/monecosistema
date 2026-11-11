@@ -86,7 +86,17 @@ export async function buyLabel(input: {
   return { labelId: cart.id, labelUrl: print.url };
 }
 
-export async function tracking(labelId: string): Promise<string | null> {
-  const r = await me<Record<string, { tracking?: string | null; melhorenvio_tracking?: string | null }>>("/shipment/tracking", { orders: [labelId] });
-  return r[labelId]?.tracking ?? null;
+// Estado do envio na transportadora. status: pending | released | posted | delivered | canceled | undelivered …
+export type Shipment = { status: string | null; tracking: string | null; postedAt: string | null; deliveredAt: string | null };
+
+export async function shipmentInfo(labelId: string): Promise<Shipment | null> {
+  type Raw = { status?: string | null; tracking?: string | null; melhorenvio_tracking?: string | null; posted_at?: string | null; delivered_at?: string | null };
+  const r = await me<Record<string, Raw>>("/shipment/tracking", { orders: [labelId] });
+  const s = r[labelId];
+  if (!s) return null;
+  // antes da postagem só existe o código do próprio Melhor Envio; depois vem o da transportadora
+  return { status: s.status ?? null, tracking: s.tracking || s.melhorenvio_tracking || null, postedAt: s.posted_at ?? null, deliveredAt: s.delivered_at ?? null };
 }
+
+export const tracking = async (labelId: string) => (await shipmentInfo(labelId))?.tracking ?? null;
+
