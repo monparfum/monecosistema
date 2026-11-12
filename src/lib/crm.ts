@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import type { Tables } from "@/integrations/supabase/types";
 import { QUIZ_INTERESSE, QUIZ_OBJETIVO } from "@/lib/mon-content";
+import { PROFILE } from "@/lib/quiz";
 
 export type Lead = Tables<"leads">;
 export type Account = Tables<"corporate_accounts">;
@@ -30,10 +31,12 @@ export const ORIGIN: Record<string, { label: string; badge: string; accent: stri
 };
 export const originOf = (l: Pick<Lead, "kind">) => ORIGIN[l.kind] ?? { label: l.kind, badge: "bg-[color:var(--muted)]", accent: "" };
 
-// Valores do payload que vêm como chave (respostas do quiz) → nome legível
+// Valores do payload que vêm como chave (respostas do quiz) → nome legível. interesse/objetivo = quiz antigo (leads já gravados)
 export const PAYLOAD_VALUE: Record<string, (v: string) => string> = {
   interesse: (v) => (QUIZ_INTERESSE as Record<string, { nome: string }>)[v]?.nome ?? v,
   objetivo: (v) => (QUIZ_OBJETIVO as Record<string, { nome: string }>)[v]?.nome ?? v,
+  perfil: (v) => (PROFILE as Record<string, { name: string }>)[v]?.name ?? v,
+  segunda_faceta: (v) => (PROFILE as Record<string, { name: string }>)[v]?.name ?? v,
 };
 
 export const ACTIVITY: Record<string, string> = {
@@ -52,6 +55,7 @@ export const PAYLOAD_LABEL: Record<string, string> = {
   empresa: "Empresa (informada)", cidade: "Cidade do evento", data_prevista: "Data prevista", participantes: "Participantes",
   tipo_evento: "Tipo de evento", mensagem: "Mensagem", assunto: "Assunto",
   interesse: "Território olfativo", objetivo: "Objetivo declarado",
+  perfil: "Perfil olfativo", segunda_faceta: "Segunda faceta", afinidades: "Mapa de afinidades",
 };
 
 export const isOverdue = (l: Pick<Lead, "next_action_at" | "status">) =>

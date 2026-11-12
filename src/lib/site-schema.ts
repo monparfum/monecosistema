@@ -298,16 +298,6 @@ export const SITE_PAGES: PageDef[] = [
     ],
   },
   {
-    slug: "quiz", title: "Quiz Olfativo", path: "/quiz",
-    sections: [
-      { title: "Textos", fields: [
-        t("titulo", "Título", "Descubra seu caminho olfativo"),
-        ta("texto", "Texto de abertura", "Duas perguntas rápidas para descobrir o território que combina com você — e como a MON pode te ajudar nessa jornada."),
-        ta("resultado_texto", "Texto do resultado", "A MON pode te ajudar a explorar esse território. Conheça nossos cursos ou fale com a gente para uma orientação personalizada."),
-      ] },
-    ],
-  },
-  {
     slug: "politicas", title: "Políticas (privacidade, termos, trocas, entrega)", path: "/politicas/privacidade",
     sections: [
       { title: "Textos legais", fields: [
