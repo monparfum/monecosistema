@@ -34,6 +34,22 @@ export const submitLead = createServerFn({ method: "POST" })
     };
   })
   .handler(async ({ data }) => {
+    // Quiz manda duas etapas com o mesmo quiz_id (cadastro e resultado): a segunda completa o lead da primeira.
+    // Só vale para o mesmo e-mail e nas últimas 24 h; fora disso entra como lead novo.
+    const quizId = data.kind === "quiz" && typeof data.payload.quiz_id === "string" ? data.payload.quiz_id : null;
+    if (quizId) {
+      const { data: prev } = await supabaseAdmin.from("leads").select("id, payload")
+        .eq("kind", "quiz").eq("email", data.email).eq("payload->>quiz_id", quizId)
+        .gte("created_at", new Date(Date.now() - 24 * 3600_000).toISOString())
+        .order("created_at", { ascending: false }).limit(1).maybeSingle();
+      if (prev) {
+        const old = prev.payload && typeof prev.payload === "object" && !Array.isArray(prev.payload) ? prev.payload : {};
+        const { error } = await supabaseAdmin.from("leads").update({ payload: { ...old, ...data.payload } }).eq("id", prev.id);
+        if (error) throw new Error("Não foi possível enviar");
+        return { ok: true };
+      }
+    }
+
     // Anti-spam: no máximo 5 envios do mesmo e-mail em 10 minutos
     const { count } = await supabaseAdmin.from("leads").select("id", { count: "exact", head: true })
       .ilike("email", data.email).gte("created_at", new Date(Date.now() - 10 * 60_000).toISOString());

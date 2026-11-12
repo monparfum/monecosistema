@@ -2,7 +2,6 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import type { Tables } from "@/integrations/supabase/types";
 import { QUIZ_INTERESSE, QUIZ_OBJETIVO } from "@/lib/mon-content";
-import { PROFILE } from "@/lib/quiz";
 
 export type Lead = Tables<"leads">;
 export type Account = Tables<"corporate_accounts">;
@@ -35,9 +34,12 @@ export const originOf = (l: Pick<Lead, "kind">) => ORIGIN[l.kind] ?? { label: l.
 export const PAYLOAD_VALUE: Record<string, (v: string) => string> = {
   interesse: (v) => (QUIZ_INTERESSE as Record<string, { nome: string }>)[v]?.nome ?? v,
   objetivo: (v) => (QUIZ_OBJETIVO as Record<string, { nome: string }>)[v]?.nome ?? v,
-  perfil: (v) => (PROFILE as Record<string, { name: string }>)[v]?.name ?? v,
-  segunda_faceta: (v) => (PROFILE as Record<string, { name: string }>)[v]?.name ?? v,
+  perfil: (v) => PERFIL_ANTIGO[v] ?? v,
+  segunda_faceta: (v) => PERFIL_ANTIGO[v] ?? v,
+  etapa: (v) => ({ inicio: "Começou e ainda não terminou", resultado: "Concluiu o quiz" })[v] ?? v,
 };
+// A primeira versão do quiz de personalidade gravava a letra do perfil; a atual grava o nome
+const PERFIL_ANTIGO: Record<string, string> = { d: "Diplomático", c: "Comunicador", s: "Sistemático", m: "Dominante" };
 
 export const ACTIVITY: Record<string, string> = {
   nota: "Nota", ligacao: "Ligação", whatsapp: "WhatsApp", email: "E-mail", reuniao: "Reunião", etapa: "Etapa", sistema: "Sistema",
@@ -56,6 +58,7 @@ export const PAYLOAD_LABEL: Record<string, string> = {
   tipo_evento: "Tipo de evento", mensagem: "Mensagem", assunto: "Assunto",
   interesse: "Território olfativo", objetivo: "Objetivo declarado",
   perfil: "Perfil olfativo", segunda_faceta: "Segunda faceta", afinidades: "Mapa de afinidades",
+  etapa: "Situação no quiz", pontos: "Pontuação (de 19)", consentimento: "Autorizou contato", quiz_id: "Código do quiz",
 };
 
 export const isOverdue = (l: Pick<Lead, "next_action_at" | "status">) =>

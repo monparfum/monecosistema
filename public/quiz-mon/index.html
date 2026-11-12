@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<!-- Ajustes do site MON (refazer ao trocar o pacote): fora do site vai para /quiz, onde o cadastro chega ao CRM; o logo já está no cabeçalho do site -->
+<script>if (window.top === window) location.replace("/quiz");</script>
+<style>.monq-logo{display:none}</style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Qual é a sua personalidade olfativa? | MON Parfum</title>
+<meta name="description" content="Quiz de personalidade olfativa da MON Parfum: descubra seu perfil predominante, suas famílias olfativas de afinidade e as notas que você pode explorar.">
+<meta property="og:title" content="Qual é a sua personalidade olfativa? | MON Parfum">
+<meta property="og:description" content="12 perguntas para descobrir o seu perfil olfativo e as notas que combinam com você.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/quiz.css">
+</head>
+<body>
+<!-- ================================================================
+     QUIZ DE PERSONALIDADE OLFATIVA — MON PARFUM
+     Estrutura: index.html (marcação) · css/quiz.css (visual)
+                js/data.js (conteúdo) · js/quiz.js (lógica)
+     ================================================================ -->
+<main class="monq" id="monq" aria-live="polite">
+
+  <header class="monq-logo"><img data-logo="d" alt="MON Parfum" width="118" height="62"></header>
+
+  <!-- TELA INICIAL -->
+  <section class="monq-screen is-active" data-screen="intro" aria-labelledby="monq-title">
+    <div class="monq-intro">
+      <div class="monq-intro-text">
+        <p class="monq-eyebrow">Quiz Olfativo · MON Parfum</p>
+        <h1 id="monq-title">Qual é a sua personalidade olfativa?</h1>
+        <p class="monq-lead">Perfume é identidade invisível. As fragrâncias que escolhemos guardam memórias, desejos e o nosso jeito de estar no mundo. Em 12 perguntas, descubra o seu perfil olfativo predominante, a sua segunda faceta e as notas que você pode explorar.</p>
+        <ul class="monq-meta">
+          <li>12 perguntas</li><li>Cerca de 4 minutos</li><li>Resultado na hora</li>
+        </ul>
+        <button class="monq-btn" type="button" data-action="start">Iniciar o quiz</button>
+      </div>
+      <figure class="monq-intro-figure"><span class="monq-intro-seal"><img data-logo="d" alt="" width="96" height="50"></span><img data-img="hero" alt="Quatro cenas que representam os perfis olfativos: cartas com rosa seca, janela para o mar, frasco de vidro âmbar e lago de montanha"></figure>
+    </div>
+  </section>
+
+  <!-- CADASTRO (antes de iniciar) -->
+  <section class="monq-screen" data-screen="lead" aria-labelledby="monq-lead-title">
+    <div class="monq-lead-box">
+      <p class="monq-eyebrow">Quiz Olfativo · MON Parfum</p>
+      <h2 id="monq-lead-title" data-l="title"></h2>
+      <p class="monq-lead-text" data-l="text"></p>
+      <form class="monq-form" novalidate>
+        <label class="monq-hp" aria-hidden="true">Site<input name="site" tabindex="-1" autocomplete="off"></label>
+        <label>Nome completo<input name="nome" required autocomplete="name" placeholder="Seu nome e sobrenome"></label>
+        <label>E-mail<input name="email" type="email" required autocomplete="email" placeholder="voce@exemplo.com"></label>
+        <label>WhatsApp<input name="whatsapp" type="tel" required autocomplete="tel" inputmode="tel" placeholder="(00) 00000-0000"></label>
+        <label class="monq-check"><input type="checkbox" name="consentimento" required><span data-l="consent"></span></label>
+        <p class="monq-form-err" role="alert"></p>
+        <button class="monq-btn" type="submit" data-l="button"></button>
+        <p class="monq-small" data-l="privacy"></p>
+      </form>
+      <button class="monq-btn monq-btn--link" type="button" data-action="home">← Voltar</button>
+    </div>
+  </section>
+
+  <!-- PERGUNTAS -->
+  <section class="monq-screen" data-screen="quiz" aria-labelledby="monq-q-title">
+    <div class="monq-progress" role="progressbar" aria-valuemin="1" aria-valuemax="12" aria-valuenow="1">
+      <div class="monq-progress-bar"><div class="monq-progress-fill"></div></div>
+      <div class="monq-progress-label"></div>
+    </div>
+    <p class="monq-eyebrow monq-q-part"></p>
+    <h2 id="monq-q-title" class="monq-q-title" tabindex="-1"></h2>
+    <div class="monq-options" role="radiogroup" aria-labelledby="monq-q-title"></div>
+    <nav class="monq-nav" aria-label="Navegação do quiz">
+      <button class="monq-btn monq-btn--ghost" type="button" data-action="back">← Voltar</button>
+      <button class="monq-btn" type="button" data-action="next" disabled>Avançar →</button>
+    </nav>
+    <p class="monq-hint" aria-live="polite"></p>
+  </section>
+
+  <!-- RESULTADO -->
+  <section class="monq-screen" data-screen="result" aria-labelledby="monq-r-title">
+    <div class="monq-result-head">
+      <p class="monq-eyebrow">Seu perfil olfativo predominante</p>
+      <h2 id="monq-r-title" class="monq-result-title" data-r="name"></h2>
+      <p class="monq-result-identity" data-r="identity"></p>
+      <p class="monq-result-second" data-r="secondLine"></p>
+    </div>
+    <p class="monq-essence" data-r="description"></p>
+
+    <div class="monq-block">
+      <h3 class="monq-h3">Seu mapa de afinidades</h3>
+      <div class="monq-map-wrap">
+        <div class="monq-quadrant" data-r="quadrant" role="img" aria-label="Mapa dos quatro perfis olfativos com a sua pontuação"></div>
+        <div class="monq-bars" data-r="bars"></div>
+      </div>
+      <p class="monq-small">As proporções mostram apenas como as suas escolhas se distribuíram neste quiz (19 pontos possíveis). Não são medidas psicológicas nem resultados científicos.</p>
+    </div>
+
+    <div class="monq-grid">
+      <div class="monq-card">
+        <h3 class="monq-h3">Suas famílias olfativas de afinidade</h3>
+        <ul class="monq-families" data-r="families"></ul>
+      </div>
+      <div class="monq-card">
+        <h3 class="monq-h3">Notas e acordes para explorar</h3>
+        <div class="monq-chips" data-r="notes"></div>
+        <ul class="monq-accords" data-r="accords"></ul>
+      </div>
+    </div>
+
+    <div class="monq-card monq-second" data-r="secondCard">
+      <h3 class="monq-h3">Sua segunda faceta: <span data-r="secondName"></span></h3>
+      <p data-r="secondText"></p>
+    </div>
+
+    <blockquote class="monq-reflection" data-r="reflection"></blockquote>
+
+    <div class="monq-explore">
+      <div class="monq-exp">
+        <div class="monq-exp-photo"><img data-img="experience" alt="Frasco de perfume com peônias e flores brancas"><span class="monq-exp-badge">50 ml</span></div>
+        <div class="monq-exp-body">
+          <p class="monq-eyebrow">Coloque sua personalidade olfativa em prática</p>
+          <h3 class="monq-h2" data-r="expTitle"></h3>
+          <p data-r="expText"></p>
+          <a class="monq-btn" data-r="expLink" target="_blank" rel="noopener"></a>
+        </div>
+      </div>
+      <div class="monq-courses-wrap">
+        <p class="monq-eyebrow">Para aprofundar o seu perfil</p>
+        <div class="monq-courses" data-r="courses"></div>
+      </div>
+    </div>
+
+    <div class="monq-cta">
+      <img class="monq-cta-logo" data-logo="l" alt="MON Parfum" width="110" height="58">
+      <h3 class="monq-h2" data-r="ctaTitle"></h3>
+      <div data-r="ctaText"></div>
+      <a class="monq-btn monq-btn--light" data-r="ctaLink" target="_blank" rel="noopener"></a>
+    </div>
+
+    <div class="monq-actions-row">
+      <button class="monq-btn monq-btn--ghost" type="button" data-action="share">Compartilhar resultado</button>
+      <button class="monq-btn monq-btn--ghost" type="button" data-action="restart">Refazer o quiz ↺</button>
+      <span class="monq-toast" role="status"></span>
+    </div>
+
+    <details class="monq-method">
+      <summary>Como este quiz foi construído</summary>
+      <div data-r="method"></div>
+    </details>
+  </section>
+
+  <noscript><p class="monq-noscript">Para fazer o quiz, ative o JavaScript do seu navegador.</p></noscript>
+</main>
+
+<script src="js/data.js"></script>
+<script src="js/quiz.js"></script>
+</body>
+</html>
